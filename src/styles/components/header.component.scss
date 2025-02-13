@@ -1,0 +1,29 @@
+
+
+.header_cont{
+    //border: 2px solid red;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border-radius: 8px;
+    align-items: center;
+    background-color: white;
+    //background: linear-gradient(90deg, rgb(206, 255, 206), rgb(182, 255, 222));
+    .logo{
+        //border: 2px solid violet;
+        width: 110px;
+        height: 40px;
+        background-color: #c5ffec;
+        border-radius: 6px;
+        img{
+            width: 100%;
+            height: 100%;
+        }        
+    }
+    .nav{
+        //border: 2px solid indigo;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+}

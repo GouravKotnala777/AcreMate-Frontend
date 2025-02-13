@@ -1,0 +1,22 @@
+
+
+.navigate_item_cont{
+    //border: 2px solid red;
+    display: flex;
+    padding: 5px;
+    width: max-content;
+    border-radius: 6px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    background-color: #c5ffec;
+    color: #5b766d;
+    .icon{
+        //border: 2px solid green;
+        //align-content: center;
+        height: 25px;
+    }
+    .text{
+        //border: 2px solid green;
+    }
+}
