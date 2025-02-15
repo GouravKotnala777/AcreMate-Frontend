@@ -1,0 +1,89 @@
+
+
+.navigate_item_cont{
+    //border: 2px solid red;
+    display: flex;
+    padding: 5px;
+    width: max-content;
+    border-radius: 6px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    background-color: #c5ffec;
+    color: #5b766d;
+    text-decoration: none;
+    .icon{
+        //border: 2px solid green;
+        //align-content: center;
+        height: 25px;
+    }
+    .text{
+        //border: 2px solid green;
+    }
+}
+
+.heading{
+    //border: 2px solid indigo;
+    margin: 5px;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+.input_cont{
+    //border: 2px solid blue;
+    position: relative;
+    height: 60px;
+    margin-top: 10px;
+    input{
+        position: absolute;
+        //margin: 5px;
+        padding: 15px;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    label{
+        //border: 2px solid orange;
+        position: absolute;
+        top: 20%;
+        left: 6%;
+        transition: 0.3s;
+        padding: 0 8px;
+        border-radius: 4px;
+        color: #555555;
+    }
+}
+
+select{
+    //border: 2px solid red;
+    padding: 12px;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin: 10px 0;
+    option{
+        border: 2px solid indigo;
+    }
+}
+
+#button_component{
+    margin-top: 10px;
+    padding: 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover{
+        opacity: 0.8;
+    }
+}
+
+.form_shared_component{
+    border: 2px solid red;
+}

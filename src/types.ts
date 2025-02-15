@@ -79,7 +79,8 @@ export interface SiteTypes{
     siteName:string;
     totalSize:number;
 }
-
+export type CreateSiteBodyTypes = Pick<SiteTypes, "siteName"|"totalSize">;
+export type UpdateSiteBodyTypes = Partial<Pick<SiteTypes, "siteName"|"totalSize">>&{siteID:string;};
 
 export interface FetchAPIHandlerArgTypes {
     apiName:string;
@@ -90,3 +91,5 @@ export interface FetchAPIHandlerArgTypes {
     body?:BodyInit|null|undefined;
 }
 export type ApiResponseTypes<T> = {success:boolean; message:string; jsonData:T};
+
+export type RoutesTypes = "clients"|"plots"|"slips"|"sites"|"agents"|"login"|"register"|"home"|"me";

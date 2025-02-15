@@ -2,6 +2,13 @@ import { ChangeEvent, useState } from "react";
 import { BG_COLOR } from "../constants";
 import { Button, Heading, Input } from "../shared/SharedComponents";
 import { RegisterFormData } from "./Register";
+import { login } from "../api";
+
+
+export interface LoginFormData{
+    email:string;
+    password:string;
+}
 
 
 const Login = () => {
@@ -11,7 +18,8 @@ const Login = () => {
         setFormData({...formData, [e.target.name]:e.target.value});
     };
 
-    const onClickHandler = () => {
+    const onClickHandler = async() => {
+        await login(formData);
         console.log(formData);
     };
 

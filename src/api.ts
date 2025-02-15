@@ -1,16 +1,27 @@
 import toast from "react-hot-toast";
-import { ApiResponseTypes, ClientTypes, FetchAPIHandlerArgTypes, PlotTypes, SiteTypes, SlipTypes, UserTypes } from "./types";
+import { ApiResponseTypes, ClientTypes, CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, FetchAPIHandlerArgTypes, PlotTypes, SiteTypes, SlipTypes, UpdatePlotBodyTypes, UpdateSiteBodyTypes, UpdateSlipBodyTypes, UserTypes } from "./types";
+import { RegisterFormData } from "./pages/Register";
+import { LoginFormData } from "./pages/Login";
 
 export const fetchAPIHandler = async<T>({
     apiName, endpoint, isFormDataType, method, credentials, body
 }:FetchAPIHandlerArgTypes) => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_SERVER_UR}${endpoint}`, {
-            ...(isFormDataType&&{
-                headers:{
-                    "Content-Type":"multipart/form-data"
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}${endpoint}`, {
+            ...(isFormDataType?
+                {
+                    headers:{
+                        "Content-Type":"multipart/form-data"
+                    }
                 }
-            }),
+                :
+                {
+                    headers:{
+                        "Content-Type":"application/json"
+                    }
+                }
+
+            ),
             method,
             ...(credentials&&{credentials:"include"}),
             body
@@ -60,20 +71,33 @@ export const findAllUsers = async() => {
 
     return data;
 };
-export const register = async() => {
-    const data = await fetchAPIHandler<null>({
-        apiName:"register",
-        endpoint:"/user/register",
-        method:"POST"
+export const myProfile = async() => {
+    const data = await fetchAPIHandler<UserTypes>({
+        apiName:"myProfile",
+        endpoint:"/user/my-profile",
+        method:"GET",
+        credentials:true
     });
 
     return data;
 };
-export const login = async() => {
+export const register = async(formData:RegisterFormData) => {
+    const data = await fetchAPIHandler<null>({
+        apiName:"register",
+        endpoint:"/user/register",
+        method:"POST",
+        body:JSON.stringify(formData)
+    });
+
+    return data;
+};
+export const login = async(formData:LoginFormData) => {
     const data = await fetchAPIHandler<null>({
         apiName:"login",
         endpoint:"/user/login",
-        method:"POST"
+        method:"POST",
+        credentials:true,
+        body:JSON.stringify(formData)
     });
 
     return data;
@@ -99,22 +123,24 @@ export const findAllClients = async() => {
 
     return data;
 };
-export const createClient = async() => {
+export const createClient = async(formData:CreateClientBodyTypes) => {
     const data = await fetchAPIHandler<ClientTypes>({
         apiName:"createClient",
         endpoint:"/client/create",
         credentials:true,
-        method:"POST"
+        method:"POST",
+        body:JSON.stringify(formData)
     });
 
     return data;
 };
-export const cancelClient = async() => {
+export const cancelClient = async(clientID:string) => {
     const data = await fetchAPIHandler<null>({
         apiName:"cancelClent",
         endpoint:"/client/cancel",
         credentials:true,
-        method:"DELETE"
+        method:"DELETE",
+        body:JSON.stringify(clientID)
     });
 
     return data;
@@ -131,32 +157,35 @@ export const findAllPlots = async() => {
 
     return data;
 };
-export const createPlot = async() => {
+export const createPlot = async(formData:CreatePlotBodyTypes) => {
     const data = await fetchAPIHandler<PlotTypes>({
         apiName:"createPlot",
         endpoint:"/plot/create",
         credentials:true,
-        method:"POST"
+        method:"POST",
+        body:JSON.stringify(formData)
     });
 
     return data;
 };
-export const updatePlot = async() => {
+export const updatePlot = async(formData:UpdatePlotBodyTypes) => {
     const data = await fetchAPIHandler<PlotTypes>({
         apiName:"updatePlot",
         endpoint:"/plot/update",
         credentials:true,
-        method:"PUT"
+        method:"PUT",
+        body:JSON.stringify(formData)
     });
 
     return data;
 };
-export const deletePlot = async() => {
+export const deletePlot = async(plotID:string) => {
     const data = await fetchAPIHandler<null>({
         apiName:"deletePlot",
         endpoint:"/plot/delete",
         credentials:true,
-        method:"DELETE"
+        method:"DELETE",
+        body:JSON.stringify(plotID)
     });
 
     return data;
@@ -173,22 +202,24 @@ export const findAllSlips = async() => {
 
     return data;
 };
-export const createSlip = async() => {
+export const createSlip = async(formData:CreateSlipBodyTypes) => {
     const data = await fetchAPIHandler<SlipTypes>({
         apiName:"createSlip",
         endpoint:"/plot/create",
         credentials:true,
-        method:"POST"
+        method:"POST",
+        body:JSON.stringify(formData)
     });
 
     return data;
 };
-export const updateSlip = async() => {
+export const updateSlip = async(formData:UpdateSlipBodyTypes) => {
     const data = await fetchAPIHandler<null>({
         apiName:"updateSlip",
         endpoint:"/plot/update",
         credentials:true,
-        method:"PUT"
+        method:"PUT",
+        body:JSON.stringify(formData)
     });
 
     return data;
@@ -206,22 +237,24 @@ export const findAllSites = async() => {
 
     return data;
 };
-export const createSite = async() => {
+export const createSite = async(formData:CreateSiteBodyTypes) => {
     const data = await fetchAPIHandler<SiteTypes>({
         apiName:"createSite",
         endpoint:"/plot/create",
         credentials:true,
-        method:"POST"
+        method:"POST",
+        body:JSON.stringify(formData)
     });
 
     return data;
 };
-export const updateSite = async() => {
+export const updateSite = async(formData:UpdateSiteBodyTypes) => {
     const data = await fetchAPIHandler<SiteTypes>({
         apiName:"updateSite",
         endpoint:"/plot/update",
         credentials:true,
-        method:"PUT"
+        method:"PUT",
+        body:JSON.stringify(formData)
     });
 
     return data;

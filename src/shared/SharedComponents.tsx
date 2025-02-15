@@ -1,12 +1,14 @@
 import { NavLink } from "react-router-dom";
-import "../styles/shared.scss";
+import "../styles/shared_components.scss";
 import { IconType } from "react-icons";
 import { ChangeEvent, useState } from "react";
+import { RoutesTypes } from "../types";
 
 interface NavigateItemPropTypes {
     Icon:IconType;
-    text:string;
+    text:RoutesTypes;
     url:string;
+    setSelectedRouteHandler:(value:RoutesTypes) => void;
 }
 interface HeadingPropTypes {
     text:string;
@@ -22,6 +24,7 @@ interface InputPropTypes {
     onChangeHandler:(e:ChangeEvent<HTMLInputElement>) => void;
 }
 interface SelectPropTypes {
+    name:string;
     options:string[];
     color?:string;
     bgColor?:string;
@@ -32,13 +35,20 @@ interface ButtonPropTypes {
     text:string;
     color?:string;
     bgColor?:string;
-    onClickHandler:() => void;
+    onClickHandler:() => Promise<void>;
+}
+interface FormSharedComponentPropTypes{
+    inputArray:{label:string; name:string;}[];
+    onChangeFeildsHandler:(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void;
+    onSubmitFormHandler:() => void;
 }
 
-export const NavigateItem = ({Icon, text, url}:NavigateItemPropTypes) => {
+export const NavigateItem = ({Icon, text, url, setSelectedRouteHandler}:NavigateItemPropTypes) => {
 
     return(
-        <NavLink to={url} className="navigate_item_cont">
+        <NavLink to={url} className="navigate_item_cont" onClick={() => {
+                setSelectedRouteHandler(text);
+            }}>
             <div className="icon"><Icon/></div>
             <div className="text">{text}</div>
         </NavLink>
@@ -109,10 +119,10 @@ export const Input = ({label, name, inputBG, labelBG, onChangeHandler}:InputProp
     )
 };
 
-export const Select = ({options, color, bgColor, border, onChangeHandler}:SelectPropTypes) => {
+export const Select = ({name, options, color, bgColor, border, onChangeHandler}:SelectPropTypes) => {
 
     return(
-        <select onChange={(e) => onChangeHandler(e)}
+        <select name={name} onChange={(e) => onChangeHandler(e)}
             style={{
                 border:border?border:"1px solid transparent",
                 backgroundColor:bgColor?bgColor:"transparent",
@@ -131,9 +141,23 @@ export const Select = ({options, color, bgColor, border, onChangeHandler}:Select
 
 export const Button = ({text, color, bgColor, onClickHandler}:ButtonPropTypes) => {
     return(
-        <button onClick={onClickHandler} style={{
+        <button id="button_component" onClick={onClickHandler} style={{
             backgroundColor:bgColor?bgColor:"black",
             color:color?color:"white"
         }}>{text}</button>
+    )
+};
+
+export const FormSharedComponent = ({inputArray, onChangeFeildsHandler, onSubmitFormHandler}:FormSharedComponentPropTypes) => {
+
+    return(
+        <div className="form_shared_component">
+            {
+                inputArray.map((inp, index) => (
+                    <Input key={index} label={inp.label} name={inp.name} onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => onChangeFeildsHandler(e)} />
+                ))
+            }
+            <button onClick={onSubmitFormHandler}>Create Client Form</button>
+        </div>
     )
 }
