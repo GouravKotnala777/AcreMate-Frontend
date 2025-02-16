@@ -71,6 +71,16 @@ export const findAllUsers = async() => {
 
     return data;
 };
+export const findSingleUser = async(userID:string) => {
+    const data = await fetchAPIHandler<UserTypes>({
+        apiName:"findSingleUser",
+        endpoint:`/user/single-user?userID=${userID}`,
+        method:"GET",
+        credentials:true
+    });
+
+    return data;
+};
 export const myProfile = async() => {
     const data = await fetchAPIHandler<UserTypes>({
         apiName:"myProfile",
@@ -123,6 +133,16 @@ export const findAllClients = async() => {
 
     return data;
 };
+export const findSingleClient = async(clientID:string) => {
+    const data = await fetchAPIHandler<ClientTypes>({
+        apiName:"findSingleClient",
+        endpoint:`/client/single-client?clientID=${clientID}`,
+        method:"GET",
+        credentials:true
+    });
+
+    return data;
+};
 export const createClient = async(formData:CreateClientBodyTypes) => {
     const data = await fetchAPIHandler<ClientTypes>({
         apiName:"createClient",
@@ -153,6 +173,16 @@ export const findAllPlots = async() => {
         endpoint:"/plot/all-plots",
         credentials:true,
         method:"GET"
+    });
+
+    return data;
+};
+export const findSinglePlot = async(plotID:string) => {
+    const data = await fetchAPIHandler<PlotTypes>({
+        apiName:"findSinglePlot",
+        endpoint:`/plot/single-plot?plotID=${plotID}`,
+        method:"GET",
+        credentials:true
     });
 
     return data;
@@ -202,6 +232,16 @@ export const findAllSlips = async() => {
 
     return data;
 };
+export const findSingleSlip = async(slipID:string) => {
+    const data = await fetchAPIHandler<SlipTypes>({
+        apiName:"findSingleSlip",
+        endpoint:`/slip/single-slip?slipID=${slipID}`,
+        method:"GET",
+        credentials:true
+    });
+
+    return data;
+};
 export const createSlip = async(formData:CreateSlipBodyTypes) => {
     const data = await fetchAPIHandler<SlipTypes>({
         apiName:"createSlip",
@@ -233,6 +273,16 @@ export const findAllSites = async() => {
         endpoint:"/plot/all-sites",
         credentials:true,
         method:"GET"
+    });
+
+    return data;
+};
+export const findSingleSite = async(siteID:string) => {
+    const data = await fetchAPIHandler<SiteTypes>({
+        apiName:"findSingleSite",
+        endpoint:`/site/single-site?siteID=${siteID}`,
+        method:"GET",
+        credentials:true
     });
 
     return data;
