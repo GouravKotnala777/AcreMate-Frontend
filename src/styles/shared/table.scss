@@ -1,0 +1,31 @@
+@import "../utils.scss";
+
+.table_cont{
+    border: 2px solid red;
+    width: 98%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: block;
+    overflow-x: scroll;
+    thead{
+        border: 2px solid violet;
+        th{
+            border: 2px solid blue;
+            background-color: $primaryLight;
+        }
+    }
+    tbody{
+        border: 2px solid indigo;
+        tr{
+            cursor: pointer;
+            &:hover{
+                background-color: white;
+            }
+            td{
+                border: 2px solid green;
+                text-align: center;
+                align-content: center;
+            }
+        }
+    }
+}
