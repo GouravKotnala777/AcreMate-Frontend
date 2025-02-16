@@ -42,6 +42,12 @@ interface FormSharedComponentPropTypes{
     onChangeFeildsHandler:(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void;
     onSubmitFormHandler:() => void;
 }
+interface TimerPropTypes{
+    bgColor?:string;
+}
+interface KeyValuePairsPropTypes{
+    keyValuePairArray:Record<string, string|number>[];
+}
 
 export const NavigateItem = ({Icon, text, url, setSelectedRouteHandler}:NavigateItemPropTypes) => {
 
@@ -160,4 +166,40 @@ export const FormSharedComponent = ({inputArray, onChangeFeildsHandler, onSubmit
             <button onClick={onSubmitFormHandler}>Create Client Form</button>
         </div>
     )
-}
+};
+
+export const Timer = ({bgColor}:TimerPropTypes) => {
+
+    return(
+        <div className="timer_cont">
+            <div className="timer_heading">
+                Time Left
+            </div>
+            <div className="timer_value">
+                <div className="watch_outer" style={{
+                        background:bgColor?`conic-gradient(${bgColor} 0deg 100deg, #00ff00 100deg 360deg)`:`conic-gradient(#00ff0020 0deg 100deg, #00ff00 100deg 360deg)`
+                    }}>
+                    <div className="watch_inner">
+                        23/42
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+};
+
+export const KeyValuePairs = ({keyValuePairArray}:KeyValuePairsPropTypes) => {
+
+    return(
+        <div className="key_value_pairs_cont">
+            {
+                keyValuePairArray.map((item) => (
+                    <div className="key_value_pair_cont">
+                        <div className="key">{Object.keys(item)[0]}:</div>
+                        <div className="value">{Object.values(item)[0]}</div>
+                    </div>
+                ))
+            }
+        </div>
+    )
+};
