@@ -68,10 +68,12 @@
             }            
         }
         main{
-            //border: 2px solid indigo;
+            border: 2px solid indigo;
             flex: 85%;
             transition: 0.3s;
-            border: 2px solid $primaryLight;
+            //border: 2px solid $primaryLight;
+            padding: 10px;
+            overflow-y: scroll;
         }
     }
 }

@@ -1,0 +1,14 @@
+@import"../utils.scss";
+
+.single_plot_bg{
+    //border: 2px solid blue;
+    //height: 100%;
+    //overflow-y: scroll;
+    .plot_info_cont{
+        //border: 2px solid orange;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+}
