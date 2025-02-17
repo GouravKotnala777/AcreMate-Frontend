@@ -3,6 +3,7 @@ import "../styles/shared_components.scss";
 import { IconType } from "react-icons";
 import { ChangeEvent, useState } from "react";
 import { RoutesTypes } from "../types";
+import { BG_COLOR } from "../constants";
 
 interface NavigateItemPropTypes {
     Icon:IconType;
@@ -38,15 +39,18 @@ interface ButtonPropTypes {
     onClickHandler:() => Promise<void>;
 }
 interface FormSharedComponentPropTypes{
-    inputArray:{label:string; name:string;}[];
+    inputArray:{type:"text"|"number"|"select"; label:string; name:string; selectionOptionArray?:string[]}[];
     onChangeFeildsHandler:(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void;
     onSubmitFormHandler:() => void;
 }
 interface TimerPropTypes{
     bgColor?:string;
+    duration?:number;
+    monthsCovered?:number;
 }
 interface KeyValuePairsPropTypes{
     keyValuePairArray:Record<string, string|number>[];
+    color?:string;
 }
 
 export const NavigateItem = ({Icon, text, url, setSelectedRouteHandler}:NavigateItemPropTypes) => {
@@ -160,7 +164,19 @@ export const FormSharedComponent = ({inputArray, onChangeFeildsHandler, onSubmit
         <div className="form_shared_component">
             {
                 inputArray.map((inp, index) => (
-                    <Input key={index} label={inp.label} name={inp.name} onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => onChangeFeildsHandler(e)} />
+                    (inp.type === "text"||inp.type === "number")?
+                        <Input key={index}  label={inp.label} name={inp.name} labelBG={BG_COLOR} onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => onChangeFeildsHandler(e)} />
+                        :
+                        (inp.type === "select")?
+                            <Select
+                                key={index}
+                                name={inp.name}
+                                border="1px solid rgb(78, 255, 175)"
+                                options={inp.selectionOptionArray as string[]}
+                                onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => onChangeFeildsHandler(e)}
+                            />
+                            :
+                            <h3 key={index}>input type = "{inp.type}"</h3>
                 ))
             }
             <button onClick={onSubmitFormHandler}>Create Client Form</button>
@@ -168,7 +184,7 @@ export const FormSharedComponent = ({inputArray, onChangeFeildsHandler, onSubmit
     )
 };
 
-export const Timer = ({bgColor}:TimerPropTypes) => {
+export const Timer = ({bgColor, monthsCovered, duration}:TimerPropTypes) => {
 
     return(
         <div className="timer_cont">
@@ -177,10 +193,19 @@ export const Timer = ({bgColor}:TimerPropTypes) => {
             </div>
             <div className="timer_value">
                 <div className="watch_outer" style={{
-                        background:bgColor?`conic-gradient(${bgColor} 0deg 100deg, #00ff00 100deg 360deg)`:`conic-gradient(#00ff0020 0deg 100deg, #00ff00 100deg 360deg)`
+                        background:
+                        (monthsCovered&&duration)?
+                            bgColor?
+                                `conic-gradient(${bgColor} 0deg ${360/duration}deg, #00ff00 ${360/duration}deg 360deg)`
+                                :
+                                `conic-gradient(#00ff0020 0deg 100deg, #00ff00 100deg 360deg)`
+                            :
+                            "#eeeeee"
+                                
+                                
                     }}>
                     <div className="watch_inner">
-                        23/42
+                        {monthsCovered}/{duration}
                     </div>
                 </div>
             </div>
@@ -188,15 +213,17 @@ export const Timer = ({bgColor}:TimerPropTypes) => {
     )
 };
 
-export const KeyValuePairs = ({keyValuePairArray}:KeyValuePairsPropTypes) => {
+export const KeyValuePairs = ({keyValuePairArray, color}:KeyValuePairsPropTypes) => {
 
     return(
         <div className="key_value_pairs_cont">
             {
-                keyValuePairArray.map((item) => (
-                    <div className="key_value_pair_cont">
+                keyValuePairArray.map((item, index) => (
+                    <div className="key_value_pair_cont" key={index}>
                         <div className="key">{Object.keys(item)[0]}:</div>
-                        <div className="value">{Object.values(item)[0]}</div>
+                        <div className="value" style={{
+                            color:color?color:"unset"
+                        }}>{Object.values(item)[0]}</div>
                     </div>
                 ))
             }
