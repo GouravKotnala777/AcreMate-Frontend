@@ -1,24 +1,24 @@
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import "../styles/components/sidebar_wrapper.scss";
 import Header from "./Header";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
-import { RoutesTypes } from "../types";
+import { ReactNode, useState } from "react";
+import { useSelectedRoute } from "../Context";
 
 interface SideBarWrapperPropTypes{
-    setSelectedRoute:Dispatch<SetStateAction<RoutesTypes|null>>;
     createFormPanel:ReactNode;
     updateFormPanel:ReactNode;
     removeFormPanel:ReactNode;
     mainChildrenPanel:ReactNode;
 }
+export type SelectedPanelTypes = "create"|"update"|"remove"|"main";
 
-const SideBarWrapper = ({setSelectedRoute, createFormPanel, updateFormPanel, removeFormPanel, mainChildrenPanel}:SideBarWrapperPropTypes) => {
+const SideBarWrapper = ({createFormPanel, updateFormPanel, removeFormPanel, mainChildrenPanel}:SideBarWrapperPropTypes) => {
     const [isSidebarActive, setIsSidebarActive] = useState<boolean>(false);
-    const [selectedPanel, setSelectedPanel] = useState<"create"|"update"|"remove"|"main">("main");
+    const {selectedPanel, setSelectedPanel} = useSelectedRoute();
 
     return(
         <div className="sidebar_wrapper_bg">
-            <header><Header setSelectedPanel={setSelectedPanel} setSelectedRoute={setSelectedRoute} /></header>
+            <header><Header /></header>
 
             <section>
                 <aside style={{

@@ -10,23 +10,26 @@ import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import SideBarWrapper from "./components/SideBarWrapper.tsx";
 import CreateFormPanel from "./components/CreateFormPanel.tsx";
-import { useState } from "react";
-import { RoutesTypes } from "./types.ts";
+//import { useState } from "react";
+//import { RoutesTypes } from "./types.ts";
 import UpdateFormPanel from "./components/UpdateFormPanel.tsx";
 import DeleteFormPanel from "./components/DeleteFormPanel.tsx";
 import MyProfile from "./pages/MyProfile.tsx";
+import { useSelectedRoute } from "./Context.tsx";
+import { SinglePlot } from "./pages/SingleItemPage.tsx";
 
 function App() {
-  const [selectedRoute, setSelectedRoute] = useState<RoutesTypes|null>(null);
+  const {selectedRoute} = useSelectedRoute();
+  //const [selectedRoute, setSelectedRoute] = useState<RoutesTypes|null>(null);
 
 
 
   return (
     <>
+    {/*<pre>{JSON.stringify(selectedRoute, null, `\t`)}</pre>*/}
       <Toaster />
       <BrowserRouter>
         <SideBarWrapper
-          setSelectedRoute={setSelectedRoute}
           createFormPanel={
             <CreateFormPanel 
               formPanelFor={
@@ -64,6 +67,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/me" element={<MyProfile />} />
+              <Route path="/single-plot/:plotID" element={<SinglePlot />} />
+              {/*<Route path="/plot/assign" element={} />*/}
             </Routes>
           }
          />
