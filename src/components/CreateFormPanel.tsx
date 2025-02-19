@@ -1,7 +1,8 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { FormSharedComponent } from "../shared/SharedComponents";
-import { createClient } from "../api";
-import { CreateClientBodyTypes } from "../types";
+import { assignPlotToClient, createClient, createPlotAndAssign, createSite, createSlip, findAllAgents } from "../api";
+import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, UserTypes } from "../types";
+import { useSearchParams } from "react-router-dom";
 
 
 interface CreateFormPanelPropTypes{
@@ -9,25 +10,68 @@ interface CreateFormPanelPropTypes{
 }
 
 const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
-    const [createFormData, setCreateFormData] = useState<CreateClientBodyTypes>({serialNumber:0, name:"", guardian:"", email:"", gender:"male", mobile:""});
+    const [createFormData, setCreateFormData] = useState<CreateClientBodyTypes|CreatePlotBodyTypes|CreateSlipBodyTypes|CreateSiteBodyTypes|object>({});
+    const [searchParams] = useSearchParams();
+    const [allAgentsIDs, setAllAgentsIDs] = useState<Pick<UserTypes, "_id"|"name">[]>([]);
+
+    const plotID = searchParams.get("plotID");
+    const plotStatus = searchParams.get("plotStatus");
     
     const onChangeFeildsHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
-        setCreateFormData({...createFormData, [e.target.name]:e.target.value});
+        if (e.target.name === "agentID") {
+            setCreateFormData({...createFormData, agentID:allAgentsIDs.find((agnt) => agnt.name === e.target.value)?._id});
+        }
+        else{
+            setCreateFormData({...createFormData, [e.target.name]:e.target.value});
+        }
     };
 
     const onSubmitFormHandler = () => {
-        createClient(createFormData);
+        if (formPanelFor === "clients") {
+            createClient(createFormData as CreateClientBodyTypes);
+        }
+        else if (formPanelFor === "plots") {
+            //console.log(createFormData);
+            createPlotAndAssign(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes);
+        }
+        else if (formPanelFor === "slips") {
+            //console.log(createFormData);
+            plotStatus === "vacant"?
+                assignPlotToClient(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes)
+                :
+                createSlip(createFormData as CreateSlipBodyTypes);
+        }
+        else if (formPanelFor === "sites") {
+            createSite(createFormData as CreateSiteBodyTypes);
+        }
+        else{
+            console.log("formPanelFor NAHI MIL RAHA HAI line-no.32");
+            alert("formPanelFor NAHI MIL RAHA HAI line-no.32");
+        }
     }
+
+    useEffect(() => {
+        if (plotID) {
+            setCreateFormData({...createFormData, plotID});
+        }
+        findAllAgents()
+        .then((data) => {
+            setAllAgentsIDs(data.jsonData);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, [plotID]);
 
     if (formPanelFor === "clients") {
         return(
             <FormSharedComponent inputArray={[
-                {label:"Serial No.", name:"serialNumber"},
-                {label:"Client Name", name:"name"},
-                {label:"Guardian's Name", name:"guardian"},
-                {label:"Email", name:"email"},
-                {label:"Gender", name:"gender"},
-                {label:"Mobile", name:"mobile"},
+                {type:"text", label:"Serial No.", name:"serialNumber"},
+                {type:"text", label:"Client Name", name:"name"},
+                {type:"text", label:"Guardian's Name", name:"guardian"},
+                {type:"text", label:"Email", name:"email"},
+                {type:"select", label:"Gender", name:"gender", selectionOptionArray:["male", "female", "other"]},
+                {type:"text", label:"Mobile", name:"mobile"},
             ]}
             onChangeFeildsHandler={onChangeFeildsHandler}
             onSubmitFormHandler={onSubmitFormHandler}
@@ -35,12 +79,72 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
         )
     }
     else if (formPanelFor === "plots") {
-        return <h1>plot create Form</h1>
+        return(
+            <FormSharedComponent
+                inputArray={[
+                    {type:"text", label:"Client Serial Number", name:"serialNumber"},
+                    {type:"text", label:"Client Name", name:"name"},
+                    {type:"text", label:"Guardian's Name", name:"guardian"},
+                    {type:"text", label:"Client Email", name:"email"},
+                    {type:"select", label:"Gender", name:"gender", selectionOptionArray:["male", "female", "other"]},
+                    {type:"text", label:"Mobile Number", name:"mobile"},
+
+
+
+                    {type:"text", label:"Plot No.", name:"plotNo"},
+                    {type:"text", label:"Plot Size", name:"size"},
+                    {type:"text", label:"Plot Rate", name:"rate"},
+                    {type:"text", label:"Duration", name:"duration"},
+                    {type:"text", label:"Plot Length", name:"length"},
+                    {type:"text", label:"Plot Breath", name:"breath"},
+                    {type:"text", label:"Site Name", name:"site"},
+                    
+                    
+                    
+                    {type:"select", label:"Slip Type", name:"slipType", selectionOptionArray:["downpay", "token", "emi"]},
+                    {type:"text", label:"Slip No.", name:"slipNo"},
+                    {type:"select", label:"Mode Of Payment", name:"modeOfPayment", selectionOptionArray:["cash", "cheque", "transfer"]},
+                    {type:"text", label:"Amount", name:"amount"},
+
+                    {type:"select", label:"Agent ID", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)}
+                ]}
+                onChangeFeildsHandler={onChangeFeildsHandler}
+                onSubmitFormHandler={onSubmitFormHandler}
+            />
+        )
     }
-    if (formPanelFor === "slips") {
-        return <h1>slip create Form</h1>
+    else if (formPanelFor === "slips") {
+        return(
+            <FormSharedComponent
+                inputArray={
+                    plotStatus === "vacant"?
+                    [
+                        {type:"text", label:"Client Serial Number", name:"serialNumber"},
+                        {type:"text", label:"Client Name", name:"name"},
+                        {type:"text", label:"Guardian's Name", name:"guardian"},
+                        {type:"text", label:"Client Email", name:"email"},
+                        {type:"select", label:"Gender", name:"gender", selectionOptionArray:["male", "female", "other"]},
+                        {type:"text", label:"Mobile Number", name:"mobile"},
+                        {type:"select", label:"Slip Type", name:"slipType", selectionOptionArray:["downpay", "token", "emi"]},
+                        {type:"text", label:"Slip No.", name:"slipNo"},
+                        {type:"select", label:"Mode Of Payment", name:"modeOfPayment", selectionOptionArray:["cash", "cheque", "transfer"]},
+                        {type:"text", label:"Amount", name:"amount"},
+                        {type:"select", label:"Agent Name", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)}// isko alag se fetch karna hai
+                    ]
+                    :
+                    [
+                        {type:"select", label:"Slip Type", name:"slipType", selectionOptionArray:["downpay", "token", "emi"]},
+                        {type:"text", label:"Slip No.", name:"slipNo"},
+                        {type:"select", label:"Mode Of Payment", name:"modeOfPayment", selectionOptionArray:["cash", "cheque", "transfer"]},
+                        {type:"text", label:"Amount", name:"amount"}
+                    ]
+                }
+                onChangeFeildsHandler={onChangeFeildsHandler}
+                onSubmitFormHandler={onSubmitFormHandler}
+            />
+            )
     }
-    if (formPanelFor === "sites") {
+    else if (formPanelFor === "sites") {
         return <h1>site create Form</h1>
     }
     else{

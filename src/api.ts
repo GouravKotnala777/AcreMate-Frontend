@@ -71,6 +71,16 @@ export const findAllUsers = async() => {
 
     return data;
 };
+export const findAllAgents = async() => {
+    const data = await fetchAPIHandler<Pick<UserTypes, "_id"|"name">[]>({
+        apiName:"findAllAgents",
+        endpoint:"/user/all-agents",
+        credentials:true,
+        method:"GET"
+    });
+
+    return data;
+};
 export const findSingleUser = async(userID:string) => {
     const data = await fetchAPIHandler<UserTypes>({
         apiName:"findSingleUser",
@@ -178,7 +188,7 @@ export const findAllPlots = async() => {
     return data;
 };
 export const findSinglePlot = async(plotID:string) => {
-    const data = await fetchAPIHandler<PlotTypes>({
+    const data = await fetchAPIHandler<{singlePlot:PlotTypes, firstSlip:SlipTypes|null, lastSlip:SlipTypes|null}>({
         apiName:"findSinglePlot",
         endpoint:`/plot/single-plot?plotID=${plotID}`,
         method:"GET",
@@ -187,10 +197,21 @@ export const findSinglePlot = async(plotID:string) => {
 
     return data;
 };
-export const createPlot = async(formData:CreatePlotBodyTypes) => {
+export const createPlotAndAssign = async(formData:CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes) => {
     const data = await fetchAPIHandler<PlotTypes>({
-        apiName:"createPlot",
+        apiName:"createPlotAndAssign",
         endpoint:"/plot/create",
+        credentials:true,
+        method:"POST",
+        body:JSON.stringify(formData)
+    });
+
+    return data;
+};
+export const assignPlotToClient = async(formData:CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes) => {
+    const data = await fetchAPIHandler<PlotTypes>({
+        apiName:"assignPlotToClient",
+        endpoint:"/plot/assign",
         credentials:true,
         method:"POST",
         body:JSON.stringify(formData)
@@ -225,7 +246,7 @@ export const deletePlot = async(plotID:string) => {
 export const findAllSlips = async() => {
     const data = await fetchAPIHandler<SlipTypes[]>({
         apiName:"findAllSlips",
-        endpoint:"/plot/all-slips",
+        endpoint:"/slip/all-slips",
         credentials:true,
         method:"GET"
     });
@@ -245,7 +266,7 @@ export const findSingleSlip = async(slipID:string) => {
 export const createSlip = async(formData:CreateSlipBodyTypes) => {
     const data = await fetchAPIHandler<SlipTypes>({
         apiName:"createSlip",
-        endpoint:"/plot/create",
+        endpoint:"/slip/create",
         credentials:true,
         method:"POST",
         body:JSON.stringify(formData)
@@ -256,7 +277,7 @@ export const createSlip = async(formData:CreateSlipBodyTypes) => {
 export const updateSlip = async(formData:UpdateSlipBodyTypes) => {
     const data = await fetchAPIHandler<null>({
         apiName:"updateSlip",
-        endpoint:"/plot/update",
+        endpoint:"/slip/update",
         credentials:true,
         method:"PUT",
         body:JSON.stringify(formData)
@@ -270,7 +291,7 @@ export const updateSlip = async(formData:UpdateSlipBodyTypes) => {
 export const findAllSites = async() => {
     const data = await fetchAPIHandler<SiteTypes[]>({
         apiName:"findAllSites",
-        endpoint:"/plot/all-sites",
+        endpoint:"/site/all-sites",
         credentials:true,
         method:"GET"
     });
@@ -290,7 +311,7 @@ export const findSingleSite = async(siteID:string) => {
 export const createSite = async(formData:CreateSiteBodyTypes) => {
     const data = await fetchAPIHandler<SiteTypes>({
         apiName:"createSite",
-        endpoint:"/plot/create",
+        endpoint:"/site/create",
         credentials:true,
         method:"POST",
         body:JSON.stringify(formData)
@@ -301,7 +322,7 @@ export const createSite = async(formData:CreateSiteBodyTypes) => {
 export const updateSite = async(formData:UpdateSiteBodyTypes) => {
     const data = await fetchAPIHandler<SiteTypes>({
         apiName:"updateSite",
-        endpoint:"/plot/update",
+        endpoint:"/site/update",
         credentials:true,
         method:"PUT",
         body:JSON.stringify(formData)

@@ -28,6 +28,7 @@ export interface ClientTypes{
     createdAt:Date;
     updatedAt:Date;
 }
+export type ClientTableTransformedTypes = Pick<ClientTypes, "_id"|"serialNumber"|"createdAt"|"name"|"guardian"|"email"|"gender"|"mobile"|"ownerShipStatus">
 export type CreateClientBodyTypes = Pick<ClientTypes, "serialNumber"|"name"|"guardian"|"email"|"mobile"|"gender">;
 
 // Plot related types
@@ -36,10 +37,8 @@ export interface PlotTypes{
     plotNo:number;
     size:number;
     rate:number;
-    dimention:{
-        length:number;
-        width:number;
-    };
+    length:number;
+    breath:number;
     site:string;
     clientID?:string;
     duration:number;
@@ -47,12 +46,12 @@ export interface PlotTypes{
     shouldPay:number;
     paid:number;
     agentID?:string;
-    plotStatus:"pending"|"completed"|"registered"|"cencelled";
+    plotStatus:"pending"|"completed"|"registered"|"vacant";
     createdAt:Date;
     updatedAt:Date;
 }
-export type CreatePlotBodyTypes = Pick<PlotTypes, "plotNo"|"size"|"rate"|"dimention"|"site"|"clientID"|"duration"|"hasSold"|"shouldPay"|"paid"|"agentID"|"plotStatus">;
-export type UpdatePlotBodyTypes = Pick<PlotTypes, "plotNo"|"size"|"rate"|"dimention"|"clientID"|"duration"|"hasSold"|"shouldPay"|"paid"|"agentID"|"plotStatus">&{plotID:string;};
+export type CreatePlotBodyTypes = Pick<PlotTypes, "plotNo"|"size"|"rate"|"site"|"duration"|"length"|"breath">&Partial<Pick<PlotTypes, "plotStatus"|"clientID"|"hasSold"|"agentID"|"paid"|"shouldPay"|"updatedAt"|"createdAt">>;
+export type UpdatePlotBodyTypes = Partial<Pick<PlotTypes, "plotNo"|"size"|"rate"|"clientID"|"duration"|"length"|"breath"|"hasSold"|"shouldPay"|"paid"|"agentID"|"plotStatus">>&{plotID:string;};
 
 //Slip related types
 export interface SlipTypes{
