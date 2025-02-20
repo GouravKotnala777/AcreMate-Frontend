@@ -81,6 +81,16 @@ export const findAllAgents = async() => {
 
     return data;
 };
+export const agentsAndSoldArea = async() => {
+    const data = await fetchAPIHandler<PlotTypes[]>({
+        apiName:"agentsAndSoldArea",
+        endpoint:"/user/sold-area",
+        credentials:true,
+        method:"GET"
+    });
+
+    return data;
+};
 export const findSingleUser = async(userID:string) => {
     const data = await fetchAPIHandler<UserTypes>({
         apiName:"findSingleUser",
@@ -302,6 +312,16 @@ export const findSingleSite = async(siteID:string) => {
     const data = await fetchAPIHandler<SiteTypes>({
         apiName:"findSingleSite",
         endpoint:`/site/single-site?siteID=${siteID}`,
+        method:"GET",
+        credentials:true
+    });
+
+    return data;
+};
+export const findAllSitesName = async() => {
+    const data = await fetchAPIHandler<string[]>({
+        apiName:"findAllSitesName",
+        endpoint:`/site/sites-name`,
         method:"GET",
         credentials:true
     });

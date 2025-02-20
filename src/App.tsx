@@ -17,6 +17,7 @@ import DeleteFormPanel from "./components/DeleteFormPanel.tsx";
 import MyProfile from "./pages/MyProfile.tsx";
 import { useSelectedRoute } from "./Context.tsx";
 import { SinglePlot } from "./pages/SingleItemPage.tsx";
+import Agents from "./pages/Agents.tsx";
 
 function App() {
   const {selectedRoute} = useSelectedRoute();
@@ -61,6 +62,7 @@ function App() {
               <Route path="/" element={<h1>Hallllo</h1>} />
               <Route path="/home" element={<Home />} />
               <Route path="/clients" element={<Clients />} />
+              <Route path="/agents" element={<Agents />} />
               <Route path="/plots" element={<Plots />} />
               <Route path="/slips" element={<Slips />} />
               <Route path="/sites" element={<Sites />} />
