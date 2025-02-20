@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { FormSharedComponent } from "../shared/SharedComponents";
-import { assignPlotToClient, createClient, createPlotAndAssign, createSite, createSlip, findAllAgents } from "../api";
+import { assignPlotToClient, createClient, createPlotAndAssign, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
 import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, UserTypes } from "../types";
 import { useSearchParams } from "react-router-dom";
 
@@ -13,6 +13,7 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
     const [createFormData, setCreateFormData] = useState<CreateClientBodyTypes|CreatePlotBodyTypes|CreateSlipBodyTypes|CreateSiteBodyTypes|object>({});
     const [searchParams] = useSearchParams();
     const [allAgentsIDs, setAllAgentsIDs] = useState<Pick<UserTypes, "_id"|"name">[]>([]);
+    const [allSitesName, setAllSitesName] = useState<string[]>([]);
 
     const plotID = searchParams.get("plotID");
     const plotStatus = searchParams.get("plotStatus");
@@ -60,7 +61,14 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
         })
         .catch((err) => {
             console.log(err);
+        });
+        findAllSitesName()
+        .then((data) => {
+            setAllSitesName(data.jsonData);
         })
+        .catch((err) => {
+            console.log(err);
+        });
     }, [plotID]);
 
     if (formPanelFor === "clients") {
@@ -97,7 +105,7 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
                     {type:"text", label:"Duration", name:"duration"},
                     {type:"text", label:"Plot Length", name:"length"},
                     {type:"text", label:"Plot Breath", name:"breath"},
-                    {type:"text", label:"Site Name", name:"site"},
+                    {type:"select", label:"Site Name", name:"site", selectionOptionArray:allSitesName},
                     
                     
                     
