@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 import "../styles/shared_components.scss";
 import { IconType } from "react-icons";
 import { ChangeEvent, useState } from "react";
-import { RoutesTypes } from "../types";
-import { BG_COLOR } from "../constants";
+import { RoutesTypes } from "../utils/types";
+import { BG_COLOR } from "../utils/constants";
 
 interface NavigateItemPropTypes {
     Icon:IconType;

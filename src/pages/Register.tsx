@@ -1,6 +1,6 @@
 import "../styles/pages/register.scss";
 import { Button, Heading, Input, Select } from "../shared/SharedComponents";
-import { BG_COLOR } from "../constants";
+import { BG_COLOR } from "../utils/constants";
 import { ChangeEvent, useState } from "react";
 import { register } from "../api";
 

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import "../styles/pages/agents.scss";
-import { agentsAndSoldArea } from "../api";
-import { PlotTypes } from "../types";
+import { findAllAgents } from "../api";
+import { UserTypes } from "../utils/types";
 import Table from "../shared/Table";
 
 const Agents = () => {
-    const [allAgentsData, setAllAgentsData] = useState<PlotTypes[]>([]);
+    const [allAgentsData, setAllAgentsData] = useState<UserTypes[]>([]);
     
 
     useEffect(() => {
-        agentsAndSoldArea()
+        findAllAgents()
         .then((data) => {
             setAllAgentsData(data.jsonData);
         })

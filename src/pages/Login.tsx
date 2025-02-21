@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { BG_COLOR } from "../constants";
+import { BG_COLOR } from "../utils/constants";
 import { Button, Heading, Input } from "../shared/SharedComponents";
 import { RegisterFormData } from "./Register";
 import { login } from "../api";

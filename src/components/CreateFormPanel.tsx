@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { FormSharedComponent } from "../shared/SharedComponents";
 import { assignPlotToClient, createClient, createPlotAndAssign, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
-import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, UserTypes } from "../types";
+import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, UserTypes } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
 
 

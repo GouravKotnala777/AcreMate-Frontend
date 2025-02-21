@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/shared/table.scss";
 import { useSelectedRoute } from "../Context";
 
-interface TablePropTypes<T extends object&{_id:string}>{
+interface TablePropTypes<T extends object&{_id:string, siteName?:string}>{
     data:T[];
 }
 
@@ -10,18 +10,21 @@ const Table = <T extends object&{_id:string}>({data}:TablePropTypes<T>) => {
     const navigate = useNavigate();
     const {selectedRoute} = useSelectedRoute();
 
-    const onClickNavigateHandler = (_id:string) => {
+    const onClickNavigateHandler = (_id:string|{agentID:string; site:string}) => {
         if (selectedRoute?.toLowerCase() === "clients") {
-            navigate(`/single-client${_id}`);
+            navigate(`/single-client/${_id}`);
         }
         else if (selectedRoute?.toLowerCase() === "plots") {
             navigate(`/single-plot/${_id}`);
         }
         else if (selectedRoute?.toLowerCase() === "slips") {
-            navigate(`/single-slip${_id}`);
+            navigate(`/single-slip/${_id}`);
         }
         else if (selectedRoute?.toLowerCase() === "sites") {
-            navigate(`/single-site${_id}`);
+            navigate(`/single-site/${_id}`);
+        }
+        else if (selectedRoute?.toLowerCase() === "agents") {
+            navigate(`/single-agent/${_id}`);
         }
         else {
             alert(`selectedRoute is ${selectedRoute?.toLowerCase()}`);

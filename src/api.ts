@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { ApiResponseTypes, ClientTypes, CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, FetchAPIHandlerArgTypes, PlotTypes, SiteTypes, SlipTypes, UpdatePlotBodyTypes, UpdateSiteBodyTypes, UpdateSlipBodyTypes, UserTypes } from "./types";
+import { ApiResponseTypes, ClientTypes, CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, FetchAPIHandlerArgTypes, PlotTypes, SiteTypes, SlipTypes, UpdatePlotBodyTypes, UpdateSiteBodyTypes, UpdateSlipBodyTypes, UserTypes } from "./utils/types";
 import { RegisterFormData } from "./pages/Register";
 import { LoginFormData } from "./pages/Login";
 
@@ -72,7 +72,7 @@ export const findAllUsers = async() => {
     return data;
 };
 export const findAllAgents = async() => {
-    const data = await fetchAPIHandler<Pick<UserTypes, "_id"|"name">[]>({
+    const data = await fetchAPIHandler<UserTypes[]>({
         apiName:"findAllAgents",
         endpoint:"/user/all-agents",
         credentials:true,
@@ -85,6 +85,16 @@ export const agentsAndSoldArea = async() => {
     const data = await fetchAPIHandler<PlotTypes[]>({
         apiName:"agentsAndSoldArea",
         endpoint:"/user/sold-area",
+        credentials:true,
+        method:"GET"
+    });
+
+    return data;
+};
+export const agentAndSite = async() => {
+    const data = await fetchAPIHandler<PlotTypes[]>({
+        apiName:"agentAndSite",
+        endpoint:"/user/sold-area2",
         credentials:true,
         method:"GET"
     });
@@ -253,10 +263,10 @@ export const deletePlot = async(plotID:string) => {
 };
 
 // Slip related apis
-export const findAllSlips = async() => {
+export const findAllSlips = async({skip}:{skip:number;}) => {
     const data = await fetchAPIHandler<SlipTypes[]>({
         apiName:"findAllSlips",
-        endpoint:"/slip/all-slips",
+        endpoint:`/slip/all-slips?skip=${skip}`,
         credentials:true,
         method:"GET"
     });

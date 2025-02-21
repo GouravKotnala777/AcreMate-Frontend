@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { myProfile } from "../api";
-import { UserTypes } from "../types";
+import { UserTypes } from "../utils/types";
 
 
 const MyProfile = () => {

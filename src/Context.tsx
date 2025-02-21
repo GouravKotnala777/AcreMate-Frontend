@@ -1,5 +1,5 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react"
-import { RoutesTypes } from "./types";
+import { RoutesTypes } from "./utils/types";
 import { SelectedPanelTypes } from "./components/SideBarWrapper";
 
 interface ContextType{

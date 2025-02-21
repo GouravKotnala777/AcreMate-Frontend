@@ -2,17 +2,29 @@ import { useEffect, useState } from "react";
 import { KeyValuePairs, Timer } from "../shared/SharedComponents";
 import "../styles/pages/single_item_page.scss";
 import { findSinglePlot } from "../api";
-import { PlotTypes, SlipTypes } from "../types";
+import { PlotTypes, SlipTypes } from "../utils/types";
 import { useNavigate, useParams } from "react-router-dom";
-import { BG_COLOR } from "../constants";
+import { BG_COLOR } from "../utils/constants";
 import { useSelectedRoute } from "../Context";
-import { getMonthsCovered } from "../utils";
+import { getMonthsCovered } from "../utils/utilFunctions";
 
 export const SingleUser = () => {
 
     return(
         <div className="single_plot_bg">
 
+        </div>
+    )
+};
+export const SingleAgent = () => {
+
+    useEffect(() => {
+        
+    }, []);
+
+    return(
+        <div className="single_plot_bg">
+            
         </div>
     )
 };

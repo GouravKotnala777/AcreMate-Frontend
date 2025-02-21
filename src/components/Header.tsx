@@ -4,7 +4,7 @@ import "../styles/components/header.component.scss";
 import logo from "/public/acremate_logo6.png";
 import { BiGrid, BiLogIn, BiRegistered, BiUser } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
-import { RoutesTypes } from "../types";
+import { RoutesTypes } from "../utils/types";
 import { useSelectedRoute } from "../Context";
 import { GiSlipknot } from "react-icons/gi";
 

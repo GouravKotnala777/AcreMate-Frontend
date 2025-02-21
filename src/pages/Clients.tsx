@@ -1,7 +1,7 @@
 import "../styles/pages/client.scss";
 import { useEffect, useState } from "react";
 import { findAllClients } from "../api";
-import { ClientTableTransformedTypes } from "../types";
+import { ClientTableTransformedTypes } from "../utils/types";
 import Table from "../shared/Table";
 
 const clientDummyData = [

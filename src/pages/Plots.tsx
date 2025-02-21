@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { findAllPlots } from "../api";
-import { PlotTypes } from "../types";
+import { PlotTypes } from "../utils/types";
 import Table from "../shared/Table";
 
 
