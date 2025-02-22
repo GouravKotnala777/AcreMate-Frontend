@@ -166,6 +166,16 @@ export const findAllClients = async() => {
 export const findSingleClient = async(clientID:string) => {
     const data = await fetchAPIHandler<ClientTypes>({
         apiName:"findSingleClient",
+        endpoint:`/client/single-client2?clientID=${clientID}`,
+        method:"GET",
+        credentials:true
+    });
+
+    return data;
+};
+export const findSingleClientAllSlips = async(clientID:string) => {
+    const data = await fetchAPIHandler<SlipTypes[]>({
+        apiName:"findSingleClientAllSlips",
         endpoint:`/client/single-client?clientID=${clientID}`,
         method:"GET",
         credentials:true
