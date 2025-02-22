@@ -16,7 +16,7 @@ import UpdateFormPanel from "./components/UpdateFormPanel.tsx";
 import DeleteFormPanel from "./components/DeleteFormPanel.tsx";
 import MyProfile from "./pages/MyProfile.tsx";
 import { useSelectedRoute } from "./Context.tsx";
-import { SinglePlot } from "./pages/SingleItemPage.tsx";
+import { SingleClient, SinglePlot } from "./pages/SingleItemPage.tsx";
 import Agents from "./pages/Agents.tsx";
 
 function App() {
@@ -70,6 +70,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/me" element={<MyProfile />} />
               <Route path="/single-plot/:plotID" element={<SinglePlot />} />
+              <Route path="/single-client/:clientID" element={<SingleClient />} />
               {/*<Route path="/plot/assign" element={} />*/}
             </Routes>
           }
