@@ -7,32 +7,30 @@ import { useIsScrollerBottomVisible } from "../utils/hooks";
 const Slips = () => {
     const [allSlips, setAllSlips] = useState<SlipTypes[]>([]);
     const [skip, setSkip] = useState<number>(0);
-    const slipsBg = useRef<HTMLDivElement>(null);
     const scrollEnd = useRef<HTMLDivElement|null>(null);
     const isVisible = useIsScrollerBottomVisible(scrollEnd);
 
 
-    const fetchAgain = () => {
-        setSkip((prev) => prev+2);
-    };
 
     useEffect(() => {
-        if (allSlips.length !== 0 && isVisible) {
-            fetchAgain();
+        if (isVisible) {
+            setSkip((prev) => prev+2);
         }
-    }, [allSlips.length, isVisible]);
+    }, [isVisible]);
 
     useEffect(() => {
-        findAllSlips({skip})
-        .then((data) => {
-            setAllSlips((prev) => [...prev, ...data.jsonData]);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        if (skip) {
+            findAllSlips({skip})
+            .then((data) => {
+                setAllSlips((prev) => [...prev, ...data.jsonData]);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
     }, [skip]);
     return(
-        <div className="slips_bg" ref={slipsBg}>
+        <div className="slips_bg">
             {/*<h1>{JSON.stringify(isScrollBottomVisible)}</h1>*/}
             <pre>{JSON.stringify(allSlips, null, `\t`)}</pre>
             <div id="scroll_end"></div>
