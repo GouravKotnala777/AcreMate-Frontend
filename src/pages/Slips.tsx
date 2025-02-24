@@ -3,7 +3,6 @@ import { findAllSlips } from "../api";
 import { SlipTypes } from "../utils/types";
 import { useIsScrollerBottomVisible } from "../utils/hooks";
 import Spinner from "../components/Spinner";
-import { PRIMARY_DARK, PRIMARY_LIGHT } from "../utils/constants";
 
 
 const Slips = () => {
