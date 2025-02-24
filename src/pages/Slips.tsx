@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { findAllSlips } from "../api";
 import { SlipTypes } from "../utils/types";
 import { useIsScrollerBottomVisible } from "../utils/hooks";
+import Spinner from "../components/Spinner";
+import { PRIMARY_DARK, PRIMARY_LIGHT } from "../utils/constants";
 
 
 const Slips = () => {
@@ -9,6 +11,7 @@ const Slips = () => {
     const [skip, setSkip] = useState<number>(0);
     const scrollEnd = useRef<HTMLDivElement|null>(null);
     const isVisible = useIsScrollerBottomVisible(scrollEnd);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
 
@@ -20,12 +23,15 @@ const Slips = () => {
 
     useEffect(() => {
         if (skip) {
+            setIsLoading(true);
             findAllSlips({skip})
             .then((data) => {
                 setAllSlips((prev) => [...prev, ...data.jsonData]);
+                setIsLoading(false);
             })
             .catch((err) => {
                 console.log(err);
+                setIsLoading(false);
             });
         }
     }, [skip]);
@@ -35,7 +41,14 @@ const Slips = () => {
             <pre>{JSON.stringify(allSlips, null, `\t`)}</pre>
             <div id="scroll_end"></div>
             {/*<button onClick={fetchAgain}>fetch</button>*/}
-            <div ref={scrollEnd}>scroll end</div>
+            <div ref={scrollEnd}>
+                {
+                    isLoading ?
+                        <Spinner width="100px" border="10px solid white" borderTop={`10px solid black`} />
+                        :
+                        <h1>end</h1>
+                }
+            </div>
         </div>
     )
 };
