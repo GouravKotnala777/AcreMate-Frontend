@@ -10,5 +10,41 @@
         gap: 10px;
         flex-wrap: wrap;
         justify-content: space-evenly;
+
+    }
+    .slips_cont{
+        //border: 2px solid red;
+        .slip_cont{
+            //border: 2px solid violet;
+            display: grid;
+            grid-template-columns: 13% 13% 8% 30% 13% 13%;
+            border-radius: 8px;
+            //background-color: $primaryLight;
+            //background-color: white;
+            margin-top: 10px;
+            box-shadow: 0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+            //box-shadow: 0.1px 0.1px 2px 0.2px $primaryDark;
+            .slip_content{
+                padding: 10px;
+            }
+            .date{
+                //border: 2px solid indigo;
+            }
+            .slip_type{
+                //border: 2px solid blue;
+            }
+            .slip_number{
+                //border: 2px solid blue;
+            }
+            .client_name{
+                //border: 2px solid green;
+            }
+            .amount{
+                //border: 2px solid yellow;
+            }
+            .mode{
+                //border: 2px solid orange;
+            }
+        }
     }
 }

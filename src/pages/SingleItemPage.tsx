@@ -3,8 +3,8 @@ import { Heading, KeyValuePairs, Timer } from "../shared/SharedComponents";
 import "../styles/pages/single_item_page.scss";
 import { findSingleClientAllSlips, findSinglePlot } from "../api";
 import { PlotTypes, SlipTypes } from "../utils/types";
-import { useNavigate, useParams } from "react-router-dom";
-import { BG_COLOR } from "../utils/constants";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { useSelectedRoute } from "../Context";
 import { getMonthsCovered } from "../utils/utilFunctions";
 import Table from "../shared/Table";
@@ -57,12 +57,19 @@ export const SinglePlot = () => {
     const [singlePlotData, setSinglePlotData] = useState<PlotTypes|null>(null);
     const [firstSlipData, setFirstSlipData] = useState<SlipTypes|null>(null);
     const [lastSlipData, setLastSlipData] = useState<SlipTypes|null>(null);
-    const {plotID} = useParams();
+    const [allSlipsData, setAllSlipsData] = useState<SlipTypes[]>([]);
+    const [query] = useSearchParams();
     const navigate = useNavigate();
     const {setSelectedRoute, setSelectedPanel} = useSelectedRoute();
 
 
-    const payEMIHAndler = () => {
+    const plotID = query.get("plotID");
+    const clientID = query.get("clientID");
+    const slipID = query.get("slipID");
+    const siteID = query.get("siteID");
+    const agentID = query.get("agentID");
+
+    const payEMIHandler = () => {
 
         if (singlePlotData?.plotStatus === "vacant") {
             navigate(`/slips?plotID=${plotID}&plotStatus=${singlePlotData?.plotStatus}`);
@@ -88,26 +95,75 @@ export const SinglePlot = () => {
     //}
     
     useEffect(() => {
-        if (!plotID) {
-            alert("plotID not found");
+        console.log("____________________ (1)", plotID);
+        
+        if (!plotID || plotID === "null" || plotID === "undefined") {
+            console.log("____________________ (2)");
+            //alert("plotID not found");
             return;
         }
-        findSinglePlot(plotID)
+        console.log("____________________ (3)");
+        findSinglePlot({plotID})
         .then((data) => {
+            console.log("____________________ (4)");
             setSinglePlotData(data.jsonData.singlePlot);
             setFirstSlipData(data.jsonData.firstSlip);
             setLastSlipData(data.jsonData.lastSlip);
+            setAllSlipsData(data.jsonData.allSlips);
         })
         .catch((err) => {
+            console.log("____________________ (5)");
             console.log(err);
         });
     }, [plotID]);
+    useEffect(() => {
+        console.log("____________________ (6)", clientID);
+        if (!clientID || clientID === "null" || clientID === "undefined") {
+            console.log("____________________ (7)");
+            //alert("clientID not found");
+            return;
+        }
+        console.log("____________________ (8)");
+        findSinglePlot({clientID})
+        .then((data) => {
+            console.log("____________________ (9)");
+            setSinglePlotData(data.jsonData.singlePlot);
+            setFirstSlipData(data.jsonData.firstSlip);
+            setLastSlipData(data.jsonData.lastSlip);
+            setAllSlipsData(data.jsonData.allSlips);
+        })
+        .catch((err) => {
+            console.log("____________________ (10)");
+            console.log(err);
+        });
+    }, [clientID]);
+    useEffect(() => {
+        console.log("____________________ (11)", slipID);
+        if (!slipID || slipID === "null" || slipID === "undefined") {
+            console.log("____________________ (12)");
+            //alert("clientID not found");
+            return;
+        }
+        console.log("____________________ (13)");
+        findSinglePlot({slipID})
+        .then((data) => {
+            console.log("____________________ (14)");
+            setSinglePlotData(data.jsonData.singlePlot);
+            setFirstSlipData(data.jsonData.firstSlip);
+            setLastSlipData(data.jsonData.lastSlip);
+            setAllSlipsData(data.jsonData.allSlips);
+        })
+        .catch((err) => {
+            console.log("____________________ (15)");
+            console.log(err);
+        });
+    }, [slipID]);
 
     return(
         <div className="single_plot_bg">
             {/*<Heading text={`Plot No. ${plotID}`} />*/}
             {/*<button onClick={assignPlotHandler}>Assign plot</button>*/}
-            <button onClick={payEMIHAndler}>Pay EMI</button>
+            <button onClick={payEMIHandler}>Pay EMI</button>
             {/*<pre>{JSON.stringify(singlePlotData, null, `\t`)}</pre>*/}
             <div className="plot_info_cont">
                 <KeyValuePairs keyValuePairArray={[
@@ -156,6 +212,36 @@ export const SinglePlot = () => {
                 }
 
                 <Timer bgColor={BG_COLOR} monthsCovered={getMonthsCovered(firstSlipData?.createdAt)} duration={singlePlotData?.duration} />
+            </div>
+            <div className="slips_cont">
+                <div className="slip_cont" style={{
+                    backgroundColor:PRIMARY_LIGHT
+                }}>
+                    <div className="date slip_content">Date</div>
+                    <div className="slip_type slip_content">Slip Type</div>
+                    <div className="slip_number slip_content">Slip No.</div>
+                    <div className="client_name slip_content">Client Name</div>
+                    <div className="amount slip_content">Amount</div>
+                    <div className="mode slip_content">Mode Of Payment</div>
+                </div>
+                {
+                    allSlipsData.map((slp) => (
+                        <div className="slip_cont" key={slp._id} style={{
+                            backgroundColor:slp.isCancelled ?
+                                "red"
+                                :
+                                "white"
+                        }}>
+                            <div className="date slip_content">{new Date(slp.createdAt).toLocaleDateString(undefined, {day:"2-digit", month:"2-digit", year:"numeric"})}</div>
+                            <div className="slip_type slip_content">{slp.slipType}</div>
+                            <div className="slip_number slip_content">{slp.slipNo}</div>
+                            <div className="client_name slip_content">{slp.clientID}</div>
+                            <div className="amount slip_content">₹{slp.amount}/-</div>
+                            {/*<div className="admin slip_content"></div>*/}
+                            <div className="mode slip_content">{slp.modeOfPayment}</div>
+                        </div>
+                    ))
+                }
             </div>
         </div>
     )

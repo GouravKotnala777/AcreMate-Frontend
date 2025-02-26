@@ -3,6 +3,7 @@ import { findAllSlips } from "../api";
 import { SlipTypes } from "../utils/types";
 import { useIsScrollerBottomVisible } from "../utils/hooks";
 import Spinner from "../components/Spinner";
+import Table from "../shared/Table";
 
 
 const Slips = () => {
@@ -37,9 +38,13 @@ const Slips = () => {
     return(
         <div className="slips_bg">
             {/*<h1>{JSON.stringify(isScrollBottomVisible)}</h1>*/}
-            <pre>{JSON.stringify(allSlips, null, `\t`)}</pre>
-            <div id="scroll_end"></div>
-            {/*<button onClick={fetchAgain}>fetch</button>*/}
+            {/*<pre>{JSON.stringify(allSlips, null, `\t`)}</pre>*/}
+            <Table data={allSlips} />
+            <button onClick={() => {
+                if (isVisible) {
+                    setSkip((prev) => prev+2);
+                }
+            }}>fetch</button>
             <div ref={scrollEnd}>
                 {
                     isLoading ?
