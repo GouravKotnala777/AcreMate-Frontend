@@ -217,10 +217,14 @@ export const findAllPlots = async() => {
 
     return data;
 };
-export const findSinglePlot = async(plotID:string) => {
-    const data = await fetchAPIHandler<{singlePlot:PlotTypes, firstSlip:SlipTypes|null, lastSlip:SlipTypes|null}>({
+export const findSinglePlot = async({clientID, plotID, slipID, siteID, agentID}:{clientID?:string;
+    plotID?:string;
+    slipID?:string;
+    siteID?:string;
+    agentID?:string}) => {
+    const data = await fetchAPIHandler<{singlePlot:PlotTypes; firstSlip:SlipTypes|null; lastSlip:SlipTypes|null; allSlips:SlipTypes[];}>({
         apiName:"findSinglePlot",
-        endpoint:`/plot/single-plot?plotID=${plotID}`,
+        endpoint:`/plot/single-plot?plotID=${plotID}&clientID=${clientID}&slipID=${slipID}&siteID=${siteID}&agentID=${agentID}`,
         method:"GET",
         credentials:true
     });
