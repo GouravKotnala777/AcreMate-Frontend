@@ -66,8 +66,8 @@ export const SinglePlot = () => {
     const plotID = query.get("plotID");
     const clientID = query.get("clientID");
     const slipID = query.get("slipID");
-    const siteID = query.get("siteID");
-    const agentID = query.get("agentID");
+    //const siteID = query.get("siteID");
+    //const agentID = query.get("agentID");
 
     const payEMIHandler = () => {
 
@@ -186,6 +186,16 @@ export const SinglePlot = () => {
                                 {"Pending":`${-(singlePlotData.shouldPay - singlePlotData.paid)}/-`}
                             ]}
                             color={singlePlotData.shouldPay - singlePlotData.paid>0?"red":"#00cc00"}
+                        />
+                }
+
+                {
+                    singlePlotData &&
+                        <KeyValuePairs
+                            keyValuePairArray={[
+                                {"Total Slips":allSlipsData.length},
+                                {"Total EMIs":Number(singlePlotData?.paid/singlePlotData?.shouldPay).toFixed(2)}
+                            ]}
                         />
                 }
 
