@@ -102,7 +102,9 @@ select{
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
         gap: 10px;
+        margin-top: 5px;
         color: #555555;
         .key{
             //border: 2px solid indigo;
@@ -116,6 +118,15 @@ select{
     }
 }
 
+.skeleton_cont{
+    //border: 1px solid red;
+    //padding: 10px;
+    height: 20px;
+    width: 100px;
+    border-radius: 4px;
+    background-color: #aaaaaa;
+    animation: fade 1.4s linear infinite;
+}
 
 .timer_cont{
     //border: 2px solid blue;
@@ -175,5 +186,16 @@ select{
     }
     100%{
         rotate: 360deg;
+    }
+}
+@keyframes fade {
+    0%{
+        opacity: 1;
+    }
+    50%{
+        opacity: 0.3;
+    }
+    100%{
+        opacity: 1;
     }
 }

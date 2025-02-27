@@ -49,8 +49,9 @@ interface TimerPropTypes{
     monthsCovered?:number;
 }
 interface KeyValuePairsPropTypes{
-    keyValuePairArray:Record<string, string|number>[];
+    keyValuePairArray:Record<string, string|number|undefined>[];
     color?:string;
+    isLoading?:boolean;
 }
 
 export const NavigateItem = ({Icon, text, url, setSelectedRouteHandler}:NavigateItemPropTypes) => {
@@ -213,7 +214,15 @@ export const Timer = ({bgColor, monthsCovered, duration}:TimerPropTypes) => {
     )
 };
 
-export const KeyValuePairs = ({keyValuePairArray, color}:KeyValuePairsPropTypes) => {
+export const Skeleton = () => {
+    return(
+        <div className="skeleton_cont">
+
+        </div>
+    )
+};
+
+export const KeyValuePairs = ({keyValuePairArray, color, isLoading}:KeyValuePairsPropTypes) => {
 
     return(
         <div className="key_value_pairs_cont">
@@ -223,7 +232,12 @@ export const KeyValuePairs = ({keyValuePairArray, color}:KeyValuePairsPropTypes)
                         <div className="key">{Object.keys(item)[0]}:</div>
                         <div className="value" style={{
                             color:color?color:"unset"
-                        }}>{Object.values(item)[0]}</div>
+                        }}>{
+                            isLoading?
+                                <Skeleton />
+                                :
+                                Object.values(item)[0]
+                        }</div>
                     </div>
                 ))
             }
