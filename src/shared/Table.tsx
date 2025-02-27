@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/shared/table.scss";
 import { useSelectedRoute } from "../Context";
+import Spinner from "../components/Spinner";
 
 interface TablePropTypes<T extends object&{_id:string, siteName?:string}>{
     data:T[];
@@ -40,49 +41,56 @@ const Table = <T extends object&{_id:string}>({data}:TablePropTypes<T>) => {
     }
 
     return(
-        <table className="table_cont">
-            <thead>
-                <tr>
-                    {
-                        Object.keys(data[0]||{}).map((th) => (
-                                <th key={th} scope="col">{th}</th>
-                        ))
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    data.map((row, index) => (
-                        <tr key={index} onClick={() => onClickNavigateHandler(
-                            selectedRoute === "C"+"lients"?
-                                {clientID:row._id}
-                                :
-                                selectedRoute === "P"+"lots"?
-                                    {plotID:row._id}
-                                    :
-                                    selectedRoute === "S"+"lips"?
-                                        {slipID:row._id}
-                                        :
-                                        selectedRoute === "A"+"gents"?
-                                            {agentID:row._id}
+        <>
+            {
+                data.length !== 0?
+                    <table className="table_cont">
+                        <thead>
+                            <tr>
+                                {
+                                    Object.keys(data[0]||{}).map((th) => (
+                                            <th key={th} scope="col">{th}</th>
+                                    ))
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                data.map((row, index) => (
+                                    <tr key={index} onClick={() => onClickNavigateHandler(
+                                        selectedRoute === "C"+"lients"?
+                                            {clientID:row._id}
                                             :
-                                            selectedRoute === "S"+"ites"?
-                                                {siteID:row._id}
+                                            selectedRoute === "P"+"lots"?
+                                                {plotID:row._id}
                                                 :
-                                                {plotID:selectedRoute as ""}
-                                
-                        )}>
-                            {Object.values(row).map((val, idx) => (
-                                idx === 0?
-                                <td key={idx}>A</td>
-                                :
-                                <td key={idx}>{String(val)}</td>
-                            ))}
-                        </tr>
-                    ))
-                }
-            </tbody>
-        </table>
+                                                selectedRoute === "S"+"lips"?
+                                                    {slipID:row._id}
+                                                    :
+                                                    selectedRoute === "A"+"gents"?
+                                                        {agentID:row._id}
+                                                        :
+                                                        selectedRoute === "S"+"ites"?
+                                                            {siteID:row._id}
+                                                            :
+                                                            {plotID:selectedRoute as ""}
+                                            
+                                    )}>
+                                        {Object.values(row).map((val, idx) => (
+                                            idx === 0?
+                                            <td key={idx}>A</td>
+                                            :
+                                            <td key={idx}>{String(val)}</td>
+                                        ))}
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                    :
+                    <Spinner width="130px" border="8px solid black" borderTop="8px solid transparent" />
+            }
+        </>
     )
 };
 

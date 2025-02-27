@@ -94,67 +94,51 @@ export const SinglePlot = () => {
     //    }
     //}
     
-    useEffect(() => {
-        console.log("____________________ (1)", plotID);
-        
+    useEffect(() => {        
         if (!plotID || plotID === "null" || plotID === "undefined") {
-            console.log("____________________ (2)");
             //alert("plotID not found");
             return;
         }
-        console.log("____________________ (3)");
         findSinglePlot({plotID})
         .then((data) => {
-            console.log("____________________ (4)");
             setSinglePlotData(data.jsonData.singlePlot);
             setFirstSlipData(data.jsonData.firstSlip);
             setLastSlipData(data.jsonData.lastSlip);
             setAllSlipsData(data.jsonData.allSlips);
         })
         .catch((err) => {
-            console.log("____________________ (5)");
             console.log(err);
         });
     }, [plotID]);
     useEffect(() => {
-        console.log("____________________ (6)", clientID);
         if (!clientID || clientID === "null" || clientID === "undefined") {
-            console.log("____________________ (7)");
-            //alert("clientID not found");
+//alert("clientID not found");
             return;
         }
-        console.log("____________________ (8)");
         findSinglePlot({clientID})
         .then((data) => {
-            console.log("____________________ (9)");
             setSinglePlotData(data.jsonData.singlePlot);
             setFirstSlipData(data.jsonData.firstSlip);
             setLastSlipData(data.jsonData.lastSlip);
             setAllSlipsData(data.jsonData.allSlips);
         })
         .catch((err) => {
-            console.log("____________________ (10)");
             console.log(err);
         });
     }, [clientID]);
     useEffect(() => {
-        console.log("____________________ (11)", slipID);
         if (!slipID || slipID === "null" || slipID === "undefined") {
-            console.log("____________________ (12)");
-            //alert("clientID not found");
+//alert("clientID not found");
             return;
         }
-        console.log("____________________ (13)");
         findSinglePlot({slipID})
         .then((data) => {
-            console.log("____________________ (14)");
             setSinglePlotData(data.jsonData.singlePlot);
             setFirstSlipData(data.jsonData.firstSlip);
             setLastSlipData(data.jsonData.lastSlip);
             setAllSlipsData(data.jsonData.allSlips);
         })
         .catch((err) => {
-            console.log("____________________ (15)");
             console.log(err);
         });
     }, [slipID]);
@@ -167,39 +151,33 @@ export const SinglePlot = () => {
             {/*<pre>{JSON.stringify(singlePlotData, null, `\t`)}</pre>*/}
             <div className="plot_info_cont">
                 <KeyValuePairs keyValuePairArray={[
-                    {"Plot No.":singlePlotData?.plotNo||0},
-                    {"Plot Size":`${singlePlotData?.size}sqyd`||"0sqyd"},
-                    {"Plot Rate":`₹${singlePlotData?.rate}/-`||"₹0/-"},
-                    {"Dimensions":`${singlePlotData?.length||0}X${singlePlotData?.breath||0}`}
-                ]} />
+                    {"Plot No.":singlePlotData?.plotNo},
+                    {"Plot Size":`${singlePlotData?.size}sqyd`},
+                    {"Plot Rate":`₹${singlePlotData?.rate}/-`},
+                    {"Dimensions":`${singlePlotData?.length}X${singlePlotData?.breath}`}
+                ]} isLoading={!singlePlotData} />
                 <KeyValuePairs keyValuePairArray={[
-                    {"Agent":singlePlotData?.agentID||"----"},
-                    {"Client":singlePlotData?.clientID||"----"}
-                ]} />
+                    {"Agent":singlePlotData?.agentID},
+                    {"Client":singlePlotData?.clientID}
+                ]} isLoading={!singlePlotData} />
                 <KeyValuePairs keyValuePairArray={[
-                    {"Duration":`${singlePlotData?.duration}months`||0},
+                    {"Duration":`${singlePlotData?.duration}months`},
                     {"Time Convered":getMonthsCovered(firstSlipData?.createdAt)},
-                    {"Should Pay":`₹${singlePlotData?.shouldPay}/-`||"₹0/-"},
-                    {"Paid":`₹${singlePlotData?.paid}/-`||"₹0/-"},
-                    {"Status":singlePlotData?.plotStatus||0}
-                ]} />
+                    {"Should Pay":`₹${singlePlotData?.shouldPay}/-`},
+                    {"Paid":`₹${singlePlotData?.paid}/-`},
+                    {"Status":singlePlotData?.plotStatus}
+                ]} isLoading={!singlePlotData} />
 
                 {
-                    (firstSlipData?.createdAt&&lastSlipData?.createdAt) ?
+                    firstSlipData &&
                         <KeyValuePairs keyValuePairArray={[
-                            {"First Payment Date":new Date(firstSlipData?.createdAt)?.toLocaleString(undefined, {day:"numeric", month:"short", year:"numeric"})},
-                            {"First Payment Amount":`₹${firstSlipData.amount}/-`},
-                            {"Last Payment Date":new Date(lastSlipData?.createdAt)?.toLocaleString(undefined, {day:"numeric", month:"short", year:"numeric"})},
-                            {"Last Payment Amount":`₹${lastSlipData.amount}/-`}
-                        ]} />
-                        :
-                        <KeyValuePairs keyValuePairArray={[
-                            {"First Payment Date":"----"},
-                            {"First Payment Amount":"₹0/-"},
-                            {"Last Payment Date":"----"},
-                            {"Last Payment Amount":"₹0/-"}
-                        ]} />
+                            {"First Payment Date":new Date(firstSlipData?.createdAt||"27-02-2025")?.toLocaleString(undefined, {day:"numeric", month:"short", year:"numeric"})},
+                            {"First Payment Amount":`₹${firstSlipData?.amount}/-`},
+                            {"Last Payment Date":new Date(lastSlipData?.createdAt||"27-02-2025")?.toLocaleString(undefined, {day:"numeric", month:"short", year:"numeric"})},
+                            {"Last Payment Amount":`₹${lastSlipData?.amount}/-`}
+                        ]} isLoading={!firstSlipData} />
                 }
+                
 
                 {
                     (singlePlotData?.shouldPay&&singlePlotData?.paid)&&
