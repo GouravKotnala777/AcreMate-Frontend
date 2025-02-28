@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
 import "../styles/shared_components.scss";
 import { IconType } from "react-icons";
-import { ChangeEvent, useState } from "react";
-import { RoutesTypes } from "../utils/types";
-import { BG_COLOR } from "../utils/constants";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { RoutesTypes, UpdateSlipBodyTypes } from "../utils/types";
+import { BG_COLOR, PRIMARY_DARK } from "../utils/constants";
+import { updateSlip } from "../api";
 
 interface NavigateItemPropTypes {
     Icon:IconType;
@@ -36,6 +37,7 @@ interface ButtonPropTypes {
     text:string;
     color?:string;
     bgColor?:string;
+    width?:string;
     onClickHandler:() => Promise<void>;
 }
 interface FormSharedComponentPropTypes{
@@ -150,11 +152,12 @@ export const Select = ({name, options, color, bgColor, border, onChangeHandler}:
     )
 };
 
-export const Button = ({text, color, bgColor, onClickHandler}:ButtonPropTypes) => {
+export const Button = ({text, color, bgColor, width, onClickHandler}:ButtonPropTypes) => {
     return(
         <button id="button_component" onClick={onClickHandler} style={{
             backgroundColor:bgColor?bgColor:"black",
-            color:color?color:"white"
+            color:color?color:"white",
+            width:width?width:"unset"
         }}>{text}</button>
     )
 };
@@ -241,6 +244,38 @@ export const KeyValuePairs = ({keyValuePairArray, color, isLoading}:KeyValuePair
                     </div>
                 ))
             }
+        </div>
+    )
+};
+
+export const DialogBox = ({isOpen, setIsOpen, updateItemID}:{isOpen:boolean; setIsOpen:Dispatch<SetStateAction<boolean>>; updateItemID?:string;}) => {
+    const [editSlipFormData, setEditSlipFormData] = useState<UpdateSlipBodyTypes>({slipID:""});
+    const onChangeHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+        setEditSlipFormData({...editSlipFormData, [e.target.name]:e.target.value})
+    };
+
+    const onClickHandler = async() => {
+        console.log({...editSlipFormData, slipID:updateItemID as string});
+        
+        const aa = await updateSlip({...editSlipFormData, slipID:updateItemID as string});
+        console.log(aa);        
+    };
+
+    if (!updateItemID) return null;
+
+    return(
+        <div className="dialog_backdrop_cont" style={{display:isOpen?"block":"none"}} onClick={() => setIsOpen(false)}>
+            <div className="dialog_cont" onClick={(e) => {e.stopPropagation();}}>
+                <Heading text="Edit Slip" />
+                <label className="dialog_label">Slip Type</label>
+                <Select border={`1px solid ${PRIMARY_DARK}`} name="slipType" options={["downpay", "token", "emi"]} onChangeHandler={onChangeHandler} />
+                <label className="dialog_label">Is Cancelled</label>
+                <Select border={`1px solid ${PRIMARY_DARK}`} name="isCancelled" options={["true", "false"]} onChangeHandler={onChangeHandler} />
+                <label className="dialog_label">Cancellation Reason</label>
+                <Select border={`1px solid ${PRIMARY_DARK}`} name="cancelledFor" options={["bounced", "cash not received", "transaction failed"]} onChangeHandler={onChangeHandler} />
+                <Input label="Remark" name="remark" onChangeHandler={onChangeHandler} />
+                <Button text="Update Slip" width="100%" onClickHandler={onClickHandler} />
+            </div>
         </div>
     )
 };

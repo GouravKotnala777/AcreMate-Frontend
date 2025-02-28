@@ -180,6 +180,30 @@ select{
     animation: spin 1s infinite linear;
 };
 
+.dialog_backdrop_cont{
+    //border: 2px solid red;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.6);
+    .dialog_cont{
+        //border: 2px solid blue;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        .dialog_label{
+            margin-left: 10px;
+            font-weight: 500;
+        }
+    }
+}
+
 @keyframes spin {
     0%{
         rotate: 0deg;

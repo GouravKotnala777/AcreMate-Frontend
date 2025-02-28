@@ -4,6 +4,8 @@
     border: 2px solid red;
     display: flex;
     flex-direction: column;
+    
+    position: relative;
     header{
         //border: 2px solid blue;
         height: 8vh;
@@ -68,7 +70,7 @@
             }            
         }
         main{
-            border: 2px solid indigo;
+            //border: 2px solid indigo;
             flex: 85%;
             transition: 0.3s;
             //border: 2px solid $primaryLight;
