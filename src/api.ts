@@ -309,7 +309,7 @@ export const createSlip = async(formData:CreateSlipBodyTypes) => {
     return data;
 };
 export const updateSlip = async(formData:UpdateSlipBodyTypes) => {
-    const data = await fetchAPIHandler<null>({
+    const data = await fetchAPIHandler<SlipTypes>({
         apiName:"updateSlip",
         endpoint:"/slip/update",
         credentials:true,
