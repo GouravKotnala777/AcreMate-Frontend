@@ -70,7 +70,7 @@ export interface SlipTypes{
     updatedAt:Date;
 }
 export type CreateSlipBodyTypes = Pick<SlipTypes, "slipType"|"slipNo"|"modeOfPayment"|"amount"|"clientID"|"plotID"|"agentID">;
-export type UpdateSlipBodyTypes = Pick<SlipTypes, "slipType"|"slipNo"|"modeOfPayment"|"amount"|"clientID"|"plotID"|"agentID">&{slipID:string};
+export type UpdateSlipBodyTypes = Partial<Pick<SlipTypes, "slipType"|"isCancelled"|"cancelledFor"|"remark">>&{slipID:string};
 
 // Site related types
 export interface SiteTypes{
