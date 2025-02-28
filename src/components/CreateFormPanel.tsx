@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { FormSharedComponent } from "../shared/SharedComponents";
 import { assignPlotToClient, createClient, createPlotAndAssign, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
-import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, UserTypes } from "../utils/types";
+import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, SlipTypes, UserTypes } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
 
 
@@ -112,6 +112,17 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
                     {type:"select", label:"Slip Type", name:"slipType", selectionOptionArray:["downpay", "token", "emi"]},
                     {type:"text", label:"Slip No.", name:"slipNo"},
                     {type:"select", label:"Mode Of Payment", name:"modeOfPayment", selectionOptionArray:["cash", "cheque", "transfer"]},
+
+                    {
+                        ...((createFormData as SlipTypes).modeOfPayment === "cheque"?
+                            {type:"text", label:"Cheque No.", name:"paymentID"}
+                            :
+                            (createFormData as SlipTypes).modeOfPayment === "transfer"?
+                                {type:"text", label:"Transaction ID", name:"paymentID"}
+                                :
+                                {type:"text", label:"", name:""}
+                        )
+                    },
                     {type:"text", label:"Amount", name:"amount"},
 
                     {type:"select", label:"Agent ID", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)}
@@ -136,6 +147,16 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
                         {type:"select", label:"Slip Type", name:"slipType", selectionOptionArray:["downpay", "token", "emi"]},
                         {type:"text", label:"Slip No.", name:"slipNo"},
                         {type:"select", label:"Mode Of Payment", name:"modeOfPayment", selectionOptionArray:["cash", "cheque", "transfer"]},
+                        {
+                            ...((createFormData as SlipTypes).modeOfPayment === "cheque"?
+                                {type:"text", label:"Cheque No.", name:"paymentID"}
+                                :
+                                (createFormData as SlipTypes).modeOfPayment === "transfer"?
+                                    {type:"text", label:"Transaction ID", name:"paymentID"}
+                                    :
+                                    {type:"text", label:"", name:""}
+                            )
+                        },
                         {type:"text", label:"Amount", name:"amount"},
                         {type:"select", label:"Agent Name", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)}// isko alag se fetch karna hai
                     ]
@@ -144,6 +165,16 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
                         {type:"select", label:"Slip Type", name:"slipType", selectionOptionArray:["downpay", "token", "emi"]},
                         {type:"text", label:"Slip No.", name:"slipNo"},
                         {type:"select", label:"Mode Of Payment", name:"modeOfPayment", selectionOptionArray:["cash", "cheque", "transfer"]},
+                        {
+                            ...((createFormData as SlipTypes).modeOfPayment === "cheque"?
+                                {type:"text", label:"Cheque No.", name:"paymentID"}
+                                :
+                                (createFormData as SlipTypes).modeOfPayment === "transfer"?
+                                    {type:"text", label:"Transaction ID", name:"paymentID"}
+                                    :
+                                    {type:"text", label:"", name:""}
+                            )
+                        },
                         {type:"text", label:"Amount", name:"amount"}
                     ]
                 }

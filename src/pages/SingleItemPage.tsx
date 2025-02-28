@@ -172,7 +172,7 @@ export const SinglePlot = () => {
 
     return(
         <>
-        <DialogBox isOpen={isEditDialogOpen} setIsOpen={setIsEditDialogOpen} updateItemID={selectedSlipID} />
+        <DialogBox isOpen={isEditDialogOpen} setIsOpen={setIsEditDialogOpen} updateItemID={selectedSlipID} setAllSlipsData={setAllSlipsData} />
         <div className="single_plot_bg">
             {/*<Heading text={`Plot No. ${plotID}`} />*/}
             {/*<button onClick={assignPlotHandler}>Assign plot</button>*/}
@@ -183,7 +183,7 @@ export const SinglePlot = () => {
                     {"Plot No.":singlePlotData?.plotNo},
                     {"Plot Size":`${singlePlotData?.size}sqyd`},
                     {"Plot Rate":`₹${singlePlotData?.rate}/-`},
-                    {"Dimensions":`${singlePlotData?.length}X${singlePlotData?.breath}`}
+                    {"Dimensions":`${singlePlotData?.breath}X${singlePlotData?.length}`}
                 ]} isLoading={!singlePlotData} />
                 <KeyValuePairs keyValuePairArray={[
                     {"Agent":singlePlotData?.agentID},
@@ -212,7 +212,7 @@ export const SinglePlot = () => {
                     (singlePlotData?.shouldPay&&singlePlotData?.paid)&&
                         <KeyValuePairs
                             keyValuePairArray={[
-                                {"Pending":`${-(singlePlotData.shouldPay - singlePlotData.paid)}/-`}
+                                {[-(singlePlotData.shouldPay - singlePlotData.paid)<=0?"Pending":"Extra"]:`${-(singlePlotData.shouldPay - singlePlotData.paid)}/-`}
                             ]}
                             color={singlePlotData.shouldPay - singlePlotData.paid>0?"red":"#00cc00"}
                         />
@@ -223,7 +223,9 @@ export const SinglePlot = () => {
                         <KeyValuePairs
                             keyValuePairArray={[
                                 {"Total Slips":allSlipsData.length},
-                                {"Total EMIs":Number(singlePlotData?.paid/singlePlotData?.shouldPay).toFixed(2)}
+                                {"Slips (cleared)":allSlipsData.reduce((acc, iter) => iter.isCancelled === false?acc+1:acc, 0)},
+                                {"Slips (cancelled)":allSlipsData.reduce((acc, iter) => iter.isCancelled === true?acc+1:acc, 0)},
+                                {"Total EMIs cleared":Number(singlePlotData?.paid/singlePlotData?.shouldPay).toFixed(2)}
                             ]}
                         />
                 }
@@ -241,7 +243,8 @@ export const SinglePlot = () => {
                         <div className="client_name slip_content">Client Name</div>
                         <div className="amount slip_content">Amount</div>
                         <div className="mode slip_content">Mode Of Payment</div>
-                        <div className="mode slip_content">Status</div>
+                        <div className="mode slip_content">PaymentID</div>
+                        {/*<div className="mode slip_content">Status</div>*/}
                         <div className="edit_btn slip_content">edit</div>
                         {/*<div className="mode slip_content">Cancelled For</div>*/}
                         {/*<div className="mode slip_content">Remark</div>*/}
@@ -266,7 +269,8 @@ export const SinglePlot = () => {
                                 <div className="amount slip_content">₹{slp.amount}/-</div>
                                 {/*<div className="admin slip_content"></div>*/}
                                 <div className="mode slip_content">{slp.modeOfPayment}</div>
-                                <div className="is_cancelled slip_content">{slp.isCancelled.toString()}</div>
+                                <div className="mode slip_content">{slp.paymentID}</div>
+                                {/*<div className="is_cancelled slip_content">{slp.isCancelled.toString()}</div>*/}
                                 <button className="edit_btn slip_content" onClick={() => {setIsEditDialogOpen(!isEditDialogOpen); setSelectedSlipID(slp._id);}}><BsThreeDots /></button>
 
                                 {

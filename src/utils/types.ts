@@ -65,11 +65,12 @@ export interface SlipTypes{
     agentID:string;
     isCancelled:boolean;
     cancelledFor:"bounced"|"cash not received"|"transaction failed";
+    paymentID?:string;
     remark:string;
     createdAt:Date;
     updatedAt:Date;
 }
-export type CreateSlipBodyTypes = Pick<SlipTypes, "slipType"|"slipNo"|"modeOfPayment"|"amount"|"clientID"|"plotID"|"agentID">;
+export type CreateSlipBodyTypes = Pick<SlipTypes, "slipType"|"slipNo"|"modeOfPayment"|"paymentID"|"amount"|"clientID"|"plotID"|"agentID">;
 export type UpdateSlipBodyTypes = Partial<Pick<SlipTypes, "slipType"|"isCancelled"|"cancelledFor"|"remark">>&{slipID:string};
 
 // Site related types

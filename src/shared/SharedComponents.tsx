@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import "../styles/shared_components.scss";
 import { IconType } from "react-icons";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import { RoutesTypes, UpdateSlipBodyTypes } from "../utils/types";
+import { RoutesTypes, SlipTypes, UpdateSlipBodyTypes } from "../utils/types";
 import { BG_COLOR, PRIMARY_DARK } from "../utils/constants";
 import { updateSlip } from "../api";
 
@@ -248,17 +248,24 @@ export const KeyValuePairs = ({keyValuePairArray, color, isLoading}:KeyValuePair
     )
 };
 
-export const DialogBox = ({isOpen, setIsOpen, updateItemID}:{isOpen:boolean; setIsOpen:Dispatch<SetStateAction<boolean>>; updateItemID?:string;}) => {
+export const DialogBox = ({isOpen, setIsOpen, updateItemID, setAllSlipsData}:{setAllSlipsData:Dispatch<SetStateAction<SlipTypes[]>>; isOpen:boolean; setIsOpen:Dispatch<SetStateAction<boolean>>; updateItemID?:string;}) => {
     const [editSlipFormData, setEditSlipFormData] = useState<UpdateSlipBodyTypes>({slipID:""});
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
-        setEditSlipFormData({...editSlipFormData, [e.target.name]:e.target.value})
+        if (e.target.name === "isCancelled") {
+            setEditSlipFormData({...editSlipFormData, [e.target.name]:e.target.value === "true"})
+        }
+        else{
+            setEditSlipFormData({...editSlipFormData, [e.target.name]:e.target.value})
+        }
     };
 
     const onClickHandler = async() => {
         console.log({...editSlipFormData, slipID:updateItemID as string});
         
         const aa = await updateSlip({...editSlipFormData, slipID:updateItemID as string});
-        console.log(aa);        
+        console.log(aa);
+        setAllSlipsData((prev) => [...prev.map((iter) => iter._id !== aa.jsonData._id?iter:aa.jsonData)]);
+        setIsOpen(false);
     };
 
     if (!updateItemID) return null;
