@@ -120,7 +120,7 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
                             (createFormData as SlipTypes).modeOfPayment === "transfer"?
                                 {type:"text", label:"Transaction ID", name:"paymentID"}
                                 :
-                                {type:"text", label:"", name:""}
+                                {type:"text", label:"", name:"", display:"none"}
                         )
                     },
                     {type:"text", label:"Amount", name:"amount"},

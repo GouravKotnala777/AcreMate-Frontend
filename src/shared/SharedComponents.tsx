@@ -23,14 +23,17 @@ interface InputPropTypes {
     name:string;
     labelBG?:string;
     inputBG?:string;
+    display?:"block"|"none";
     onChangeHandler:(e:ChangeEvent<HTMLInputElement>) => void;
 }
 interface SelectPropTypes {
+    label:string;
     name:string;
     options:string[];
     color?:string;
     bgColor?:string;
     border?:string;
+    display?:"block"|"none";
     onChangeHandler:(e:ChangeEvent<HTMLSelectElement>) => void;
 }
 interface ButtonPropTypes {
@@ -41,7 +44,7 @@ interface ButtonPropTypes {
     onClickHandler:() => Promise<void>;
 }
 interface FormSharedComponentPropTypes{
-    inputArray:{type:"text"|"number"|"select"; label:string; name:string; selectionOptionArray?:string[]}[];
+    inputArray:{type:"text"|"number"|"select"; label:string; name:string; display?:"block"|"none"; selectionOptionArray?:string[]}[];
     onChangeFeildsHandler:(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void;
     onSubmitFormHandler:() => void;
 }
@@ -80,7 +83,7 @@ export const Heading = ({text, color, bgColor, textAlign}:HeadingPropTypes) => {
     )
 };
 
-export const Input = ({label, name, inputBG, labelBG, onChangeHandler}:InputPropTypes) => {
+export const Input = ({label, name, inputBG, labelBG, display, onChangeHandler}:InputPropTypes) => {
     const [focused, setIsFocused] = useState<boolean>(false);
     const [isFilled, setIsFilled] = useState<boolean>(false);
 
@@ -89,8 +92,8 @@ export const Input = ({label, name, inputBG, labelBG, onChangeHandler}:InputProp
     //};
 
     return(
-        <div className="input_cont">
-            <input type="text" name={name}
+        <div className="input_cont" style={{display:display?display:"block"}}>
+            <input id={name} type="text" name={name}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 onChange={(e) => {
@@ -107,42 +110,45 @@ export const Input = ({label, name, inputBG, labelBG, onChangeHandler}:InputProp
                     backgroundColor:inputBG?inputBG:"transparent"
                 }}
             />
-            <label style={{
-                top:
-                    isFilled?"-17%"
-                    :
-                        focused?"-17%"
+            <label 
+                htmlFor={name}
+                style={{
+                    top:
+                        isFilled?"-17%"
                         :
-                        "15%",
-                left:
-                    isFilled?"2%"
-                    :
-                        focused?"2%"
-                        :
-                        "3%",
-                fontSize:
-                        isFilled?"0.7rem"
-                        :
-                            focused?"0.7rem"
+                            focused?"-17%"
                             :
-                            "1rem",
-                backgroundColor:labelBG?labelBG:"white"
+                            "15%",
+                    left:
+                        isFilled?"2%"
+                        :
+                            focused?"2%"
+                            :
+                            "3%",
+                    fontSize:
+                            isFilled?"0.7rem"
+                            :
+                                focused?"0.7rem"
+                                :
+                                "1rem",
+                    backgroundColor:labelBG?labelBG:"white"
             }}>{label}</label>
         </div>
     )
 };
 
-export const Select = ({name, options, color, bgColor, border, onChangeHandler}:SelectPropTypes) => {
+export const Select = ({label, name, options, color, bgColor, border, display, onChangeHandler}:SelectPropTypes) => {
 
     return(
         <select name={name} onChange={(e) => onChangeHandler(e)}
             style={{
                 border:border?border:"1px solid transparent",
                 backgroundColor:bgColor?bgColor:"transparent",
-                color:color?color:"black"
+                color:color?color:"black",
+                display:display?display:"block"
             }}
         >
-            <option>Select</option>
+            <option>--Select {label}--</option>
             {
                 options.map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
@@ -169,13 +175,15 @@ export const FormSharedComponent = ({inputArray, onChangeFeildsHandler, onSubmit
             {
                 inputArray.map((inp, index) => (
                     (inp.type === "text"||inp.type === "number")?
-                        <Input key={index}  label={inp.label} name={inp.name} labelBG={BG_COLOR} onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => onChangeFeildsHandler(e)} />
+                        <Input key={index} label={inp.label} name={inp.name} labelBG={BG_COLOR} display={inp.display} onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => onChangeFeildsHandler(e)} />
                         :
                         (inp.type === "select")?
                             <Select
                                 key={index}
+                                label={inp.label}
                                 name={inp.name}
                                 border="1px solid rgb(78, 255, 175)"
+                                display={inp.display}
                                 options={inp.selectionOptionArray as string[]}
                                 onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => onChangeFeildsHandler(e)}
                             />
@@ -275,11 +283,11 @@ export const DialogBox = ({isOpen, setIsOpen, updateItemID, setAllSlipsData}:{se
             <div className="dialog_cont" onClick={(e) => {e.stopPropagation();}}>
                 <Heading text="Edit Slip" />
                 <label className="dialog_label">Slip Type</label>
-                <Select border={`1px solid ${PRIMARY_DARK}`} name="slipType" options={["downpay", "token", "emi"]} onChangeHandler={onChangeHandler} />
+                <Select label="slip type" border={`1px solid ${PRIMARY_DARK}`} name="slipType" options={["downpay", "token", "emi"]} onChangeHandler={onChangeHandler} />
                 <label className="dialog_label">Is Cancelled</label>
-                <Select border={`1px solid ${PRIMARY_DARK}`} name="isCancelled" options={["true", "false"]} onChangeHandler={onChangeHandler} />
+                <Select label="is cancelled" border={`1px solid ${PRIMARY_DARK}`} name="isCancelled" options={["true", "false"]} onChangeHandler={onChangeHandler} />
                 <label className="dialog_label">Cancellation Reason</label>
-                <Select border={`1px solid ${PRIMARY_DARK}`} name="cancelledFor" options={["bounced", "cash not received", "transaction failed"]} onChangeHandler={onChangeHandler} />
+                <Select label="reason" border={`1px solid ${PRIMARY_DARK}`} name="cancelledFor" options={["bounced", "cash not received", "transaction failed"]} onChangeHandler={onChangeHandler} />
                 <Input label="Remark" name="remark" onChangeHandler={onChangeHandler} />
                 <Button text="Update Slip" width="100%" onClickHandler={onClickHandler} />
             </div>
