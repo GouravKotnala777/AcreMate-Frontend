@@ -45,8 +45,9 @@ interface ButtonPropTypes {
 }
 interface FormSharedComponentPropTypes{
     inputArray:{type:"text"|"number"|"select"; label:string; name:string; display?:"block"|"none"; selectionOptionArray?:string[]}[];
+    btnText:string;
     onChangeFeildsHandler:(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void;
-    onSubmitFormHandler:() => void;
+    onSubmitFormHandler:() => Promise<void>;
 }
 interface TimerPropTypes{
     bgColor?:string;
@@ -168,7 +169,7 @@ export const Button = ({text, color, bgColor, width, onClickHandler}:ButtonPropT
     )
 };
 
-export const FormSharedComponent = ({inputArray, onChangeFeildsHandler, onSubmitFormHandler}:FormSharedComponentPropTypes) => {
+export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler, onSubmitFormHandler}:FormSharedComponentPropTypes) => {
 
     return(
         <div className="form_shared_component">
@@ -191,7 +192,8 @@ export const FormSharedComponent = ({inputArray, onChangeFeildsHandler, onSubmit
                             <h3 key={index}>input type = "{inp.type}"</h3>
                 ))
             }
-            <button onClick={onSubmitFormHandler}>Create Client Form</button>
+            <Button text={btnText} width="100%" onClickHandler={onSubmitFormHandler} />
+            {/*<button onClick={onSubmitFormHandler}></button>*/}
         </div>
     )
 };

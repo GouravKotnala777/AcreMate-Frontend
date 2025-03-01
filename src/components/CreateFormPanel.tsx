@@ -27,7 +27,7 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
         }
     };
 
-    const onSubmitFormHandler = () => {
+    const onSubmitFormHandler = async() => {
         if (formPanelFor === "clients") {
             createClient(createFormData as CreateClientBodyTypes);
         }
@@ -81,6 +81,7 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
                 {type:"select", label:"Gender", name:"gender", selectionOptionArray:["male", "female", "other"]},
                 {type:"text", label:"Mobile", name:"mobile"},
             ]}
+            btnText="Create New Client"
             onChangeFeildsHandler={onChangeFeildsHandler}
             onSubmitFormHandler={onSubmitFormHandler}
             />
@@ -127,6 +128,7 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
 
                     {type:"select", label:"Agent ID", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)}
                 ]}
+                btnText="Created New Plot And Assign"
                 onChangeFeildsHandler={onChangeFeildsHandler}
                 onSubmitFormHandler={onSubmitFormHandler}
             />
@@ -172,12 +174,13 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
                                 (createFormData as SlipTypes).modeOfPayment === "transfer"?
                                     {type:"text", label:"Transaction ID", name:"paymentID"}
                                     :
-                                    {type:"text", label:"", name:""}
+                                    {type:"text", label:"", name:"", display:"none"}
                             )
                         },
                         {type:"text", label:"Amount", name:"amount"}
                     ]
                 }
+                btnText={plotStatus === "vacant"?"Assign Plot":"Create Slip"}
                 onChangeFeildsHandler={onChangeFeildsHandler}
                 onSubmitFormHandler={onSubmitFormHandler}
             />
