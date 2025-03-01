@@ -1,14 +1,16 @@
-import { useState } from "react";
+//import { useState } from "react";
 import { findAllSites } from "../api";
 
 
 const Sites = () => {
-    const [allSites, setAllSites] = useState([]);
+    //const [allSites, setAllSites] = useState([]);
+
+
 
     return(
         <div className="sites_bg">
             <h1>Sites</h1>
-            {JSON.stringify(allSites)}
+            {/*{JSON.stringify(allSites)}*/}
             <button onClick={findAllSites}>fetch</button>
         </div>
     )

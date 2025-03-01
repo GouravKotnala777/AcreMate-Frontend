@@ -37,7 +37,7 @@ const Register = () => {
                 <Input label="First Name" name="firstName" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Input label="Last Name" name="lastName" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Input label="Email" name="email" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
-                <Select name="gender" options={["male", "female", "other"]} border="1px solid rgb(78, 255, 175)" onChangeHandler={onChangeHandler} />
+                <Select label="Gender" name="gender" options={["male", "female", "other"]} border="1px solid rgb(78, 255, 175)" onChangeHandler={onChangeHandler} />
                 <Input label="Mobile" name="mobile" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Input label="Password" name="password" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Button text="Register" onClickHandler={onClickHandler}  />
