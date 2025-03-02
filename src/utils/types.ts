@@ -78,9 +78,10 @@ export interface SiteTypes{
     _id:string;
     siteName:string;
     totalSize:number;
+    soldArea:number;
 }
 export type CreateSiteBodyTypes = Pick<SiteTypes, "siteName"|"totalSize">;
-export type UpdateSiteBodyTypes = Partial<Pick<SiteTypes, "siteName"|"totalSize">>&{siteID:string;};
+export type UpdateSiteBodyTypes = Partial<Pick<SiteTypes, "totalSize"|"soldArea">>&{siteID:string;};
 
 export interface FetchAPIHandlerArgTypes {
     apiName:string;
