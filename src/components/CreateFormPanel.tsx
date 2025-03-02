@@ -187,7 +187,17 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
             )
     }
     else if (formPanelFor === "sites") {
-        return <h1>site create Form</h1>
+        return (
+            <FormSharedComponent
+                inputArray={[
+                    {label:"Site Name", name:"siteName", type:"text"},
+                    {label:"Total Size", name:"totalSize", type:"text"}
+                ]}
+                btnText="Create Site"
+                onChangeFeildsHandler={onChangeFeildsHandler}
+                onSubmitFormHandler={onSubmitFormHandler}
+            />
+        )
     }
     else{
         return <h1>nullish or another route create Form</h1>
