@@ -253,6 +253,17 @@ export const assignPlotToClient = async(formData:CreatePlotBodyTypes&CreateClien
 
     return data;
 };
+export const detachClientFromPlot = async(formData:{plotID:string}) => {
+    const data = await fetchAPIHandler<PlotTypes>({
+        apiName:"detachClientFromPlot",
+        endpoint:"/plot/reset",
+        credentials:true,
+        method:"POST",
+        body:JSON.stringify(formData)
+    });
+
+    return data;
+};
 export const updatePlot = async(formData:UpdatePlotBodyTypes) => {
     const data = await fetchAPIHandler<PlotTypes>({
         apiName:"updatePlot",
