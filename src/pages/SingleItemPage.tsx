@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { DialogBox, Heading, KeyValuePairs, Timer } from "../shared/SharedComponents";
 import "../styles/pages/single_item_page.scss";
-import { findSingleClientAllSlips, findSinglePlot } from "../api";
-import { PlotTypes, SlipTypes } from "../utils/types";
+import { detachClientFromPlot, findSingleClientAllSlips, findSinglePlot, findSingleSite } from "../api";
+import { PlotTypes, SiteTypes, SlipTypes } from "../utils/types";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { useSelectedRoute } from "../Context";
@@ -86,6 +86,13 @@ export const SinglePlot = () => {
             setSelectedRoute("slips");
             setSelectedPanel("create");
         }
+    };
+
+    const resetPlotAssignmentHandler = async() => {
+        if (!plotID) {
+            throw new Error("PlotID not found");
+        }
+        await detachClientFromPlot({plotID});
     }
     //const assignPlotHandler = () => {
 
@@ -176,6 +183,7 @@ export const SinglePlot = () => {
         <div className="single_plot_bg">
             {/*<Heading text={`Plot No. ${plotID}`} />*/}
             {/*<button onClick={assignPlotHandler}>Assign plot</button>*/}
+            <button onClick={resetPlotAssignmentHandler}>Reset Plot Assignment</button>
             <button onClick={payEMIHandler}>Pay EMI</button>
             {/*<pre>{JSON.stringify(singlePlotData, null, `\t`)}</pre>*/}
             <div className="plot_info_cont">
@@ -306,10 +314,29 @@ export const SingleSlip = () => {
     )
 };
 export const SingleSite = () => {
+    const [query] = useSearchParams();
+    const [singleSiteData, setSingleSiteData] = useState<SiteTypes>();
+
+    const siteID = query.get("siteID");
+
+    useEffect(() => {
+        if (!siteID) {
+            alert("SiteID not found");
+            return;
+        }
+
+        findSingleSite(siteID)
+        .then((data) => {
+            setSingleSiteData(data.jsonData);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, [siteID]);
 
     return(
         <div className="single_plot_bg">
-
+            <pre>{JSON.stringify(singleSiteData, null, `\t`)}</pre>            
         </div>
     )
 };
