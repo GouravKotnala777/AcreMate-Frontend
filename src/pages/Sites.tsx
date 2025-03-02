@@ -1,17 +1,28 @@
-//import { useState } from "react";
+import { useEffect, useState } from "react";
 import { findAllSites } from "../api";
+import { SiteTypes } from "../utils/types";
+import Table from "../shared/Table";
 
 
 const Sites = () => {
-    //const [allSites, setAllSites] = useState([]);
+    const [allSites, setAllSites] = useState<SiteTypes[]>([]);
 
 
+    useEffect(() => {
+        findAllSites()
+        .then((data) => {
+            setAllSites(data.jsonData);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     return(
         <div className="sites_bg">
             <h1>Sites</h1>
-            {/*{JSON.stringify(allSites)}*/}
-            <button onClick={findAllSites}>fetch</button>
+            {/*<pre>{JSON.stringify(allSites, null, `\t`)}</pre>*/}
+            <Table data={allSites} />
         </div>
     )
 };
