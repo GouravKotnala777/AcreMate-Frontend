@@ -18,6 +18,7 @@ import MyProfile from "./pages/MyProfile.tsx";
 import { useSelectedRoute } from "./Context.tsx";
 import { SinglePlot, SingleSite } from "./pages/SingleItemPage.tsx";
 import Agents from "./pages/Agents.tsx";
+import Test from "./Test.tsx";
 
 function App() {
   const {selectedRoute} = useSelectedRoute();
@@ -60,6 +61,7 @@ function App() {
           mainChildrenPanel={
             <Routes>
               <Route path="/" element={<h1>Hallllo</h1>} />
+              <Route path="/test" element={<Test />} />
               <Route path="/home" element={<Home />} />
               <Route path="/clients" element={<Clients />} />
               <Route path="/agents" element={<Agents />} />
