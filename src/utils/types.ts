@@ -46,6 +46,7 @@ export interface PlotTypes{
     shouldPay:number;
     paid:number;
     agentID?:string;
+    beltRange:number[];
     plotStatus:"pending"|"completed"|"registered"|"vacant";
     createdAt:Date;
     updatedAt:Date;
@@ -74,14 +75,20 @@ export type CreateSlipBodyTypes = Pick<SlipTypes, "slipType"|"slipNo"|"modeOfPay
 export type UpdateSlipBodyTypes = Partial<Pick<SlipTypes, "slipType"|"isCancelled"|"cancelledFor"|"remark">>&{slipID:string};
 
 // Site related types
+export interface PlotBeltTypes {
+    noOfPlots:number;
+    lastPlotNo:number;
+    baseSize:number;
+}
 export interface SiteTypes{
     _id:string;
     siteName:string;
     totalSize:number;
     soldArea:number;
+    plotsInSingleRow:PlotBeltTypes[];
 }
 export type CreateSiteBodyTypes = Pick<SiteTypes, "siteName"|"totalSize">;
-export type UpdateSiteBodyTypes = Partial<Pick<SiteTypes, "totalSize"|"soldArea">>&{siteID:string;};
+export type UpdateSiteBodyTypes = Partial<Pick<SiteTypes, "totalSize"|"soldArea">>&{siteID:string;}&{noOfPlots?:number; lastPlotNo?:number; baseSize?:number;};
 
 export interface FetchAPIHandlerArgTypes {
     apiName:string;
