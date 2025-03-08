@@ -231,10 +231,10 @@ export const findSinglePlot = async({clientID, plotID, slipID, siteID, agentID}:
 
     return data;
 };
-export const createPlotAndAssign = async(formData:CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes) => {
-    const data = await fetchAPIHandler<PlotTypes>({
-        apiName:"createPlotAndAssign",
-        endpoint:"/plot/create",
+export const createPlots = async(formData:CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes) => {
+    const data = await fetchAPIHandler<PlotTypes[]>({
+        apiName:"createPlots",
+        endpoint:"/plot/create-plots",
         credentials:true,
         method:"POST",
         body:JSON.stringify(formData)
@@ -380,6 +380,28 @@ export const updateSite = async(formData:UpdateSiteBodyTypes) => {
         endpoint:"/site/update",
         credentials:true,
         method:"PUT",
+        body:JSON.stringify(formData)
+    });
+
+    return data;
+};
+export const updateSiteRows = async(formData:UpdateSiteBodyTypes) => {
+    const data = await fetchAPIHandler<SiteTypes>({
+        apiName:"updateSiteRows",
+        endpoint:"/site/update-row",
+        credentials:true,
+        method:"PUT",
+        body:JSON.stringify(formData)
+    });
+
+    return data;
+};
+export const resetSiteRows = async(formData:UpdateSiteBodyTypes) => {
+    const data = await fetchAPIHandler<SiteTypes>({
+        apiName:"resetSiteRows",
+        endpoint:"/site/reset-row",
+        credentials:true,
+        method:"DELETE",
         body:JSON.stringify(formData)
     });
 
