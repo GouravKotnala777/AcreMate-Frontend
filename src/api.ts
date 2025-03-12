@@ -82,7 +82,7 @@ export const findAllAgents = async() => {
     return data;
 };
 export const agentsAndSoldArea = async() => {
-    const data = await fetchAPIHandler<PlotTypes[]>({
+    const data = await fetchAPIHandler<(PlotTypes&{agentName:string; soldArea:number;})[]>({
         apiName:"agentsAndSoldArea",
         endpoint:"/user/sold-area",
         credentials:true,
