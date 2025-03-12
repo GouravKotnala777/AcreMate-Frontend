@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { FormSharedComponent } from "../shared/SharedComponents";
-import { assignPlotToClient, createClient, createPlotAndAssign, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
+import { assignPlotToClient, createClient, createPlots, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
 import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, SlipTypes, UserTypes } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
 
@@ -33,7 +33,7 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
         }
         else if (formPanelFor === "plots") {
             //console.log(createFormData);
-            createPlotAndAssign(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes);
+            createPlots(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes);
         }
         else if (formPanelFor === "slips") {
             //console.log(createFormData);
@@ -91,44 +91,16 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
         return(
             <FormSharedComponent
                 inputArray={[
-                    {type:"text", label:"Client Serial Number", name:"serialNumber"},
-                    {type:"text", label:"Client Name", name:"name"},
-                    {type:"text", label:"Guardian's Name", name:"guardian"},
-                    {type:"text", label:"Client Email", name:"email"},
-                    {type:"select", label:"Gender", name:"gender", selectionOptionArray:["male", "female", "other"]},
-                    {type:"text", label:"Mobile Number", name:"mobile"},
-
-
-
-                    {type:"text", label:"Plot No.", name:"plotNo"},
+                    {type:"text", label:"First Plot No. In Row", name:"plotNo"},
                     {type:"text", label:"Plot Size", name:"size"},
+                    {type:"text", label:"Plot Quantity", name:"quantity"},
                     {type:"text", label:"Plot Rate", name:"rate"},
                     {type:"text", label:"Duration", name:"duration"},
-                    {type:"text", label:"Plot Length", name:"length"},
                     {type:"text", label:"Plot Breath", name:"breath"},
-                    {type:"select", label:"Site Name", name:"site", selectionOptionArray:allSitesName},
-                    
-                    
-                    
-                    {type:"select", label:"Slip Type", name:"slipType", selectionOptionArray:["downpay", "token", "emi"]},
-                    {type:"text", label:"Slip No.", name:"slipNo"},
-                    {type:"select", label:"Mode Of Payment", name:"modeOfPayment", selectionOptionArray:["cash", "cheque", "transfer"]},
-
-                    {
-                        ...((createFormData as SlipTypes).modeOfPayment === "cheque"?
-                            {type:"text", label:"Cheque No.", name:"paymentID"}
-                            :
-                            (createFormData as SlipTypes).modeOfPayment === "transfer"?
-                                {type:"text", label:"Transaction ID", name:"paymentID"}
-                                :
-                                {type:"text", label:"", name:"", display:"none"}
-                        )
-                    },
-                    {type:"text", label:"Amount", name:"amount"},
-
-                    {type:"select", label:"Agent ID", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)}
+                    {type:"text", label:"Plot Length", name:"length"},
+                    {type:"select", label:"Site Name", name:"site", selectionOptionArray:allSitesName}
                 ]}
-                btnText="Created New Plot And Assign"
+                btnText="Created New Plots"
                 onChangeFeildsHandler={onChangeFeildsHandler}
                 onSubmitFormHandler={onSubmitFormHandler}
             />
@@ -156,11 +128,13 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
                                 (createFormData as SlipTypes).modeOfPayment === "transfer"?
                                     {type:"text", label:"Transaction ID", name:"paymentID"}
                                     :
-                                    {type:"text", label:"", name:""}
+                                    {type:"text", label:"", name:"", display:"none"}
                             )
                         },
                         {type:"text", label:"Amount", name:"amount"},
-                        {type:"select", label:"Agent Name", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)}// isko alag se fetch karna hai
+                        {type:"select", label:"Agent Name", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)},// isko alag se fetch karna hai
+                        {type:"number", label:"Plot size you want to sell", name:"size"},
+                        {type:"number", label:"Plot no through which you want to adjust area", name:"plotNo"}
                     ]
                     :
                     [
