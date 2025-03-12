@@ -41,6 +41,7 @@ interface ButtonPropTypes {
     color?:string;
     bgColor?:string;
     width?:string;
+    margin?:string;
     onClickHandler:() => Promise<void>;
 }
 interface FormSharedComponentPropTypes{
@@ -159,12 +160,13 @@ export const Select = ({label, name, options, color, bgColor, border, display, o
     )
 };
 
-export const Button = ({text, color, bgColor, width, onClickHandler}:ButtonPropTypes) => {
+export const Button = ({text, color, bgColor, width, margin, onClickHandler}:ButtonPropTypes) => {
     return(
         <button id="button_component" onClick={onClickHandler} style={{
             backgroundColor:bgColor?bgColor:"black",
             color:color?color:"white",
-            width:width?width:"unset"
+            width:width?width:"unset",
+            margin:margin?margin:"0"
         }}>{text}</button>
     )
 };
@@ -192,7 +194,7 @@ export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler,
                             <h3 key={index}>input type = "{inp.type}"</h3>
                 ))
             }
-            <Button text={btnText} width="100%" onClickHandler={onSubmitFormHandler} />
+            <Button text={btnText} width="100%" margin="10px 0 15px 0" onClickHandler={onSubmitFormHandler} />
             {/*<button onClick={onSubmitFormHandler}></button>*/}
         </div>
     )
