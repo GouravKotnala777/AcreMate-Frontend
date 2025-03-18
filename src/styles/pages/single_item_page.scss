@@ -74,3 +74,31 @@
         }
     }
 }
+
+.belts_cont{
+    //border: 2px solid red;
+    .belt{
+        //border: 2px solid violet;
+        display: flex;
+        justify-content: space-around;
+        font-size: 0.8rem;
+        max-width: 500px;
+        margin: 5px auto;
+        padding: 5px;
+        border-radius: 8px;
+        box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+        background-color: white;
+        .plot_quantity{
+            //border: 2px solid indigo;
+            
+        }
+        .last_plot{
+            //border: 2px solid indigo;
+            
+        }
+        .base_size{
+            //border: 2px solid indigo;
+
+        }
+    }
+}

@@ -1,0 +1,14 @@
+
+.home_bg{
+    //border: 2px solid red;
+    .agent_data_cont{
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        .agent_data{
+            //border: 2px solid blue;
+            max-width: 300px;
+
+        }
+    }
+}
