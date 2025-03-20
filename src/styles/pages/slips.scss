@@ -1,8 +1,105 @@
-
+@import "../utils.scss";
 
 
 .slips_bg{
-    border: 2px solid rgb(13, 255, 0);
-    height: 100%;
-    overflow-y: scroll;
+    //border: 2px solid rgb(13, 255, 0);
+    //height: 100%;
+    //overflow-y: scroll;
+    .slips_cont{
+        //border: 2px solid red;
+        padding: 10px 2px;
+        overflow-y: auto;
+        .slip_cont{
+            //border: 2px solid blue;
+            font-size: 0.65rem;
+            display: grid;
+            grid-template-columns: 7% 7% 14% 14% 15% 6% 6% 11% 6% 14%;
+            grid-template-rows: 40px;
+            margin-top: 10px;
+            place-items: center;
+            //border: 1px solid $primaryDark;
+            border-radius: 4px;
+            background-color: white;
+            color: #313131;
+            box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+            min-width: 800px;
+            .slip_info_heading{
+                //border: 2px solid green;
+                font-weight: 500;
+            }
+            .slip_info{
+                //border: 2px solid green;
+            }
+        }
+    }
+    .slip_selectors_cont{
+        //border: 2px solid red;
+        display: flex;
+        //justify-content: space-around;
+        gap: 15px;
+        width: max-content;
+        margin: 10px auto;
+        .slip_selector_cont{
+            //border: 2px solid violet;
+            display: flex;
+            font-size: 0.7rem;
+            padding: 5px;
+            cursor: pointer;
+            //border: 1px solid $primaryDark;
+            border-radius: 4px;
+            color: #313131;
+            background-color:white;
+            border: none;
+            box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+            &:hover{
+                background-color: $primaryLight;
+            }
+            .from_value{
+                
+            }
+            .to_value{
+
+            }
+        }
+    }
+    .pagination_cont{
+        //border: 2px solid green;
+        display: flex;
+        gap: 10px;
+        margin: 10px auto;
+        width: max-content;
+        .left_arrow{
+            //border: 2px solid red;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            background-color: white;
+            &:hover{
+                background-color: $primaryLight;
+            }
+        }
+        .page{
+            //border: 2px solid blue;
+            //padding: 5px 10px;
+            cursor: pointer;
+            border: 1px solid $primaryDark;
+            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+        }
+        .right_arrow{
+            //border: 2px solid red;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            background-color: white;
+            &:hover{
+                background-color: $primaryLight;
+            }
+        }
+    }
 }
