@@ -10,7 +10,6 @@ interface NavigateItemPropTypes {
     Icon:IconType;
     text:RoutesTypes;
     url:string;
-    setSelectedRouteHandler:(value:RoutesTypes) => void;
 }
 interface HeadingPropTypes {
     text:string;
@@ -61,12 +60,10 @@ interface KeyValuePairsPropTypes{
     isLoading?:boolean;
 }
 
-export const NavigateItem = ({Icon, text, url, setSelectedRouteHandler}:NavigateItemPropTypes) => {
+export const NavigateItem = ({Icon, text, url}:NavigateItemPropTypes) => {
 
     return(
-        <NavLink to={url} className="navigate_item_cont" onClick={() => {
-                setSelectedRouteHandler(text);
-            }}>
+        <NavLink to={url} className="navigate_item_cont" tabIndex={1}>
             <div className="icon"><Icon/></div>
             <div className="text">{text}</div>
         </NavLink>
