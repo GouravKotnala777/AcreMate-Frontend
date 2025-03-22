@@ -71,6 +71,22 @@ export const findAllUsers = async() => {
 
     return data;
 };
+export const getSearchedSuggesstions = async({searchQuery}:{searchQuery:string;}) => {
+    const data = await fetchAPIHandler<{
+        allClientsOfName:ClientTypes[];
+        allClientsOfGuardianName:ClientTypes[];
+        allClientsOfSearialNo:ClientTypes[];
+        allPlots:PlotTypes[];
+        allSlips:SlipTypes[];
+    }>({
+        apiName:"getSearchedSuggesstions",
+        endpoint:`/user/search?searchQuery=${searchQuery}`,
+        credentials:true,
+        method:"GET"
+    });
+
+    return data;
+};
 export const findAllAgents = async() => {
     const data = await fetchAPIHandler<UserTypes[]>({
         apiName:"findAllAgents",
@@ -292,6 +308,16 @@ export const findAllSlips = async({skip}:{skip:number;}) => {
     const data = await fetchAPIHandler<SlipTypes[]>({
         apiName:"findAllSlips",
         endpoint:`/slip/all-slips?skip=${skip}`,
+        credentials:true,
+        method:"GET"
+    });
+
+    return data;
+};
+export const findSlipsWithSlipNoRange = async({fromSlipNo, toSlipNo}:{fromSlipNo:number; toSlipNo:number;}) => {
+    const data = await fetchAPIHandler<(SlipTypes&{clientID:{name:string; guardian:string; mobile:string;}}&{plotID:{plotNo:number; site:string;}})[]>({
+        apiName:"findSlipsWithSlipNoRange",
+        endpoint:`/slip/all-slipss?fromSlipNo=${fromSlipNo}&toSlipNo=${toSlipNo}`,
         credentials:true,
         method:"GET"
     });
