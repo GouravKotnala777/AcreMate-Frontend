@@ -4,12 +4,7 @@ import { assignPlotToClient, createClient, createPlots, createSite, createSlip, 
 import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, SlipTypes, UserTypes } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
 
-
-interface CreateFormPanelPropTypes{
-    formPanelFor:string|null;
-}
-
-const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
+const CreateFormPanel = () => {
     const [createFormData, setCreateFormData] = useState<CreateClientBodyTypes|CreatePlotBodyTypes|CreateSlipBodyTypes|CreateSiteBodyTypes|object>({});
     const [searchParams] = useSearchParams();
     const [allAgentsIDs, setAllAgentsIDs] = useState<Pick<UserTypes, "_id"|"name">[]>([]);
@@ -17,6 +12,7 @@ const CreateFormPanel = ({formPanelFor}:CreateFormPanelPropTypes) => {
 
     const plotID = searchParams.get("plotID");
     const plotStatus = searchParams.get("plotStatus");
+    const formPanelFor = searchParams.get("formPanelFor");
     
     const onChangeFeildsHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
         if (e.target.name === "agentID") {
