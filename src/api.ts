@@ -78,6 +78,8 @@ export const getSearchedSuggesstions = async({searchQuery}:{searchQuery:string;}
         allClientsOfSearialNo:ClientTypes[];
         allPlots:PlotTypes[];
         allSlips:SlipTypes[];
+        allNefts:SlipTypes[];
+        allDrafts:SlipTypes[];
     }>({
         apiName:"getSearchedSuggesstions",
         endpoint:`/user/search?searchQuery=${searchQuery}`,
