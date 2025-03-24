@@ -77,12 +77,12 @@ export const SinglePlot = () => {
     const payEMIHandler = () => {
 
         if (singlePlotData?.plotStatus === "vacant") {
-            navigate(`/slips?plotID=${plotID}&plotStatus=${singlePlotData?.plotStatus}`);
+            navigate(`/create?plotID=${singlePlotData._id}&plotStatus=${singlePlotData?.plotStatus}&formPanelFor=slips`);
             setSelectedRoute("slips");
             setSelectedPanel("create");
         }
         else{
-            navigate(`/slips?plotID=${plotID}&plotStatus=${singlePlotData?.plotStatus}`);
+            navigate(`/create?plotID=${singlePlotData?._id}&plotStatus=${singlePlotData?.plotStatus}&formPanelFor=slips`);
             setSelectedRoute("slips");
             setSelectedPanel("create");
         }
