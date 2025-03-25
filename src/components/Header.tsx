@@ -2,7 +2,7 @@ import "../styles/components/header.component.scss";
 import { BsPerson } from "react-icons/bs";
 import { NavigateItem } from "../shared/SharedComponents";
 import logo from "/public/acremate_logo6.png";
-import { BiRegistered } from "react-icons/bi";
+import { BiDownArrow, BiRegistered } from "react-icons/bi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { GiSlipknot } from "react-icons/gi";
 import { FaMagnifyingGlass } from "react-icons/fa6";
@@ -16,6 +16,7 @@ import { CgRemove } from "react-icons/cg";
 let timerID:number|null = null;
 const Header = () => {
     const [isSuggessionActive, setIsSuggessionActive] = useState<boolean>(false);
+    const [isDropDownActive, setIsDropDownActive] = useState<boolean>(false);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSearchInpFocused, setIsSearchInpFocused] = useState<boolean>(false);
@@ -25,15 +26,21 @@ const Header = () => {
             allClientsOfSearialNo:ClientTypes[];
             allPlots:PlotTypes[];
             allSlips:SlipTypes[];
+            allNefts:SlipTypes[];
+            allDrafts:SlipTypes[];
         }>({
             allClientsOfName:[],
             allClientsOfGuardianName:[],
             allClientsOfSearialNo:[],
             allPlots:[],
-            allSlips:[]
+            allSlips:[],
+            allNefts:[],
+            allDrafts:[]
         });
     const navigate = useNavigate();
     const overlayRef = useRef<HTMLDivElement|null>(null);
+    const searchInpRef = useRef<HTMLInputElement|null>(null);
+    const searchInpContRef = useRef<HTMLDivElement|null>(null);
 
 
     const undoSearchHandler = () => {
@@ -46,7 +53,9 @@ const Header = () => {
                 allClientsOfGuardianName:[],
                 allClientsOfSearialNo:[],
                 allPlots:[],
-                allSlips:[]
+                allSlips:[],
+                allNefts:[],
+                allDrafts:[]
             });
     }
 
@@ -75,13 +84,21 @@ const Header = () => {
             return;
         }
         overlay.style.display = "none";
+
+        const searchInpCont = searchInpContRef.current
+        if (!searchInpCont) return;
+        searchInpCont.style.zIndex = "1";
+
+
         undoSearchHandler();
         //setIsSearchInpFocused(false);
+        setIsDropDownActive(false);
     }
     const focusHandler = () => {
         const overlay = overlayRef.current;
         if (!overlay) return;
         overlay.style.display = "block";
+        overlay.style.zIndex = "2";
         setIsSearchInpFocused(true);
     }
 
@@ -120,11 +137,16 @@ const Header = () => {
             <NavLink to="/home" className="logo">
                 <img src={logo} alt={logo} />
             </NavLink>
-            <div className="search_cont">
+            <div className="search_cont" ref={searchInpContRef}>
                 <div className="search_icon"><FaMagnifyingGlass /></div>
-                <input type="text" name="search" className="search_inp" value={searchQuery}
+                <input ref={searchInpRef} type="text" name="search" className="search_inp" value={searchQuery}
                     onChange={(e) => searchHandler(e)}
-                    onFocus={focusHandler}
+                    onFocus={() => {
+                        focusHandler();
+                        const searchInpCont = searchInpContRef.current
+                        if (!searchInpCont) return;
+                        searchInpCont.style.zIndex = "3";
+                    }}
                 />
                 
                 {
@@ -132,7 +154,12 @@ const Header = () => {
                         <div className="placeholder_animation_cont">
                             {
                                 ["Client Name", "Client Guardian Name", "Client Serial Number", "Plot Number", "Slip Number"].map((str, ind) => (
-                                    <div id={`placeholder_value-${ind}`} className={`placeholder_value-${ind} value`} key={str} onClick={focusHandler}>{str}</div>
+                                    <div id={`placeholder_value-${ind}`} className={`placeholder_value-${ind} value`} key={str} onClick={() => {
+                                        focusHandler();
+                                        const searchInp = searchInpRef.current
+                                        if (!searchInp) return;
+                                        searchInp.focus();
+                                    }}>{str}</div>
                                 ))
                             }
                         </div>
@@ -206,21 +233,66 @@ const Header = () => {
                             ))
                         }
                     </div>
+                    <div className="suggesstion_section sixth_section">
+                        {
+                            suggesstions.allNefts.length !== 0 &&
+                                <div className="suggesstion_heading">NEFT related search</div>
+                        }
+                        {
+                            suggesstions.allNefts.map((slp) => (
+                                <button className="suggesstion_value" key={slp._id} onClick={() => navigateThroughSuggesstion(`/single-plot?slipID=${slp._id}`)}>{slp.paymentID}</button>
+                            ))
+                        }
+                    </div>
+                    <div className="suggesstion_section seventh_section">
+                        {
+                            suggesstions.allDrafts.length !== 0 &&
+                                <div className="suggesstion_heading">Cheque related search</div>
+                        }
+                        {
+                            suggesstions.allDrafts.map((slp) => (
+                                <button className="suggesstion_value" key={slp._id} onClick={() => navigateThroughSuggesstion(`/single-plot?slipID=${slp._id}`)}>{slp.paymentID}</button>
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
             <div className="overlay"
+                tabIndex={1}
                 ref={overlayRef}
                 onClick={blurHandler}
+                onKeyDown={(e) => {
+                    e.key === "Enter" && blurHandler()
+                }}
             ></div>
             <nav className="nav">
+                <NavigateItem Icon={BsPerson} text={"Agents" as "agents"} url="/pendings" />
+                <div className="nav_item_dropdown">
+                    <div className="heading"
+                        onMouseOver={() => {
+                            focusHandler();
+                            setIsDropDownActive(true);
+                            const searchInp = searchInpRef.current;
+                            if (!searchInp) {
+                                console.log("SSSSSSSSSSSSSSSSSSS");
+                                
+                                return;
+                            }
+                            searchInp.style.zIndex = "-1";
+                        }}
+                        >Create <BiDownArrow /></div>
+                    <div className="dropdown_list" tabIndex={1} style={{
+                        transform:isDropDownActive?`scale(1, 1)`:`scale(1, 0)`
+                    }}>
+                        <button className="link" onClick={() => {navigate(`/create?plotID=""&plotStatus=""&formPanelFor=sites`); blurHandler();}}>create site</button>
+                        <button className="link">option2</button>
+                        <button className="link">option3</button>
+                        <button className="link">option4</button>
+                    </div>
+                </div>
                 <NavigateItem Icon={BsPerson} text={"Agents" as "agents"} url="/agents" />
                 <NavigateItem Icon={GiSlipknot} text={"Slips" as "slips"} url="/slips"/>
                 <NavigateItem Icon={BiRegistered} text={"Login" as "login"} url="/login"/>
-                {/*<NavigateItem Icon={BsPersonCheck} text={"Clients" as "clients"} url="/clients" setSelectedRouteHandler={setSelectedRouteHandler} />
-                <NavigateItem Icon={BsPersonDown} text={"Plots" as "plots"} url="/plots" setSelectedRouteHandler={setSelectedRouteHandler} />
-                <NavigateItem Icon={BiGrid} text={"Sites" as "sites"} url="/sites" setSelectedRouteHandler={setSelectedRouteHandler} />
-                <NavigateItem Icon={BiLogIn} text={"Register" as "register"} url="/register" setSelectedRouteHandler={setSelectedRouteHandler} />
-                <NavigateItem Icon={BiUser} text={"Me" as "me"} url="/me" setSelectedRouteHandler={setSelectedRouteHandler} />*/}
             </nav>
         </header>
         </>
