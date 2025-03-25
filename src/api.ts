@@ -235,6 +235,16 @@ export const findAllPlots = async() => {
 
     return data;
 };
+export const findPendingClients = async(skip:number) => {
+    const data = await fetchAPIHandler<(PlotTypes&{pending:number; timeCovered:number;}&{clientDetailes:{serialNumber:string; name:string; guardian:string; mobile:string;}}&{lastSlip:{_id:string; amount:number; createdAt:Date;}})[]>({
+        apiName:"findPendingClients",
+        endpoint:`/plot/pendings?skip=${skip}`,
+        credentials:true,
+        method:"GET"
+    });
+
+    return data;
+};
 export const findSinglePlot = async({clientID, plotID, slipID, siteID, agentID}:{clientID?:string;
     plotID?:string;
     slipID?:string;

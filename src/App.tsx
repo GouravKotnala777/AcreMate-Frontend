@@ -14,6 +14,7 @@ import MyProfile from "./pages/MyProfile.tsx";
 import { SinglePlot, SingleSite } from "./pages/SingleItemPage.tsx";
 import Agents from "./pages/Agents.tsx";
 import Header from "./components/Header.tsx";
+import CreateFormPanel from "./components/CreateFormPanel.tsx";
 
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
           <Route path="/me" element={<MyProfile />} />
           <Route path="/single-plot" element={<SinglePlot />} />
           <Route path="/single-site" element={<SingleSite />} />
-          {/*<Route path="/plot/assign" element={} />*/}
+          <Route path="/create" element={<CreateFormPanel />} />
         </Routes>
       </BrowserRouter>
     </>
