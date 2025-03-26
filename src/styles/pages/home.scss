@@ -2,6 +2,12 @@
 
 .home_bg{
     //border: 2px solid red;
+    //.plot_info_dialog{
+    //    border: 2px solid red;
+    //    position: absolute;
+    //    top: 0;
+    //    left: 0;
+    //}
     .agent_data_cont{
         display: flex;
         justify-content: space-around;
@@ -20,7 +26,7 @@
             //border: 2px solid blue;
             font-size: 0.65rem;
             display: grid;
-            grid-template-columns: 7% 7% 14% 7% 15% 6% 13% 11% 6% 14%;
+            grid-template-columns: 7% 7% 9% 7% 13% 7% 10% 11% 6% 13% 5% 5%;
             grid-template-rows: 40px;
             margin-top: 10px;
             place-items: center;
@@ -36,6 +42,22 @@
             }
             .slip_info{
                 //border: 2px solid green;
+            }
+            .send_sms{
+                //border: 2px solid blue;
+                .send_sms_btn{
+                    //border: 2px solid green;
+                    border-radius: 4px;
+                    //padding: 3px;
+                    width: 30px;
+                    height: 30px;
+                    background-color: $primaryLight;
+                    border: none;
+                    cursor: pointer;
+                    &:hover{
+                        background-color: $primaryDark;
+                    }
+                }
             }
         }
     }

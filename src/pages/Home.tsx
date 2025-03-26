@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { PlotTypes } from "../utils/types";
 import { findPendingClients } from "../api";
 import { PRIMARY_LIGHT } from "../utils/constants";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -15,6 +16,7 @@ const Home = () => {
     )[]>([]);
     const [skip, setSkip] = useState<number>(0);
     const scrollBottomRef = useRef<HTMLDivElement|null>(null);
+    const navigate = useNavigate();
 
 
     const findPendingClientsHandler = async() => {
@@ -60,6 +62,8 @@ const Home = () => {
                     <div className="mobile slip_info slip_info_heading">Mobile</div>
                     <div className="mobile slip_info slip_info_heading">Time Covered</div>
                     <div className="amount slip_info slip_info_heading">Pending</div>
+                    <div className="send_sms slip_info slip_info_heading">View</div>
+                    <div className="send_sms slip_info slip_info_heading">Send SMS</div>
                 </div>
                 {
                     allPendingPlots.map((plt) => (
@@ -77,11 +81,17 @@ const Home = () => {
                                 color:"red",
                                 fontWeight:"600"
                             }}>{plt.pending}</div>
+                            <div className="send_sms slip_info slip_info_heading">
+                                <button className="send_sms_btn" onClick={() => navigate(`/single-plot?plotID=${plt._id}`)}>S</button>
+                            </div>
+                            <div className="send_sms slip_info slip_info_heading">
+                                <button className="send_sms_btn">S</button>
+                            </div>
                         </div>
                     ))
                 }
             </div>
-            <pre>{JSON.stringify(allPendingPlots, null, `\t`)}</pre>
+            {/*<pre>{JSON.stringify(allPendingPlots, null, `\t`)}</pre>*/}
             <div className="scroll_bottom" ref={scrollBottomRef}>load more...</div>
         </div>
     )
