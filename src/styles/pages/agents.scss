@@ -2,4 +2,16 @@
 
 .agents_bg{
     border: 2px solid red;
+    position: relative;
+
+    .emi_chart{
+        border: 2px solid green;
+        display: block;
+    }
+    .tooltip_dialog{
+        border: 2px solid blue;
+        position: absolute;
+        width: 200px;
+        height: 100px;
+    }
 }
