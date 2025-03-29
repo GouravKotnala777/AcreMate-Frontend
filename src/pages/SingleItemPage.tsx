@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, UIEvent, useEffect, useRef, useState } from "react";
 import { DialogBox, FormSharedComponent, Heading, KeyValuePairs, Timer } from "../shared/SharedComponents";
 import "../styles/pages/single_item_page.scss";
 import { detachClientFromPlot, findAllPlots, findSingleClientAllSlips, findSinglePlot, findSingleSite, resetSiteRows, updateSiteRows } from "../api";
@@ -55,14 +55,341 @@ export const SingleClient = () => {
         </div>
     )
 };
+//const dummyDat = {
+//    shouldPay:9000,
+//    payments:[
+//        {
+//            amount:10000,
+//            pending:2000,
+//            createdAt:"20-01-25"            
+//        },
+//        {
+//            amount:7000,
+//            pending:2000,
+//            createdAt:"21-02-25"            
+//        },
+//        {
+//            amount:100000,
+//            pending:2000,
+//            createdAt:"19-03-25"            
+//        },
+//        {
+//            amount:10000,
+//            pending:2000,
+//            createdAt:"21-04-25"            
+//        },
+//        {
+//            amount:8000,
+//            pending:2000,
+//            createdAt:"19-05-25"            
+//        },
+//        {
+//            amount:9000,
+//            pending:2000,
+//            createdAt:"24-06-25"            
+//        },
+//        {
+//            amount:10000,
+//            pending:2000,
+//            createdAt:"20-07-25"            
+//        },
+//        {
+//            amount:11000,
+//            pending:2000,
+//            createdAt:"22-08-25"            
+//        },
+//        {
+//            amount:9000,
+//            pending:2000,
+//            createdAt:"24-09-25"            
+//        },
+//        {
+//            amount:10000,
+//            pending:2000,
+//            createdAt:"20-10-25"            
+//        },
+//        {
+//            amount:11000,
+//            pending:2000,
+//            createdAt:"22-11-25"            
+//        },
+//        {
+//            amount:8000,
+//            pending:2000,
+//            createdAt:"19-12-25"            
+//        },
+//        {
+//            amount:7000,
+//            pending:2000,
+//            createdAt:"21-13-25"            
+//        },
+//        {
+//            amount:8000,
+//            pending:2000,
+//            createdAt:"19-14-25"            
+//        },
+//        {
+//            amount:9000,
+//            pending:2000,
+//            createdAt:"24-15-25"            
+//        },
+//        {
+//            amount:10000,
+//            pending:2000,
+//            createdAt:"20-16-25"            
+//        },
+//        {
+//            amount:11000,
+//            pending:2000,
+//            createdAt:"22-17-25"            
+//        },
+//        {
+//            amount:7000,
+//            pending:2000,
+//            createdAt:"21-18-25"            
+//        },
+//        {
+//            amount:8000,
+//            pending:2000,
+//            createdAt:"19-19-25"            
+//        },
+//        //{
+//        //    amount:13000,
+//        //    pending:2000,
+//        //    createdAt:"24-20-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"20-21-25"            
+//        //},
+//        //{
+//        //    amount:11000,
+//        //    pending:2000,
+//        //    createdAt:"22-22-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"24-23-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"22-17-25"            
+//        //},
+//        //{
+//        //    amount:7000,
+//        //    pending:2000,
+//        //    createdAt:"21-18-25"            
+//        //},
+//        //{
+//        //    amount:8000,
+//        //    pending:2000,
+//        //    createdAt:"19-19-25"            
+//        //},
+//        //{
+//        //    amount:9000,
+//        //    pending:2000,
+//        //    createdAt:"24-20-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"20-21-25"            
+//        //},
+//        //{
+//        //    amount:11000,
+//        //    pending:2000,
+//        //    createdAt:"22-22-25"            
+//        //},
+//        {
+//            amount:100000,
+//            pending:2000,
+//            createdAt:"24-23-25"            
+//        },
+//        {
+//            amount:10000,
+//            pending:2000,
+//            createdAt:"20-01-25"            
+//        },
+//        {
+//            amount:7000,
+//            pending:2000,
+//            createdAt:"21-02-25"            
+//        },
+//        //{
+//        //    amount:8000,
+//        //    pending:2000,
+//        //    createdAt:"19-03-25"            
+//        //},
+//        //{
+//        //    amount:7000,
+//        //    pending:2000,
+//        //    createdAt:"21-04-25"            
+//        //},
+//        //{
+//        //    amount:8000,
+//        //    pending:2000,
+//        //    createdAt:"19-05-25"            
+//        //},
+//        //{
+//        //    amount:9000,
+//        //    pending:2000,
+//        //    createdAt:"24-06-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"20-07-25"            
+//        //},
+//        //{
+//        //    amount:11000,
+//        //    pending:2000,
+//        //    createdAt:"22-08-25"            
+//        //},
+//        //{
+//        //    amount:9000,
+//        //    pending:2000,
+//        //    createdAt:"24-09-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"20-10-25"            
+//        //},
+//        //{
+//        //    amount:11000,
+//        //    pending:2000,
+//        //    createdAt:"22-11-25"            
+//        //},
+//        //{
+//        //    amount:8000,
+//        //    pending:2000,
+//        //    createdAt:"19-12-25"            
+//        //},
+//        //{
+//        //    amount:7000,
+//        //    pending:2000,
+//        //    createdAt:"21-13-25"            
+//        //},
+//        //{
+//        //    amount:8000,
+//        //    pending:2000,
+//        //    createdAt:"19-14-25"            
+//        //},
+//        //{
+//        //    amount:9000,
+//        //    pending:2000,
+//        //    createdAt:"24-15-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"20-16-25"            
+//        //},
+//        //{
+//        //    amount:11000,
+//        //    pending:2000,
+//        //    createdAt:"22-17-25"            
+//        //},
+//        //{
+//        //    amount:7000,
+//        //    pending:2000,
+//        //    createdAt:"21-18-25"            
+//        //},
+//        //{
+//        //    amount:8000,
+//        //    pending:2000,
+//        //    createdAt:"19-19-25"            
+//        //},
+//        //{
+//        //    amount:100000,
+//        //    pending:2000,
+//        //    createdAt:"24-20-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"20-21-25"            
+//        //},
+//        //{
+//        //    amount:11000,
+//        //    pending:2000,
+//        //    createdAt:"22-22-25"            
+//        //},
+//        //{
+//        //    amount:9000,
+//        //    pending:2000,
+//        //    createdAt:"24-23-25"            
+//        //},
+//        //{
+//        //    amount:11000,
+//        //    pending:2000,
+//        //    createdAt:"22-17-25"            
+//        //},
+//        //{
+//        //    amount:7000,
+//        //    pending:2000,
+//        //    createdAt:"21-18-25"            
+//        //},
+//        //{
+//        //    amount:8000,
+//        //    pending:2000,
+//        //    createdAt:"19-19-25"            
+//        //},
+//        //{
+//        //    amount:9000,
+//        //    pending:2000,
+//        //    createdAt:"24-20-25"            
+//        //},
+//        //{
+//        //    amount:10000,
+//        //    pending:2000,
+//        //    createdAt:"20-21-25"            
+//        //},
+//        //{
+//        //    amount:11000,
+//        //    pending:2000,
+//        //    createdAt:"22-22-25"            
+//        //},
+//        //{
+//        //    amount:9000,
+//        //    pending:2000,
+//        //    createdAt:"24-23-25"            
+//        //}
+//    ]
+//};
 export const SinglePlot = () => {
     const [singlePlotData, setSinglePlotData] = useState<PlotTypes|null>(null);
+
+    // we will take 'firstSlipData' & 'lastSlipData' from 'allSlipsData'
     const [firstSlipData, setFirstSlipData] = useState<SlipTypes|null>(null);
     const [lastSlipData, setLastSlipData] = useState<SlipTypes|null>(null);
     const [allSlipsData, setAllSlipsData] = useState<SlipTypes[]>([]);
+
+
+    
     const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
     const [selectedSlipID, setSelectedSlipID] = useState<string>("");
     const [expendedSlipIDs, setExpendedSlipIDs] = useState<string[]>([]);
+
+
+    const canvasRef = useRef<HTMLCanvasElement|null>(null);
+    const [nodeValue, setNodeValue] = useState<{lowest:number; highest:number;}>({lowest:0, highest:0});
+    const [yRange, setYRange] = useState<number[]>([]);
+    const [tooltipCollection, setTooltipCollection] = useState<{x:number; y:number; amount:number; date:Date;}[]>([]);
+    const [tooltip, setTooltip] = useState<{x:number; y:number; amount:number}>({x:0, y:0, amount:0});
+    const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
+    const [hoveringDotAmount, setHoveringDotAmount] = useState<number>(0);
+    const [scrollLeft, setScrollLeft] = useState<number>(0);
+    const [clientWidth, setClientWidth] = useState<number>(0);
+    const [hoveringDotDate, setHoveringDotDate] = useState<Date|null>(null);
+    const [isTooltipAtEnd, setIsTooltipAtEnd] = useState<boolean>(false);
+    
+
+
+
     const [query] = useSearchParams();
     const navigate = useNavigate();
     const {setSelectedRoute, setSelectedPanel} = useSelectedRoute();
@@ -87,25 +414,12 @@ export const SinglePlot = () => {
             setSelectedPanel("create");
         }
     };
-
     const resetPlotAssignmentHandler = async() => {
         if (!plotID) {
             throw new Error("PlotID not found");
         }
         await detachClientFromPlot({plotID});
     }
-    //const assignPlotHandler = () => {
-
-    //    if (singlePlotData?.plotStatus === "vacant") {
-    //        navigate("/SSSSSSSSSSSSSS");
-    //    }
-    //    else{
-    //        navigate(`/slips?plotID=${plotID}`);
-    //        setSelectedRoute("slips");
-    //        setSelectedPanel("create");
-    //    }
-    //}
-
     const func = (expendedSlipI:string) => {
         if (expendedSlipIDs.includes(expendedSlipI)) {
             console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
@@ -127,6 +441,194 @@ export const SinglePlot = () => {
 
         }
     };
+
+
+
+    const getHighestAmount = () => {
+        let lowestNum = 0;
+        let highestNum = 0;
+        const y_range:number[] = [];
+        let y_interval = 0;
+        for(const payment of allSlipsData){
+            if (payment.amount > highestNum) {
+                highestNum = payment.amount;
+            }
+            if (payment.amount < lowestNum) {
+                lowestNum = payment.amount;
+            }
+            if (lowestNum === 0) {
+                lowestNum = payment.amount;
+            }
+        }
+        
+
+        setNodeValue({lowest:lowestNum, highest:highestNum});
+        
+        y_interval = Math.ceil((highestNum-lowestNum)/(allSlipsData.length*2));
+        
+        for(let i=0; i<=allSlipsData.length*2; i++){
+            y_range.push(lowestNum+(y_interval*(i)));
+            setYRange((prev) => [...prev, lowestNum+(y_interval*(i))]);
+        }     
+    };
+
+    const convertMoneyToPx = (amount:number|undefined, xAxisMarginTop:number) => {
+        if (!amount) return NaN;
+        const valueInPx = ((amount-nodeValue.lowest)/1)/((nodeValue.highest-nodeValue.lowest)/xAxisMarginTop);
+
+        if (!isFinite(valueInPx)) return NaN;
+        return Math.ceil(valueInPx);
+    };
+
+    const tooltipHandler = (e:MouseEvent<HTMLCanvasElement>) => {       
+        setTooltip({x:e.clientX-10+scrollLeft, y:e.clientY-157, amount:0});        
+    };
+    const aHandler = (e:UIEvent<HTMLDivElement>) => {
+        setScrollLeft(e.currentTarget.scrollLeft);
+        setClientWidth(e.currentTarget.clientWidth);
+    };
+
+    useEffect(() => {
+        const hoveringDot = tooltipCollection.find((tltp) => 
+            tooltip.x > tltp.x-3 &&
+            tooltip.x <= tltp.x+3
+        );
+        if (hoveringDot) {
+            setIsTooltipVisible(true);
+            if(hoveringDot.x > clientWidth+scrollLeft-100){
+                setIsTooltipAtEnd(true);
+            }
+            else{
+                setIsTooltipAtEnd(false)
+            }
+            setHoveringDotAmount(hoveringDot.amount);
+            setHoveringDotDate(hoveringDot.date);
+        }
+        else{
+            setHoveringDotAmount(0);
+            setHoveringDotDate(null);
+            setIsTooltipVisible(false);
+        }
+    }, [tooltip]);
+
+    useEffect(() => {
+        if (!singlePlotData?.shouldPay) return;
+        
+        // Canvas variables
+        const canvas = canvasRef.current;
+        const canvasWidth = 1200;
+        const canvasHeight = 300;
+        // Y-axis variables
+        const yAxisMarginLeft = 50;
+        const yAxisMarginTop = 0;
+        const yAxisMarginBottom = 300;
+
+        if (!canvas) return;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+        
+        const ctx = canvas.getContext("2d");
+        
+        if (!ctx) return;
+
+        // Y-axis line
+        ctx.beginPath();
+        ctx.moveTo(yAxisMarginLeft, yAxisMarginTop);
+        ctx.lineTo(yAxisMarginLeft, yAxisMarginBottom);
+        ctx.stroke();
+
+        // EMI line
+        ctx.beginPath();
+        ctx.moveTo(yAxisMarginLeft, 280-convertMoneyToPx(singlePlotData?.shouldPay, 280)+10);
+        ctx.lineTo(canvasWidth, 280-convertMoneyToPx(singlePlotData?.shouldPay, 280)+10);
+        ctx.setLineDash([2, 2]);
+        ctx.strokeStyle = "#919191";
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+
+        // Y-axis dash
+        for(let i=0; i<=allSlipsData.length*2; i++){
+            ctx.beginPath();
+            ctx.moveTo(45, convertMoneyToPx(yRange[i], 280)+10);
+            ctx.lineTo(55, convertMoneyToPx(yRange[i], 280)+10);
+            ctx.stroke();
+        }
+        // Y-axis lables
+        for(let i=0; i<=allSlipsData.length*2; i++){
+            ctx.font = "8px arial";
+            ctx.fillText((yRange[(allSlipsData.length*2) - i]??0).toString(), 10, convertMoneyToPx(yRange[i], 280)+13);
+        }
+        // Dots
+        setTooltipCollection([]);
+        for(let i=0; i<allSlipsData.length; i++){
+            ctx.beginPath();
+            if (allSlipsData[i].amount >= singlePlotData?.shouldPay) {
+                ctx.strokeStyle = "#00a700";
+                ctx.fillStyle = "#93ff93";
+                
+            } else {
+                ctx.strokeStyle = "#a70000";
+                ctx.fillStyle = "#ff9393";
+            }
+            if (tooltip.x > (i*(canvasWidth/allSlipsData.length-5))+50+50-3 && tooltip.x <= (i*(canvasWidth/allSlipsData.length-5))+50+50+3) {
+                ctx.arc((i*(canvasWidth/allSlipsData.length-5))+50+50, 280-convertMoneyToPx(allSlipsData[i].amount, 280)+10, 5, 0, 2.5*Math.PI);
+            }
+            else{
+                ctx.arc((i*(canvasWidth/allSlipsData.length-5))+50+50, 280-convertMoneyToPx(allSlipsData[i].amount, 280)+10, 2.5, 0, 2.5*Math.PI);
+            }
+            ctx.fill();
+            ctx.stroke();
+
+            //console.log(allSlipsData[i].amount);
+            
+            if (convertMoneyToPx(allSlipsData[i].amount, 280)) {
+                setTooltipCollection((prev) => [...prev, {x:(i*(canvasWidth/allSlipsData.length-5))+50+50, y:(280-convertMoneyToPx(allSlipsData[i].amount, 280))+10, amount:allSlipsData[i].amount, date:allSlipsData[i].createdAt}]);
+            }
+            else if (!isNaN(convertMoneyToPx(allSlipsData[i].amount, 280))) {
+                setTooltipCollection((prev) => [...prev, {x:(i*(canvasWidth/allSlipsData.length-5))+50+50, y:(280-convertMoneyToPx(allSlipsData[i].amount, 280))+10, amount:allSlipsData[i].amount, date:allSlipsData[i].createdAt}]);
+            }
+            else{
+                console.log("NNNNNNNNNNNNNNNNNNNNN");
+            }
+        }
+        // Lines
+        for(let i=0; i<allSlipsData.length; i++){
+            ctx.beginPath();
+            if (allSlipsData[i].amount >= singlePlotData?.shouldPay) {
+                ctx.strokeStyle = "#51ff51";
+            
+            } else {
+                ctx.strokeStyle = "#ff5151";
+            }
+            ctx.moveTo((i*(canvasWidth/allSlipsData.length-5))+50+50, 280-convertMoneyToPx(allSlipsData[i].amount, 280)+10);
+            if (i+1 < allSlipsData.length) {
+                ctx.lineTo(((i+1)*(canvasWidth/allSlipsData.length-5))+50+50, 280-convertMoneyToPx(allSlipsData[i+1].amount, 280)+10);
+            }
+            ctx.stroke();
+        }
+        // Hovering dotted line
+        ctx.beginPath();
+        ctx.strokeStyle = "#919191";
+        ctx.setLineDash([2, 2]);
+        ctx.moveTo(tooltip.x, 0);
+        ctx.lineTo(tooltip.x, 300);
+        ctx.stroke();
+    }, [singlePlotData, allSlipsData, nodeValue, tooltip]);
+
+
+    const gg = () => {
+        console.log(allSlipsData);
+        console.log(tooltipCollection);
+    }
+    
+
+    useEffect(() => {
+        getHighestAmount();
+    }, [allSlipsData]);
+
+
+
     
     useEffect(() => {        
         if (!plotID || plotID === "null" || plotID === "undefined") {
@@ -183,9 +685,37 @@ export const SinglePlot = () => {
         <div className="single_plot_bg">
             {/*<Heading text={`Plot No. ${plotID}`} />*/}
             {/*<button onClick={assignPlotHandler}>Assign plot</button>*/}
+            {/*<pre>{JSON.stringify(nodeValue, null, `\t`)}</pre>*/}
             <button onClick={resetPlotAssignmentHandler}>Reset Plot Assignment</button>
             <button onClick={payEMIHandler}>Pay EMI</button>
-            {/*<pre>{JSON.stringify(singlePlotData, null, `\t`)}</pre>*/}
+
+            <button onClick={gg}>EMIs</button>
+
+            <div className="canvas_scrollable" onScroll={(e) => aHandler(e)}>
+                <canvas ref={canvasRef} className="emi_chart" onMouseMove={(e) => tooltipHandler(e)}>
+                </canvas>
+            </div>
+
+            {
+                isTooltipVisible && hoveringDotDate &&
+                    <div className="tooltip_dialog"
+                        style={{
+                            top:`${tooltip.y+70}px`,
+                            left:(isTooltipAtEnd) ? `${tooltip.x-150-scrollLeft}px` : `${tooltip.x-scrollLeft}px`
+                        }}
+                    >
+                        <KeyValuePairs
+                            keyValuePairArray={[
+                                {"Date":new Date(hoveringDotDate)?.toLocaleDateString(undefined, {day:"2-digit", month:"short", year:"2-digit"})},
+                                {"Amount":hoveringDotAmount}
+                            ]}
+                        />
+                    </div>
+            }
+
+
+
+
             <div className="plot_info_cont">
                 <KeyValuePairs keyValuePairArray={[
                     {"Plot No.":singlePlotData?.plotNo},

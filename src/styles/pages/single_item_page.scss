@@ -5,6 +5,25 @@
     //height: 100%;
     //overflow-y: scroll;
     //position: relative;
+    .canvas_scrollable{
+        //border: 2px solid blue;
+        overflow-y: auto;
+        margin: 20px 0;
+        //padding: 2px;
+        box-shadow: 0.2px 0.2px 2px 0.2px rgba(0,0,0,0.2) inset;
+        .emi_chart{
+            //border: 2px solid green;
+            display: block;
+            //width: max-content;
+            border-radius: 8px;
+        }
+    }
+    .tooltip_dialog{
+        //border: 2px solid blue;
+        position: absolute;
+        //width: 200px;
+        //height: 100px;
+    }
     .plot_info_cont{
         //border: 2px solid orange;
         display: flex;
