@@ -2,13 +2,14 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { FormSharedComponent } from "../shared/SharedComponents";
 import { assignPlotToClient, createClient, createPlots, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
 import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, SlipTypes, UserTypes } from "../utils/types";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CreateFormPanel = () => {
     const [createFormData, setCreateFormData] = useState<CreateClientBodyTypes|CreatePlotBodyTypes|CreateSlipBodyTypes|CreateSiteBodyTypes|object>({});
     const [searchParams] = useSearchParams();
     const [allAgentsIDs, setAllAgentsIDs] = useState<Pick<UserTypes, "_id"|"name">[]>([]);
     const [allSitesName, setAllSitesName] = useState<string[]>([]);
+    const navigate = useNavigate();
 
     const plotID = searchParams.get("plotID");
     const plotStatus = searchParams.get("plotStatus");
@@ -25,7 +26,7 @@ const CreateFormPanel = () => {
 
     const onSubmitFormHandler = async() => {
         if (formPanelFor === "clients") {
-            createClient(createFormData as CreateClientBodyTypes);
+            createClient(createFormData as CreateClientBodyTypes, navigate, `single-plot?plotID=${plotID}`);
         }
         else if (formPanelFor === "plots") {
             //console.log(createFormData);
@@ -36,7 +37,7 @@ const CreateFormPanel = () => {
             plotStatus === "vacant"?
                 assignPlotToClient(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes)
                 :
-                createSlip(createFormData as CreateSlipBodyTypes);
+                createSlip(createFormData as CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`);
         }
         else if (formPanelFor === "sites") {
             createSite(createFormData as CreateSiteBodyTypes);

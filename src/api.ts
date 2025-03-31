@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import { ApiResponseTypes, ClientTypes, CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, FetchAPIHandlerArgTypes, PlotTypes, SiteTypes, SlipTypes, UpdatePlotBodyTypes, UpdateSiteBodyTypes, UpdateSlipBodyTypes, UserTypes } from "./utils/types";
 import { RegisterFormData } from "./pages/Register";
 import { LoginFormData } from "./pages/Login";
+import { NavigateFunction } from "react-router-dom";
 
 export const fetchAPIHandler = async<T>({
     apiName, endpoint, isFormDataType, method, credentials, body
@@ -147,6 +148,12 @@ export const register = async(formData:RegisterFormData) => {
         body:JSON.stringify(formData)
     });
 
+    if (data.success) {
+        setTimeout(() => {
+            window.location.href = "/home";
+        }, 2500);
+    }
+
     return data;
 };
 export const login = async(formData:LoginFormData) => {
@@ -158,6 +165,12 @@ export const login = async(formData:LoginFormData) => {
         body:JSON.stringify(formData)
     });
 
+    if (data.success) {
+        setTimeout(() => {
+            window.location.href = "/home";
+        }, 2500);
+    }
+
     return data;
 };
 export const logout = async() => {
@@ -166,6 +179,10 @@ export const logout = async() => {
         endpoint:"/user/logout",
         method:"POST"
     });
+
+    if (data.success) {
+        window.location.href = "/home";
+    }
 
     return data;
 };
@@ -201,7 +218,7 @@ export const findSingleClientAllSlips = async(clientID:string) => {
 
     return data;
 };
-export const createClient = async(formData:CreateClientBodyTypes) => {
+export const createClient = async(formData:CreateClientBodyTypes, navigate:NavigateFunction, url:string) => {
     const data = await fetchAPIHandler<ClientTypes>({
         apiName:"createClient",
         endpoint:"/client/create",
@@ -209,6 +226,10 @@ export const createClient = async(formData:CreateClientBodyTypes) => {
         method:"POST",
         body:JSON.stringify(formData)
     });
+
+    if (data.success) {
+        navigate(url);
+    }
 
     return data;
 };
@@ -279,6 +300,10 @@ export const assignPlotToClient = async(formData:CreatePlotBodyTypes&CreateClien
         body:JSON.stringify(formData)
     });
 
+    if (data.success) {
+        window.location.href = "/single-plot";
+    }
+
     return data;
 };
 export const detachClientFromPlot = async(formData:{plotID:string}) => {
@@ -290,6 +315,10 @@ export const detachClientFromPlot = async(formData:{plotID:string}) => {
         body:JSON.stringify(formData)
     });
 
+    if (data.success) {
+        window.location.href = "/single-plot";
+    }
+
     return data;
 };
 export const updatePlot = async(formData:UpdatePlotBodyTypes) => {
@@ -300,6 +329,10 @@ export const updatePlot = async(formData:UpdatePlotBodyTypes) => {
         method:"PUT",
         body:JSON.stringify(formData)
     });
+
+    if (data.success) {
+        window.location.href = "/single-plot";
+    }
 
     return data;
 };
@@ -346,7 +379,7 @@ export const findSingleSlip = async(slipID:string) => {
 
     return data;
 };
-export const createSlip = async(formData:CreateSlipBodyTypes) => {
+export const createSlip = async(formData:CreateSlipBodyTypes, navigate:NavigateFunction, url:string) => {
     const data = await fetchAPIHandler<SlipTypes>({
         apiName:"createSlip",
         endpoint:"/slip/create",
@@ -354,6 +387,13 @@ export const createSlip = async(formData:CreateSlipBodyTypes) => {
         method:"POST",
         body:JSON.stringify(formData)
     });
+
+    if (data.success) {
+        setTimeout(() => {
+            //window.location.href = `/single-plot?plotID=${formData.plotID}`;
+            navigate(url);
+        }, 2500);
+    }
 
     return data;
 };

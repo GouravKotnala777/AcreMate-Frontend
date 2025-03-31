@@ -465,7 +465,7 @@ export const SinglePlot = () => {
         setNodeValue({lowest:lowestNum, highest:highestNum});
         
         y_interval = Math.ceil((highestNum-lowestNum)/(allSlipsData.length*2));
-        
+        setYRange([]);
         for(let i=0; i<=allSlipsData.length*2; i++){
             y_range.push(lowestNum+(y_interval*(i)));
             setYRange((prev) => [...prev, lowestNum+(y_interval*(i))]);
@@ -614,10 +614,12 @@ export const SinglePlot = () => {
         ctx.moveTo(tooltip.x, 0);
         ctx.lineTo(tooltip.x, 300);
         ctx.stroke();
-    }, [singlePlotData, allSlipsData, nodeValue, tooltip]);
+    }, [allSlipsData, tooltip]);
 
 
     const gg = () => {
+        console.log(yRange);
+        console.log(nodeValue);        
         console.log(allSlipsData);
         console.log(tooltipCollection);
     }
@@ -687,7 +689,7 @@ export const SinglePlot = () => {
             {/*<button onClick={assignPlotHandler}>Assign plot</button>*/}
             {/*<pre>{JSON.stringify(nodeValue, null, `\t`)}</pre>*/}
             <button onClick={resetPlotAssignmentHandler}>Reset Plot Assignment</button>
-            <button onClick={payEMIHandler}>Pay EMI</button>
+            <button onClick={payEMIHandler}>{singlePlotData?.plotStatus === "vacant"?"Sell To Client":"Pay EMI"}</button>
 
             <button onClick={gg}>EMIs</button>
 
