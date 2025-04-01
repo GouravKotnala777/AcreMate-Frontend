@@ -19,6 +19,7 @@ const Header = () => {
     const [isDropDownActive, setIsDropDownActive] = useState<boolean>(false);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isHamActive, setIsHamActive] = useState<boolean>(false);
     const [isSearchInpFocused, setIsSearchInpFocused] = useState<boolean>(false);
     const [suggesstions, setSuggesstions] = useState<{
             allClientsOfName:ClientTypes[];
@@ -266,9 +267,8 @@ const Header = () => {
                 }}
             ></div>
             <nav className="nav">
-                <NavigateItem Icon={BsPerson} text={"Agents" as "agents"} url="/pendings" />
                 <div className="nav_item_dropdown">
-                    <div className="heading"
+                    <div className="nav_heading"
                         onMouseOver={() => {
                             focusHandler();
                             setIsDropDownActive(true);
@@ -290,10 +290,39 @@ const Header = () => {
                         <button className="link">option4</button>
                     </div>
                 </div>
-                <NavigateItem Icon={BsPerson} text={"Agents" as "agents"} url="/agents" />
-                <NavigateItem Icon={GiSlipknot} text={"Slips" as "slips"} url="/slips"/>
-                <NavigateItem Icon={BiRegistered} text={"Login" as "login"} url="/login"/>
+                <div className="nav_item_blocks">
+                    <NavigateItem Icon={BsPerson} text={"Agents" as "agents"} url="/agents" />
+                    <NavigateItem Icon={GiSlipknot} text={"Slips" as "slips"} url="/slips"/>
+                    <NavigateItem Icon={BiRegistered} text={"Login" as "login"} url="/login"/>
+                </div>
             </nav>
+            <div className="ham_nav_cont">
+                <button className="ham_toggler" onClick={() => setIsHamActive(!isHamActive)}>Ham</button>
+                <div className="ham_nav_side_panel_closer"
+                    onClick={() => setIsHamActive(false)}
+                    style={{
+                        left:isHamActive?"0":"-100vw"
+                    }}
+                >
+                    <div className="ham_nav_side_panel">
+                        <div className="ham_nav_items">
+                            <NavLink to="/home" className="ham_nav_item">
+                                Home
+                            </NavLink>
+                            <NavLink to="/register" className="ham_nav_item">
+                                Register
+                            </NavLink>
+                            <NavLink to="/login" className="ham_nav_item">
+                                Login
+                            </NavLink>
+                            <NavLink to="/logout" className="ham_nav_item">
+                                Logout
+                            </NavLink>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </header>
         </>
     )

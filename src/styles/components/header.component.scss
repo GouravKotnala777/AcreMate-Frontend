@@ -4,11 +4,10 @@
     //border: 2px solid red;
     display: flex;
     justify-content: space-between;
-    padding: 5px;
+    //padding: 2px 5px;
     border-radius: 8px;
     align-items: center;
     //background-color: white;
-    background: linear-gradient(45deg, white 80%, $primaryLight 0%);
     //z-index: 99;
     .logo{
         //border: 2px solid violet;
@@ -159,12 +158,13 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        justify-content: space-between;
         .nav_item_dropdown{
             //border: 2px solid red;
             color: $fontPrimary;
             position: relative;
-            width: 130px;
-            .heading{
+            width: 60px;
+            .nav_heading{
                 //border: 2px solid violet;
                 font-size: 0.8rem;
                 display: flex;
@@ -198,6 +198,63 @@
                     background-color: white;
                     &:hover{
                         background-color: $primaryLight;
+                    }
+                }
+            }
+        }
+        .nav_item_blocks{
+            width: 270px;
+            //border: 2px solid green;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(125deg, white 10%, $primaryLight 0%);
+            border-radius: 0 6px 6px 0;
+            //background: red;
+            padding: 5px;
+        }
+    }
+    .ham_nav_cont{
+        //border: 2px solid red;
+        display: none;
+        z-index: 3;
+        .ham_toggler{
+            //border: 2px solid indigo;
+        }
+        .ham_nav_side_panel_closer{
+            //border: 2px solid blue;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            transition: 0.4s;
+            background: rgba(0,0,0,0.6);
+            .ham_nav_side_panel{
+                //border: 2px solid violet;
+                width: 70%;
+                height: 100%;
+                background: white;
+                border-radius: 0 10px 10px 0;
+                //position: fixed;
+                //top: 0;
+                //left: 0;
+                //width: 50vw;
+                //height: 100vh;
+                //transition: 0.4s;
+                .ham_nav_items{
+                    //border: 2px solid green;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 30px;
+                    padding: 30px 10px;
+                    .ham_nav_item{
+                        //border: 2px solid yellow;
+                        color: $fontPrimary;
+                        text-decoration: none;
                     }
                 }
             }
@@ -335,5 +392,58 @@
     100%{
         top: 15px;
         opacity:0;
+    }
+}
+
+
+
+@media screen and (width <= 850px) {
+    .header_cont{
+        .nav{
+            //border: 2px solid red;
+            .nav_item_dropdown{
+                .nav_heading{
+                    //border: 2px solid violet;
+                    font-size: 0.7rem;
+                }
+                .dropdown_list{
+                    .link{
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (width <= 750px) {
+    .header_cont{
+        .nav{
+            //border: 2px solid green;
+            display: none;
+            .nav_item_dropdown{
+                .nav_heading{
+                    //border: 2px solid violet;
+                    font-size: 0.7rem;
+                }
+                .dropdown_list{
+                    .link{
+                    }
+                }
+            }
+        }
+        .ham_nav_cont{
+            //border: 2px solid red;
+            display: block;
+            .ham_toggler{
+                //border: 2px solid indigo;
+            }
+            .ham_nav_side_panel_closer{
+                .ham_nav_side_panel{
+                    .ham_nav_items{
+                        .ham_nav_item{
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@
 .navigate_item_cont{
     //border: 2px solid red;
     display: flex;
-    padding: 5px;
+    padding: 5px 7px;
     width: max-content;
     border-radius: 6px;
     justify-content: space-between;
@@ -15,7 +15,7 @@
     .icon{
         //border: 2px solid green;
         //align-content: center;
-        height: 25px;
+        //height: 25px;
     }
     .text{
         //border: 2px solid green;
@@ -221,5 +221,21 @@ select{
     }
     100%{
         opacity: 1;
+    }
+}
+
+@media screen and (width <= 850px) {
+    .navigate_item_cont{
+        //border: 2px solid red;
+        //padding: 5px 7px;
+        font-size: 0.7rem;
+        .icon{
+            //border: 2px solid green;
+            //align-content: center;
+            //height: 25px;
+        }
+        .text{
+            //border: 2px solid green;
+        }
     }
 }
