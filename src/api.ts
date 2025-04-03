@@ -246,10 +246,10 @@ export const cancelClient = async(clientID:string) => {
 };
 
 // Plot related apis
-export const findAllPlots = async() => {
+export const findAllPlots = async(siteName:string) => {
     const data = await fetchAPIHandler<PlotTypes[]>({
         apiName:"findAllPlots",
-        endpoint:"/plot/all-plots",
+        endpoint:`/plot/all-plots?siteName=${siteName}`,
         credentials:true,
         method:"GET"
     });
