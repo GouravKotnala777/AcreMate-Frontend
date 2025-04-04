@@ -1,8 +1,51 @@
-
+@import "../utils.scss";
 
 
 .sites_bg{
-    border: 2px solid rgb(13, 255, 0);
+    //border: 2px solid rgb(13, 255, 0);
     height: 100%;
-    overflow-y: scroll;
+    //overflow-y: scroll;
+    .slips_cont{
+        //border: 2px solid red;
+        padding: 10px 2px;
+        overflow-y: auto;
+        .slip_cont{
+            //border: 2px solid blue;
+            font-size: 0.65rem;
+            display: grid;
+            grid-template-columns: 16.66% 16.66% 10.66% 10.66% 22.66% 22.66%;
+            grid-template-rows: 40px;
+            margin-top: 10px;
+            place-items: center;
+            //border: 1px solid $primaryDark;
+            border-radius: 4px;
+            background-color: white;
+            color: #313131;
+            box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+            min-width: 1000px;
+            .slip_info_heading{
+                //border: 2px solid green;
+                font-weight: 500;
+            }
+            .slip_info{
+                //border: 2px solid green;
+            }
+            .send_sms{
+                //border: 2px solid blue;
+                .send_sms_btn{
+                    //border: 2px solid green;
+                    border-radius: 4px;
+                    //padding: 3px;
+                    width: 30px;
+                    height: 30px;
+                    background-color: $primaryLight;
+                    border: none;
+                    cursor: pointer;
+                    &:hover{
+                        background-color: $primaryDark;
+                    }
+                }
+            }
+        }
+    }
 }
