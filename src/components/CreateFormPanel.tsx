@@ -40,7 +40,11 @@ const CreateFormPanel = () => {
                 createSlip(createFormData as CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`);
         }
         else if (formPanelFor === "sites") {
-            createSite(createFormData as CreateSiteBodyTypes);
+            const createdSite = await createSite(createFormData as CreateSiteBodyTypes);
+
+            if (createdSite.success) {
+                navigate(`/single-site?siteID=${createdSite.jsonData._id}&totalSize=${createdSite.jsonData.totalSize}`);
+            }
         }
         else{
             console.log("formPanelFor NAHI MIL RAHA HAI line-no.32");
