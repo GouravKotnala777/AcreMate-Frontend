@@ -284,8 +284,8 @@ const Header = () => {
                     <div className="dropdown_list" tabIndex={1} style={{
                         transform:isDropDownActive?`scale(1, 1)`:`scale(1, 0)`
                     }}>
-                        <button className="link" onClick={() => {navigate(`/create?plotID=""&plotStatus=""&formPanelFor=sites`); blurHandler();}}>create site</button>
-                        <button className="link">option2</button>
+                        <button className="link" onClick={() => {navigate(`/sites`); blurHandler();}}>All Sites</button>
+                        <button className="link" onClick={() => {navigate(`/create?plotID=""&plotStatus=""&formPanelFor=sites`); blurHandler();}}>Create Site</button>
                         <button className="link">option3</button>
                         <button className="link">option4</button>
                     </div>
@@ -308,6 +308,12 @@ const Header = () => {
                         <div className="ham_nav_items">
                             <NavLink to="/home" className="ham_nav_item">
                                 Home
+                            </NavLink>
+                            <NavLink to="/sites" className="ham_nav_item">
+                                All Sites
+                            </NavLink>
+                            <NavLink to="/create?plotID=''&plotStatus=''&formPanelFor=sites" className="ham_nav_item">
+                                Create Site
                             </NavLink>
                             <NavLink to="/register" className="ham_nav_item">
                                 Register
