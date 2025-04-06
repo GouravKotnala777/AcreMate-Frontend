@@ -43,7 +43,7 @@ const CreateFormPanel = () => {
             const createdSite = await createSite(createFormData as CreateSiteBodyTypes);
 
             if (createdSite.success) {
-                navigate(`/single-site?siteID=${createdSite.jsonData._id}&totalSize=${createdSite.jsonData.totalSize}`);
+                navigate(`/single-site?siteID=${createdSite.jsonData._id}`);
             }
         }
         else{
