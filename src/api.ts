@@ -101,7 +101,7 @@ export const findAllAgents = async() => {
     return data;
 };
 export const agentsAndSoldArea = async() => {
-    const data = await fetchAPIHandler<(PlotTypes&{agentName:string; soldArea:number;})[]>({
+    const data = await fetchAPIHandler<(PlotTypes&{agentName:string; soldArea:number; pending:number;})[]>({
         apiName:"agentsAndSoldArea",
         endpoint:"/user/sold-area",
         credentials:true,
@@ -291,7 +291,7 @@ export const createPlots = async(formData:CreatePlotBodyTypes&CreateClientBodyTy
 
     return data;
 };
-export const assignPlotToClient = async(formData:CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes) => {
+export const assignPlotToClient = async(formData:CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes, navigate:NavigateFunction, url:string) => {
     const data = await fetchAPIHandler<PlotTypes>({
         apiName:"assignPlotToClient",
         endpoint:"/plot/assign",
@@ -301,8 +301,15 @@ export const assignPlotToClient = async(formData:CreatePlotBodyTypes&CreateClien
     });
 
     if (data.success) {
-        window.location.href = "/single-plot";
+        setTimeout(() => {
+            //window.location.href = `/single-plot?plotID=${formData.plotID}`;
+            navigate(url);
+        }, 2500);
     }
+
+    //if (data.success) {
+    //    window.location.href = "/single-plot";
+    //}
 
     return data;
 };

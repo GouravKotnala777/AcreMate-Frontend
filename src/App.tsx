@@ -11,10 +11,11 @@ import Register from "./pages/Register.tsx";
 //import { useState } from "react";
 //import { RoutesTypes } from "./types.ts";
 import MyProfile from "./pages/MyProfile.tsx";
-import { SinglePlot, SingleSite } from "./pages/SingleItemPage.tsx";
+import { SinglePlot } from "./pages/SingleItemPage.tsx";
 import Agents from "./pages/Agents.tsx";
 import Header from "./components/Header.tsx";
 import CreateFormPanel from "./components/CreateFormPanel.tsx";
+import SingleSite from "./pages/SingleSite.tsx";
 
 
 function App() {

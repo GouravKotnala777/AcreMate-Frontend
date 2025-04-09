@@ -35,7 +35,7 @@ const CreateFormPanel = () => {
         else if (formPanelFor === "slips") {
             //console.log(createFormData);
             plotStatus === "vacant"?
-                assignPlotToClient(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes)
+                assignPlotToClient(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`)
                 :
                 createSlip(createFormData as CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`);
         }
@@ -43,7 +43,9 @@ const CreateFormPanel = () => {
             const createdSite = await createSite(createFormData as CreateSiteBodyTypes);
 
             if (createdSite.success) {
-                navigate(`/single-site?siteID=${createdSite.jsonData._id}`);
+                //navigate(`/single-site?siteID=${createdSite.jsonData._id}`);
+                //navigate("/create?formPanelFor=plots");
+                window.location.href = "/create?formPanelFor=plots";
             }
         }
         else{
