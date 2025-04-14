@@ -1,0 +1,79 @@
+@import "../utils.scss";
+
+.list_cont{
+    //border: 2px solid red;
+    padding: 10px 2px;
+    overflow-y: auto;
+    .list_item{
+        //border: 2px solid blue;
+        font-size: 0.65rem;
+        display: grid;
+        //grid-template-columns: 7% 7% 9% 7% 13% 7% 10% 11% 6% 13% 5% 5%;
+        grid-template-rows: 40px;
+        margin-top: 10px;
+        place-items: center;
+        //border: 1px solid $primaryDark;
+        border-radius: 4px;
+        background-color: white;
+        color: #313131;
+        box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+        min-width: 1000px;
+        position: relative;
+        //height: max-content;
+        .slip_info_heading{
+            //border: 2px solid green;
+            font-weight: 500;
+        }
+        .slip_info{
+            //border: 2px solid green;
+        }
+        .send_sms{
+            //border: 2px solid blue;
+            .send_sms_btn{
+                //border: 2px solid green;
+                border-radius: 4px;
+                //padding: 3px;
+                width: 30px;
+                height: 30px;
+                background-color: $primaryLight;
+                border: none;
+                cursor: pointer;
+                &:hover{
+                    background-color: $primaryDark;
+                }
+            }
+        }
+        .remark_toggler{
+            //border: 2px solid red;
+            background-color: transparent;
+            color: $fontPrimary;
+            border: none;
+            cursor: pointer;
+            .BiDownArrow{
+                transition: 0.3s;
+            }
+            position: absolute;
+            top: 40%;
+            left: 0;
+        }
+        .remark_section{
+            //border: 1px solid red;
+            font-size: 0.6rem;
+            //display: grid;
+            //grid-template-rows: 40px;
+            //place-items: center;
+            border-radius: 0 0 4px 4px;
+            background-color: white;
+            color: $fontPrimary;
+            box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+            min-width: 1000px;
+            background-color: $bgColor;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: 0.3s;
+            transform-origin: top;
+            grid-column: 1/-1;
+
+        }
+    }
+}
