@@ -3,12 +3,13 @@ import { findAllPlots } from "../api";
 import { PlotTypes } from "../utils/types";
 import Table from "../shared/Table";
 
+// I HAVE TO DELETE THIS WHOLE PAGE IT IS NOT IN USE
 
 const Plots = () => {
     const [allPlotsData, setAllPlotsData] = useState<PlotTypes[]>([]);
 
     useEffect(() => {
-        findAllPlots()
+        findAllPlots("plotID") // wrote only to remove error, we will delete this whole page
         .then((data) => {
             setAllPlotsData(data.jsonData);
         })

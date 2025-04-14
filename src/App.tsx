@@ -3,7 +3,6 @@ import Home from "./pages/Home.tsx";
 //import Header from "./components/Header.tsx";
 import { Toaster } from "react-hot-toast";
 import Clients from "./pages/Clients.tsx";
-import Plots from "./pages/Plots.tsx";
 import Slips from "./pages/Slips.tsx";
 import Sites from "./pages/Sites.tsx";
 import Login from "./pages/Login.tsx";
@@ -34,7 +33,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/clients" element={<Clients />} />
           <Route path="/agents" element={<Agents />} />
-          <Route path="/plots" element={<Plots />} />
+          {/*<Route path="/plots" element={<Plots />} />*/}
           <Route path="/slips" element={<Slips />} />
           <Route path="/sites" element={<Sites />} />
           <Route path="/login" element={<Login />} />
