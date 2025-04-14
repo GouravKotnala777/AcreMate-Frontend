@@ -33,6 +33,7 @@ export type CreateClientBodyTypes = Pick<ClientTypes, "serialNumber"|"name"|"gua
 
 // Plot related types
 export interface PlotTypes{
+    [key:string]:unknown;
     _id:string;
     plotNo:number;
     size:number;
