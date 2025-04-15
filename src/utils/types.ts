@@ -57,6 +57,7 @@ export type UpdatePlotBodyTypes = Partial<Pick<PlotTypes, "plotNo"|"size"|"rate"
 
 //Slip related types
 export interface SlipTypes{
+    [key:string]:unknown;
     _id:string;
     slipType:"downpay"|"token"|"emi";
     slipNo:number;
@@ -82,6 +83,7 @@ export interface PlotBeltTypes {
     baseSize:number;
 }
 export interface SiteTypes{
+    [key:string]:unknown;
     _id:string;
     siteName:string;
     totalSize:number;
