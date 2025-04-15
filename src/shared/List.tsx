@@ -29,7 +29,7 @@ const List = <T extends {[key:string]:unknown}>({headings, data, hasRemark}:List
     const flattenObject = (obj:T, ParentKey:string="", result:FlattenObjectType={}) => {
         for(const key in obj){
             if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
-            if (key === "_id") continue;
+            //if (key === "_id") continue;
 
             const newKey = ParentKey ? `${key}` : key;
             const value = obj[key];
@@ -66,7 +66,7 @@ const List = <T extends {[key:string]:unknown}>({headings, data, hasRemark}:List
                                 <button className="send_sms_btn" onClick={onClickButton}>{fieldName}</button>
                             </div>
                             :
-                            !transformedObj[fieldName] ? 
+                            (transformedObj[fieldName] === undefined || transformedObj[fieldName] === null || transformedObj[fieldName] === "") ? 
                                 <p>"nothing ok"</p>
                                 :
                                 isDate ? 
