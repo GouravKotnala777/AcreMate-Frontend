@@ -5,6 +5,7 @@ import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../
 import { KeyValuePairs } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
+import List from "../shared/List";
 
 
 const SingleSite = () => {
@@ -64,6 +65,14 @@ const SingleSite = () => {
         base_size.value = "";
         setUpdateRowFormData({...updateRowFormData, baseSize:0, lastPlotNo:0, noOfPlots:0});
     }
+
+    const navigateToSinglePageHandler = (plotID:string) => {
+        navigate(`/single-plot?plotID=${plotID}`);
+    };
+
+    const navigateToAddPlotPageHandler = () => {
+        navigate(`/create?formPanelFor=plots`);
+    };
 
 
     useEffect(() => {
@@ -255,36 +264,18 @@ const SingleSite = () => {
                 }
             </div>
 
-            <div className="slips_cont">
-                <div className="slip_cont" style={{
-                    backgroundColor:PRIMARY_LIGHT
-                }}>
-                    <div className="slip_no slip_info slip_info_heading">ID</div>
-                    <div className="name slip_info slip_info_heading">Plot No.</div>
-                    <div className="s/o slip_info slip_info_heading">Size</div>
-                    <div className="plot_no slip_info slip_info_heading">Rate</div>
-                    <div className="plot_no slip_info slip_info_heading">Status</div>
-                    <div className="plot_no slip_info slip_info_heading">View</div>
-                    <div className="plot_no slip_info slip_info_heading">Patoni</div>
-                </div>
-                {
-                    data.map((plt) => (
-                        <div className="slip_cont" key={plt._id}>
-                            <div className="slip_no slip_info">{plt._id}</div>
-                            <div className="slip_no slip_info">{plt.plotNo}</div>
-                            <div className="slip_no slip_info">{plt.size}</div>
-                            <div className="slip_no slip_info">{plt.rate}</div>
-                            <div className="slip_no slip_info">{plt.plotStatus}</div>
-                            <div className="send_sms slip_info slip_info_heading">
-                                <button className="send_sms_btn" onClick={() => navigate(`/single-plot?plotID=${plt._id}`)}>S</button>
-                            </div>
-                            <div className="send_sms slip_info slip_info_heading">
-                                <button className="send_sms_btn" onClick={() => navigate("/create?formPanelFor=plots")}>Add Plots</button>
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
+            <List
+                data={data}
+                headings={[
+                    {columnWidth:"20%", fieldHeading:"ID", fieldName:"_id"},
+                    {columnWidth:"12%", fieldHeading:"Plot No.", fieldName:"plotNo"},
+                    {columnWidth:"12%", fieldHeading:"Size", fieldName:"size"},
+                    {columnWidth:"12%", fieldHeading:"Rate", fieldName:"rate"},
+                    {columnWidth:"12%", fieldHeading:"Status", fieldName:"plotStatus", style:{fontWeight:"700"}},
+                    {columnWidth:"12%", fieldHeading:"Info", fieldName:"info", isButton:true, infoNavigationHandler:navigateToSinglePageHandler},
+                    {columnWidth:"20%", fieldHeading:"Add Plots", fieldName:"add", isButton:true, onClickButton:navigateToAddPlotPageHandler},
+                ]}
+            />
         </>
     )
 };

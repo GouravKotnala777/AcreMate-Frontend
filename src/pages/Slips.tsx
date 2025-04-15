@@ -4,6 +4,7 @@ import { findSlipsWithSlipNoRange } from "../api";
 import { SlipTypes } from "../utils/types";
 import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
+import List from "../shared/List";
 
 const recentSlip = 731;
 const limit = 5;
@@ -78,38 +79,21 @@ const Slips = () => {
 
     return(
         <div className="slips_bg">
-            <div className="slips_cont">
-                <div className="slip_cont" style={{
-                    backgroundColor:PRIMARY_LIGHT
-                }}>
-                    <div className="slip_no slip_info slip_info_heading">Slip No.</div>
-                    <div className="status slip_info slip_info_heading">Type</div>
-                    <div className="name slip_info slip_info_heading">Name</div>
-                    <div className="s/o slip_info slip_info_heading">Guardian</div>
-                    <div className="mobile slip_info slip_info_heading">Mobile</div>
-                    <div className="plot_no slip_info slip_info_heading">Plot No.</div>
-                    <div className="site slip_info slip_info_heading">Site</div>
-                    <div className="amount slip_info slip_info_heading">Amount</div>
-                    <div className="mode_of_pay slip_info slip_info_heading">Mode</div>
-                    <div className="id slip_info slip_info_heading">Transaction No.</div>
-                </div>
-                {
-                    slips.map((slip) => (
-                        <div className="slip_cont">
-                            <div className="slip_no slip_info">{slip.slipNo}</div>
-                            <div className="status slip_info">{slip.slipType}</div>
-                            <div className="name slip_info">{slip.clientID.name}</div>
-                            <div className="s/o slip_info">{slip.clientID.guardian}</div>
-                            <div className="mobile slip_info">{slip.clientID.mobile}</div>
-                            <div className="plot_no slip_info">{slip.plotID.plotNo}</div>
-                            <div className="site slip_info">{slip.plotID.site}</div>
-                            <div className="amount slip_info">{slip.amount}</div>
-                            <div className="mode_of_pay slip_info">{slip.modeOfPayment}</div>
-                            <div className="id slip_info">122321</div>
-                        </div>
-                    ))
-                }
-            </div>
+            <List 
+                headings={[
+                    {columnWidth:"10%", fieldHeading:"Slip No.", fieldName:"slipNo"},
+                    {columnWidth:"10%", fieldHeading:"Type", fieldName:"slipType"},
+                    {columnWidth:"10%", fieldHeading:"Name", fieldName:"name"},
+                    {columnWidth:"10%", fieldHeading:"Guardian", fieldName:"guardian"},
+                    {columnWidth:"10%", fieldHeading:"Mobile", fieldName:"mobile"},
+                    {columnWidth:"10%", fieldHeading:"Plot No.", fieldName:"plotNo"},
+                    {columnWidth:"10%", fieldHeading:"Site", fieldName:"site"},
+                    {columnWidth:"10%", fieldHeading:"Amount", fieldName:"amount"},
+                    {columnWidth:"10%", fieldHeading:"Mode", fieldName:"modeOfPayment"},
+                    {columnWidth:"10%", fieldHeading:"Transaction No.", fieldName:"paymentID"},
+                ]}
+                data={slips}
+            />
             <div className="slip_selectors_cont">
                 <button className="slip_selector_cont" onClick={() => setSlipNoRange({fromSlipNo:Number(currentPage+"01"), toSlipNo:Number(currentPage+"20")})}>
                     <div className="to_value">{currentPage}01</div>
