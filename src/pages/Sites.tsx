@@ -3,7 +3,10 @@ import { findAllSites } from "../api";
 import { SiteTypes } from "../utils/types";
 import { useNavigate } from "react-router-dom";
 import "../styles/pages/sites.scss";
-import List from "../shared/List";
+import ListHeading from "../components/ListHeading";
+import ListItem from "../components/ListItem";
+import { BsInfo } from "react-icons/bs";
+import { CgAdd } from "react-icons/cg";
 
 
 const Sites = () => {
@@ -35,17 +38,39 @@ const Sites = () => {
 
             <button onClick={() => navigate("/create?formPanelFor=sites")}>Create Site</button>
 
-            <List
-                headings={[
-                    {columnWidth:"17%", fieldHeading:"ID", fieldName:"_id"},
-                    {columnWidth:"15%", fieldHeading:"Site Name", fieldName:"siteName"},
-                    {columnWidth:"17%", fieldHeading:"Total Size", fieldName:"totalSize"},
-                    {columnWidth:"17%", fieldHeading:"Sold Area", fieldName:"soldArea"},
-                    {columnWidth:"17%", fieldHeading:"Info", fieldName:"info", infoNavigationHandler:navigateToSinglePageHandler, isButton:true},
-                    {columnWidth:"17%", fieldHeading:"Add Plots", fieldName:"add", onClickButton:navigateToAddPlotsHandler, isButton:true}
+            <ListHeading
+                headingRow={[
+                    {itemValue:"ID", itemWidth:"16%"},
+                    {itemValue:"Site Name", itemWidth:"16%"},
+                    {itemValue:"Total Size", itemWidth:"16%"},
+                    {itemValue:"Sold Area", itemWidth:"16%"},
+                    {itemValue:"Info", itemWidth:"16%"},
+                    {itemValue:"Add Plots", itemWidth:"16%"}
                 ]}
-                data={allSites}
             />
+
+            {
+                allSites.map((st) => (
+                    <ListItem
+                        cellWidth={[
+                            "16%",
+                            "16%",
+                            "16%",
+                            "16%",
+                            "16%",
+                            "16%"
+                        ]}
+                        row={[
+                            {itemValue:st._id},
+                            {itemValue:st.siteName},
+                            {itemValue:st.totalSize},
+                            {itemValue:st.soldArea},
+                            {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(st._id)},
+                            {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotsHandler()},
+                        ]}
+                    />
+                ))
+            }
         </div>
     )
 };

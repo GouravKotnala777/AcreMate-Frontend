@@ -4,7 +4,8 @@ import { findSlipsWithSlipNoRange } from "../api";
 import { SlipTypes } from "../utils/types";
 import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
-import List from "../shared/List";
+import ListHeading from "../components/ListHeading";
+import ListItem from "../components/ListItem";
 
 const recentSlip = 731;
 const limit = 5;
@@ -79,21 +80,53 @@ const Slips = () => {
 
     return(
         <div className="slips_bg">
-            <List 
-                headings={[
-                    {columnWidth:"10%", fieldHeading:"Slip No.", fieldName:"slipNo"},
-                    {columnWidth:"10%", fieldHeading:"Type", fieldName:"slipType"},
-                    {columnWidth:"10%", fieldHeading:"Name", fieldName:"name"},
-                    {columnWidth:"10%", fieldHeading:"Guardian", fieldName:"guardian"},
-                    {columnWidth:"10%", fieldHeading:"Mobile", fieldName:"mobile"},
-                    {columnWidth:"10%", fieldHeading:"Plot No.", fieldName:"plotNo"},
-                    {columnWidth:"10%", fieldHeading:"Site", fieldName:"site"},
-                    {columnWidth:"10%", fieldHeading:"Amount", fieldName:"amount"},
-                    {columnWidth:"10%", fieldHeading:"Mode", fieldName:"modeOfPayment"},
-                    {columnWidth:"10%", fieldHeading:"Transaction No.", fieldName:"paymentID"},
+
+            <ListHeading
+                headingRow={[
+                    {itemValue:"Date", itemWidth:"10%"},
+                    {itemValue:"Slip No.", itemWidth:"10%"},
+                    {itemValue:"Type", itemWidth:"10%"},
+                    {itemValue:"Name", itemWidth:"10%"},
+                    {itemValue:"Guardian", itemWidth:"10%"},
+                    {itemValue:"Mobile", itemWidth:"10%"},
+                    {itemValue:"Plot No.", itemWidth:"10%"},
+                    {itemValue:"Amount", itemWidth:"10%"},
+                    {itemValue:"Mode", itemWidth:"10%"},
+                    {itemValue:"Transaction No.", itemWidth:"10%"},
                 ]}
-                data={slips}
             />
+
+            {
+                slips.map((slp) => (
+
+                    <ListItem
+                        cellWidth={[
+                            "10%",
+                            "10%",
+                            "10%",
+                            "10%",
+                            "10%",
+                            "10%",
+                            "10%",
+                            "10%",
+                            "10%",
+                            "10%"
+                        ]}
+                        row={[
+                            {itemValue:slp.createdAt, isDate:true},
+                            {itemValue:slp.slipNo},
+                            {itemValue:slp.slipType},
+                            {itemValue:slp.clientID.name},
+                            {itemValue:slp.clientID.guardian},
+                            {itemValue:slp.clientID.mobile},
+                            {itemValue:slp.plotID.plotNo},
+                            {itemValue:slp.amount},
+                            {itemValue:slp.modeOfPayment},
+                            {itemValue:slp.paymentID},
+                        ]}
+                    />
+                ))
+            }
             <div className="slip_selectors_cont">
                 <button className="slip_selector_cont" onClick={() => setSlipNoRange({fromSlipNo:Number(currentPage+"01"), toSlipNo:Number(currentPage+"20")})}>
                     <div className="to_value">{currentPage}01</div>

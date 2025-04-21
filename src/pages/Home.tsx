@@ -1,10 +1,12 @@
 import "../styles/pages/home.scss";
 import { useEffect, useRef, useState } from "react";
 import { PlotTypes } from "../utils/types";
-import { findPendingClients } from "../api";
+import { findPendingClients, sendMessageToClient } from "../api";
 import { useNavigate } from "react-router-dom";
-import List from "../shared/List";
-
+import ListItem from "../components/ListItem";
+import { BsInfo } from "react-icons/bs";
+import { IoCall } from "react-icons/io5";
+import ListHeading from "../components/ListHeading";
 
 
 const Home = () => {
@@ -32,6 +34,10 @@ const Home = () => {
         navigate(`/single-plot?plotID=${plotID}`);
     };
 
+    const sendMessageToClientHandler = (to:string, message:string) => {
+        sendMessageToClient({to, message});
+    }
+
     useEffect(() => {
         const observer = new IntersectionObserver((enteries) => {
             if (enteries[0].isIntersecting) {
@@ -48,30 +54,66 @@ const Home = () => {
         }
     }, []);
 
+
+
     return(
         <div className="home_bg">
             <h1>Home</h1>
             <button onClick={() => findPendingClientsHandler()}>Fetch Pendings</button>
 
-            {/*<pre>{JSON.stringify(allPendingPlots, null, `\t`)}</pre>*/}
-            <List headings={[
-                    {columnWidth:"8%", fieldHeading:"Serial No.", fieldName:"serialNumber"},
-                    {columnWidth:"8%", fieldHeading:"Name", fieldName:"name"},
-                    {columnWidth:"8%", fieldHeading:"Guardian", fieldName:"guardian"},
-                    {columnWidth:"8%", fieldHeading:"Plot No.", fieldName:"plotNo"},
-                    {columnWidth:"8%", fieldHeading:"Site", fieldName:"site"},
-                    {columnWidth:"8%", fieldHeading:"Last Slip Date", fieldName:"createdAt", isDate:true},
-                    {columnWidth:"8%", fieldHeading:"Last Slip Amount", fieldName:"amount"},
-                    {columnWidth:"8%", fieldHeading:"Mobile", fieldName:"mobile"},
-                    {columnWidth:"8%", fieldHeading:"Time Covered", fieldName:"timeCovered"},
-                    {columnWidth:"8%", fieldHeading:"Pending", fieldName:"pending", style:{
-                        color:"red",
-                        fontWeight:"600"
-                    }},
-                    {columnWidth:"10%", fieldHeading:"Info", fieldName:"info", isButton:true, infoNavigationHandler:navigateToSinglePage},
-                    {columnWidth:"10%", fieldHeading:"Call", fieldName:"send", isButton:true, onClickButton(){console.log("bbbbb")}}
-                ]} data={allPendingPlots} hasRemark={true} />
+            <ListHeading
+                headingRow={[
+                    {itemValue:"Serial No.", itemWidth:"8%"},
+                    {itemValue:"Name", itemWidth:"8%"},
+                    {itemValue:"Guardian", itemWidth:"8%"},
+                    {itemValue:"Plot No.", itemWidth:"8%"},
+                    {itemValue:"Site", itemWidth:"8%"},
+                    {itemValue:"Last Slip Date", itemWidth:"8%"},
+                    {itemValue:"Last Slip Amount", itemWidth:"8%"},
+                    {itemValue:"Mobile", itemWidth:"8%"},
+                    {itemValue:"Time Covered", itemWidth:"8%"},
+                    {itemValue:"Pending", itemWidth:"8%"},
+                    {itemValue:"Info", itemWidth:"8%"},
+                    {itemValue:"Call", itemWidth:"8%"}
+                ]}
+            />
 
+            {
+                allPendingPlots.map((i) => (
+                    <ListItem
+                        cellWidth={[
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%",
+                            "8%"
+                        ]}
+                        row={[
+                            {itemValue:i.clientDetailes.serialNumber},
+                            {itemValue:i.clientDetailes.name},
+                            {itemValue:i.clientDetailes.guardian},
+                            {itemValue:i.plotNo},
+                            {itemValue:i.site},
+                            {itemValue:i.lastSlip.createdAt, isDate:true},
+                            {itemValue:i.lastSlip.amount},
+                            {itemValue:i.clientDetailes.mobile},
+                            {itemValue:i.timeCovered},
+                            {itemValue:i.pending, style:{color:"red", fontWeight:"600"}},
+                            {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePage(i._id.toString())},
+                            {itemValue:"call", isButton:true, btnIcon:IoCall, onClickHanlder:()=>sendMessageToClientHandler(i.clientDetailes.mobile, `Hello ${i.clientDetailes.name} your pending is ${i.pending}₹`)}
+                        ]}
+                    />
+                ))
+            }
+
+            {/*<pre>{JSON.stringify(allPendingPlots, null, `\t`)}</pre>*/}
             <div className="scroll_bottom" ref={scrollBottomRef}>load more...</div>
         </div>
     )
