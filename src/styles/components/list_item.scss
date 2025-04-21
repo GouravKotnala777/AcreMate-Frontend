@@ -1,0 +1,44 @@
+@import "../utils.scss";
+
+
+.list_heading_cont{
+    //border: 2px solid red;
+    font-size: 0.65rem;
+    font-weight: 500;
+    display: grid;
+    place-items: center;
+    padding:10px;
+    color: #313131;
+    box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+    min-width: 1000px;
+    background-color: $primaryLight;
+    margin-top: 10px;
+}
+.list_item_cont{
+    //border: 2px solid red;
+    display: grid;
+    place-items: center;
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background-color: white;
+    color: #313131;
+    box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+    min-width: 1000px;
+    margin-top: 10px;
+    .cell{
+        //border: 2px solid green;
+
+    }    
+    .cell_btn{
+        width: 30px;
+        height: 30px;
+        background-color: $primaryLight;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        &:hover{
+            opacity: 0.7;
+        }
+    }    
+}
