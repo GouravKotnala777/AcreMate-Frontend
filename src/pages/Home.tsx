@@ -7,6 +7,7 @@ import ListItem from "../components/ListItem";
 import { BsInfo } from "react-icons/bs";
 import { IoCall } from "react-icons/io5";
 import ListHeading from "../components/ListHeading";
+import { ScrollableContainer } from "../shared/SharedComponents";
 
 
 const Home = () => {
@@ -61,57 +62,59 @@ const Home = () => {
             <h1>Home</h1>
             <button onClick={() => findPendingClientsHandler()}>Fetch Pendings</button>
 
-            <ListHeading
-                headingRow={[
-                    {itemValue:"Serial No.", itemWidth:"8%"},
-                    {itemValue:"Name", itemWidth:"8%"},
-                    {itemValue:"Guardian", itemWidth:"8%"},
-                    {itemValue:"Plot No.", itemWidth:"8%"},
-                    {itemValue:"Site", itemWidth:"8%"},
-                    {itemValue:"Last Slip Date", itemWidth:"8%"},
-                    {itemValue:"Last Slip Amount", itemWidth:"8%"},
-                    {itemValue:"Mobile", itemWidth:"8%"},
-                    {itemValue:"Time Covered", itemWidth:"8%"},
-                    {itemValue:"Pending", itemWidth:"8%"},
-                    {itemValue:"Info", itemWidth:"8%"},
-                    {itemValue:"Call", itemWidth:"8%"}
-                ]}
-            />
+            <ScrollableContainer>
+                <ListHeading
+                    headingRow={[
+                        {itemValue:"Serial No.", itemWidth:"8%"},
+                        {itemValue:"Name", itemWidth:"8%"},
+                        {itemValue:"Guardian", itemWidth:"8%"},
+                        {itemValue:"Plot No.", itemWidth:"8%"},
+                        {itemValue:"Site", itemWidth:"8%"},
+                        {itemValue:"Last Slip Date", itemWidth:"8%"},
+                        {itemValue:"Last Slip Amount", itemWidth:"8%"},
+                        {itemValue:"Mobile", itemWidth:"8%"},
+                        {itemValue:"Time Covered", itemWidth:"8%"},
+                        {itemValue:"Pending", itemWidth:"8%"},
+                        {itemValue:"Info", itemWidth:"8%"},
+                        {itemValue:"Call", itemWidth:"8%"}
+                    ]}
+                />
 
-            {
-                allPendingPlots.map((i) => (
-                    <ListItem
-                        cellWidth={[
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%",
-                            "8%"
-                        ]}
-                        row={[
-                            {itemValue:i.clientDetailes.serialNumber},
-                            {itemValue:i.clientDetailes.name},
-                            {itemValue:i.clientDetailes.guardian},
-                            {itemValue:i.plotNo},
-                            {itemValue:i.site},
-                            {itemValue:i.lastSlip.createdAt, isDate:true},
-                            {itemValue:i.lastSlip.amount},
-                            {itemValue:i.clientDetailes.mobile},
-                            {itemValue:i.timeCovered},
-                            {itemValue:i.pending, style:{color:"red", fontWeight:"600"}},
-                            {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePage(i._id.toString())},
-                            {itemValue:"call", isButton:true, btnIcon:IoCall, onClickHanlder:()=>sendMessageToClientHandler(i.clientDetailes.mobile, `Hello ${i.clientDetailes.name} your pending is ${i.pending}₹`)}
-                        ]}
-                    />
-                ))
-            }
+                {
+                    allPendingPlots.map((i) => (
+                        <ListItem
+                            cellWidth={[
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%",
+                                "8%"
+                            ]}
+                            row={[
+                                {itemValue:i.clientDetailes.serialNumber},
+                                {itemValue:i.clientDetailes.name},
+                                {itemValue:i.clientDetailes.guardian},
+                                {itemValue:i.plotNo},
+                                {itemValue:i.site},
+                                {itemValue:i.lastSlip.createdAt, isDate:true},
+                                {itemValue:i.lastSlip.amount},
+                                {itemValue:i.clientDetailes.mobile},
+                                {itemValue:i.timeCovered},
+                                {itemValue:i.pending, style:{color:"red", fontWeight:"600"}},
+                                {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePage(i._id.toString())},
+                                {itemValue:"call", isButton:true, btnIcon:IoCall, onClickHanlder:()=>sendMessageToClientHandler(i.clientDetailes.mobile, `Hello ${i.clientDetailes.name} your pending is ${i.pending}₹`)}
+                            ]}
+                        />
+                    ))
+                }
+            </ScrollableContainer>
 
             {/*<pre>{JSON.stringify(allPendingPlots, null, `\t`)}</pre>*/}
             <div className="scroll_bottom" ref={scrollBottomRef}>load more...</div>

@@ -7,6 +7,7 @@ import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
 import { BsInfo } from "react-icons/bs";
 import { CgAdd } from "react-icons/cg";
+import { ScrollableContainer } from "../shared/SharedComponents";
 
 
 const Sites = () => {
@@ -38,39 +39,41 @@ const Sites = () => {
 
             <button onClick={() => navigate("/create?formPanelFor=sites")}>Create Site</button>
 
-            <ListHeading
-                headingRow={[
-                    {itemValue:"ID", itemWidth:"16%"},
-                    {itemValue:"Site Name", itemWidth:"16%"},
-                    {itemValue:"Total Size", itemWidth:"16%"},
-                    {itemValue:"Sold Area", itemWidth:"16%"},
-                    {itemValue:"Info", itemWidth:"16%"},
-                    {itemValue:"Add Plots", itemWidth:"16%"}
-                ]}
-            />
+            <ScrollableContainer>
+                <ListHeading
+                    headingRow={[
+                        {itemValue:"ID", itemWidth:"16%"},
+                        {itemValue:"Site Name", itemWidth:"16%"},
+                        {itemValue:"Total Size", itemWidth:"16%"},
+                        {itemValue:"Sold Area", itemWidth:"16%"},
+                        {itemValue:"Info", itemWidth:"16%"},
+                        {itemValue:"Add Plots", itemWidth:"16%"}
+                    ]}
+                />
 
-            {
-                allSites.map((st) => (
-                    <ListItem
-                        cellWidth={[
-                            "16%",
-                            "16%",
-                            "16%",
-                            "16%",
-                            "16%",
-                            "16%"
-                        ]}
-                        row={[
-                            {itemValue:st._id},
-                            {itemValue:st.siteName},
-                            {itemValue:st.totalSize},
-                            {itemValue:st.soldArea},
-                            {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(st._id)},
-                            {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotsHandler()},
-                        ]}
-                    />
-                ))
-            }
+                {
+                    allSites.map((st) => (
+                        <ListItem
+                            cellWidth={[
+                                "16%",
+                                "16%",
+                                "16%",
+                                "16%",
+                                "16%",
+                                "16%"
+                            ]}
+                            row={[
+                                {itemValue:st._id},
+                                {itemValue:st.siteName},
+                                {itemValue:st.totalSize},
+                                {itemValue:st.soldArea},
+                                {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(st._id)},
+                                {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotsHandler()},
+                            ]}
+                        />
+                    ))
+                }
+            </ScrollableContainer>
         </div>
     )
 };

@@ -6,6 +6,7 @@ import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
+import { ScrollableContainer } from "../shared/SharedComponents";
 
 const recentSlip = 731;
 const limit = 5;
@@ -81,52 +82,54 @@ const Slips = () => {
     return(
         <div className="slips_bg">
 
-            <ListHeading
-                headingRow={[
-                    {itemValue:"Date", itemWidth:"10%"},
-                    {itemValue:"Slip No.", itemWidth:"10%"},
-                    {itemValue:"Type", itemWidth:"10%"},
-                    {itemValue:"Name", itemWidth:"10%"},
-                    {itemValue:"Guardian", itemWidth:"10%"},
-                    {itemValue:"Mobile", itemWidth:"10%"},
-                    {itemValue:"Plot No.", itemWidth:"10%"},
-                    {itemValue:"Amount", itemWidth:"10%"},
-                    {itemValue:"Mode", itemWidth:"10%"},
-                    {itemValue:"Transaction No.", itemWidth:"10%"},
-                ]}
-            />
+            <ScrollableContainer>
+                <ListHeading
+                    headingRow={[
+                        {itemValue:"Date", itemWidth:"10%"},
+                        {itemValue:"Slip No.", itemWidth:"10%"},
+                        {itemValue:"Type", itemWidth:"10%"},
+                        {itemValue:"Name", itemWidth:"10%"},
+                        {itemValue:"Guardian", itemWidth:"10%"},
+                        {itemValue:"Mobile", itemWidth:"10%"},
+                        {itemValue:"Plot No.", itemWidth:"10%"},
+                        {itemValue:"Amount", itemWidth:"10%"},
+                        {itemValue:"Mode", itemWidth:"10%"},
+                        {itemValue:"Transaction No.", itemWidth:"10%"},
+                    ]}
+                />
 
-            {
-                slips.map((slp) => (
+                {
+                    slips.map((slp) => (
 
-                    <ListItem
-                        cellWidth={[
-                            "10%",
-                            "10%",
-                            "10%",
-                            "10%",
-                            "10%",
-                            "10%",
-                            "10%",
-                            "10%",
-                            "10%",
-                            "10%"
-                        ]}
-                        row={[
-                            {itemValue:slp.createdAt, isDate:true},
-                            {itemValue:slp.slipNo},
-                            {itemValue:slp.slipType},
-                            {itemValue:slp.clientID.name},
-                            {itemValue:slp.clientID.guardian},
-                            {itemValue:slp.clientID.mobile},
-                            {itemValue:slp.plotID.plotNo},
-                            {itemValue:slp.amount},
-                            {itemValue:slp.modeOfPayment},
-                            {itemValue:slp.paymentID},
-                        ]}
-                    />
-                ))
-            }
+                        <ListItem
+                            cellWidth={[
+                                "10%",
+                                "10%",
+                                "10%",
+                                "10%",
+                                "10%",
+                                "10%",
+                                "10%",
+                                "10%",
+                                "10%",
+                                "10%"
+                            ]}
+                            row={[
+                                {itemValue:slp.createdAt, isDate:true},
+                                {itemValue:slp.slipNo},
+                                {itemValue:slp.slipType},
+                                {itemValue:slp.clientID.name},
+                                {itemValue:slp.clientID.guardian},
+                                {itemValue:slp.clientID.mobile},
+                                {itemValue:slp.plotID.plotNo},
+                                {itemValue:slp.amount},
+                                {itemValue:slp.modeOfPayment},
+                                {itemValue:slp.paymentID},
+                            ]}
+                        />
+                    ))
+                }
+            </ScrollableContainer>
             <div className="slip_selectors_cont">
                 <button className="slip_selector_cont" onClick={() => setSlipNoRange({fromSlipNo:Number(currentPage+"01"), toSlipNo:Number(currentPage+"20")})}>
                     <div className="to_value">{currentPage}01</div>

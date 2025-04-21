@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
 import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../api";
-import { KeyValuePairs } from "../shared/SharedComponents";
+import { KeyValuePairs, ScrollableContainer } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
 import ListHeading from "../components/ListHeading";
@@ -246,41 +246,43 @@ const SingleSite = () => {
                 }
             </div>
 
-            <ListHeading
-                headingRow={[
-                    {itemValue:"ID", itemWidth:"14%"},
-                    {itemValue:"Plot No.", itemWidth:"14%"},
-                    {itemValue:"Size", itemWidth:"14%"},
-                    {itemValue:"Rate", itemWidth:"14%"},
-                    {itemValue:"Status", itemWidth:"14%"},
-                    {itemValue:"Info", itemWidth:"14%"},
-                    {itemValue:"Add Plots", itemWidth:"14%"}
-                ]}
-            />
-            {
-                allPlots.map((plt) => (
-                    <ListItem
-                        cellWidth={[
-                            "14%",
-                            "14%",
-                            "14%",
-                            "14%",
-                            "14%",
-                            "14%",
-                            "14%"
-                        ]}
-                        row={[
-                            {itemValue:plt._id},
-                            {itemValue:plt.plotNo},
-                            {itemValue:plt.size},
-                            {itemValue:plt.rate},
-                            {itemValue:plt.plotStatus},
-                            {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)},
-                            {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotPageHandler()}
-                        ]}
-                    />
-                ))
-            }
+            <ScrollableContainer>
+                <ListHeading
+                    headingRow={[
+                        {itemValue:"ID", itemWidth:"14%"},
+                        {itemValue:"Plot No.", itemWidth:"14%"},
+                        {itemValue:"Size", itemWidth:"14%"},
+                        {itemValue:"Rate", itemWidth:"14%"},
+                        {itemValue:"Status", itemWidth:"14%"},
+                        {itemValue:"Info", itemWidth:"14%"},
+                        {itemValue:"Add Plots", itemWidth:"14%"}
+                    ]}
+                />
+                {
+                    allPlots.map((plt) => (
+                        <ListItem
+                            cellWidth={[
+                                "14%",
+                                "14%",
+                                "14%",
+                                "14%",
+                                "14%",
+                                "14%",
+                                "14%"
+                            ]}
+                            row={[
+                                {itemValue:plt._id},
+                                {itemValue:plt.plotNo},
+                                {itemValue:plt.size},
+                                {itemValue:plt.rate},
+                                {itemValue:plt.plotStatus},
+                                {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)},
+                                {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotPageHandler()}
+                            ]}
+                        />
+                    ))
+                }
+            </ScrollableContainer>
 
             {/*<List
                 data={data}
