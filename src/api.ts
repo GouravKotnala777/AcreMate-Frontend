@@ -233,6 +233,17 @@ export const createClient = async(formData:CreateClientBodyTypes, navigate:Navig
 
     return data;
 };
+export const sendMessageToClient = async(formData:{to:string, message:string}) => {
+    const data = await fetchAPIHandler<null>({
+        apiName:"sendMessageToClient",
+        endpoint:"/client/send-message",
+        credentials:true,
+        method:"POST",
+        body:JSON.stringify(formData)
+    });
+
+    return data;
+};
 export const cancelClient = async(clientID:string) => {
     const data = await fetchAPIHandler<null>({
         apiName:"cancelClent",
