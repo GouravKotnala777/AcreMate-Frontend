@@ -204,6 +204,11 @@ select{
     }
 }
 
+.scrollable_cont{
+    //border: 2px solid red;
+    overflow-x: auto;
+}
+
 @keyframes spin {
     0%{
         rotate: 0deg;

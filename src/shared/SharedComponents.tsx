@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "../styles/shared_components.scss";
 import { IconType } from "react-icons";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { RoutesTypes, SlipTypes, UpdateSlipBodyTypes } from "../utils/types";
 import { BG_COLOR, PRIMARY_DARK } from "../utils/constants";
 import { updateSlip } from "../api";
@@ -58,6 +58,9 @@ interface KeyValuePairsPropTypes{
     keyValuePairArray:Record<string, string|number|undefined>[];
     color?:string;
     isLoading?:boolean;
+}
+interface ScrollableContainerPropTypes{
+    children:ReactNode;
 }
 
 export const NavigateItem = ({Icon, text, url}:NavigateItemPropTypes) => {
@@ -292,6 +295,15 @@ export const DialogBox = ({isOpen, setIsOpen, updateItemID, setAllSlipsData}:{se
                 <Input label="Remark" name="remark" onChangeHandler={onChangeHandler} />
                 <Button text="Update Slip" width="100%" onClickHandler={onClickHandler} />
             </div>
+        </div>
+    )
+};
+
+export const ScrollableContainer = ({children}:ScrollableContainerPropTypes) => {
+
+    return(
+        <div className="scrollable_cont">
+            {children}
         </div>
     )
 };
