@@ -5,7 +5,10 @@ import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../
 import { KeyValuePairs } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
-import List from "../shared/List";
+import ListHeading from "../components/ListHeading";
+import ListItem from "../components/ListItem";
+import { BsInfo } from "react-icons/bs";
+import { CgAdd } from "react-icons/cg";
 
 
 const SingleSite = () => {
@@ -13,7 +16,7 @@ const SingleSite = () => {
 
     const canvasRef = useRef<HTMLCanvasElement|null>(null);
     const [siteData, setSiteData] = useState<SiteTypes|null>(null);
-    const [data, setData] = useState<PlotTypes[]>([]);
+    const [allPlots, setAllPlots] = useState<PlotTypes[]>([]);
     const [updateRowFormData, setUpdateRowFormData] = useState<UpdateSiteBodyTypes>({siteID:"", baseSize:0, noOfPlots:0});
     const [isSiteUpdateFormActive, setIsSiteUpdateFormActive] = useState<boolean>(false);
     const [trackedArea, setTrackedArea] = useState<number>(0);
@@ -24,13 +27,7 @@ const SingleSite = () => {
     const navigate = useNavigate();
 
     const siteID = query.get("siteID");
-    //const totalSize = query.get("totalSize");
 
-
-    //const findAllPlotsHandler = async() => {
-    //    const res = await findAllPlots();
-    //    setData(res.jsonData);
-    //};
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
         setUpdateRowFormData({...updateRowFormData, [e.target.name]:e.target.value});        
     };
@@ -76,7 +73,7 @@ const SingleSite = () => {
 
 
     useEffect(() => {
-        if (data.length === 0) return;
+        if (allPlots.length === 0) return;
         
         const boxH = 30;
         const boxY = 10;
@@ -104,19 +101,19 @@ const SingleSite = () => {
             let soldArea:number = 0;
             let finalWidth = 0;
             for(let i=(Number(siteData.plotsInSingleRow[Number(objIndex)].lastPlotNo)-Number(siteData.plotsInSingleRow[Number(objIndex)].noOfPlots)); i<siteData.plotsInSingleRow[Number(objIndex)].lastPlotNo; i++){
-                const w = data[i]?.size;
-                finalWidth = rowWidth+data[Number(i)]?.size-w;
+                const w = allPlots[i]?.size;
+                finalWidth = rowWidth+allPlots[Number(i)]?.size-w;
 
-                if (data[Number(i)]?.hasSold) {
-                    soldArea += data[i]?.size;
+                if (allPlots[Number(i)]?.hasSold) {
+                    soldArea += allPlots[i]?.size;
                 }
                 //if (data[Number(i)].plotStatus === "completed" || data[Number(i)].plotStatus === "pending" || data[Number(i)].plotStatus === "registered") {
                 //    soldArea += data[i].size;
                 //}
-                if (data[Number(i)]?.plotStatus === "vacant") {
+                if (allPlots[Number(i)]?.plotStatus === "vacant") {
                     ctx.fillStyle = "#ffa0a0";
                 }
-                else if (data[Number(i)]?.plotStatus === "registered" || data[Number(objIndex)]?.plotStatus === "completed") {
+                else if (allPlots[Number(i)]?.plotStatus === "registered" || allPlots[Number(objIndex)]?.plotStatus === "completed") {
                     ctx.fillStyle = "#23a949";
                 }
                 else{
@@ -136,13 +133,13 @@ const SingleSite = () => {
                 ctx.font = "12px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText(`${data[i]?.plotNo}`, finalWidth+w/2, (boxH/2)+(Number(objIndex)*boxY)+(Number(objIndex)*boxH)-5);
-                ctx.fillText(`${data[i]?.size}`, finalWidth+w/2, (boxH/2)+(Number(objIndex)*boxY)+(Number(objIndex)*boxH)+10);
+                ctx.fillText(`${allPlots[i]?.plotNo}`, finalWidth+w/2, (boxH/2)+(Number(objIndex)*boxY)+(Number(objIndex)*boxH)-5);
+                ctx.fillText(`${allPlots[i]?.size}`, finalWidth+w/2, (boxH/2)+(Number(objIndex)*boxY)+(Number(objIndex)*boxH)+10);
             }
-            ctx.fillText(`=> ${soldArea}sqyd / ${rowWidth}sqyd`, rowWidth+data[data.length-1].size, (Number(objIndex)*boxY)+(Number(objIndex)*boxH)+15);
+            ctx.fillText(`=> ${soldArea}sqyd / ${rowWidth}sqyd`, rowWidth+allPlots[allPlots.length-1].size, (Number(objIndex)*boxY)+(Number(objIndex)*boxH)+15);
         }
 
-    }, [siteData, data]);
+    }, [siteData, allPlots]);
 
     useEffect(() => {
         if (!siteID) {
@@ -169,7 +166,7 @@ const SingleSite = () => {
 
         findAllPlots(siteData?.siteName)
         .then((data) => {
-            setData(data.jsonData)
+            setAllPlots(data.jsonData)
         })
         .catch((err) => {
             console.log(err);
@@ -213,25 +210,10 @@ const SingleSite = () => {
                                     async() => {alert("Can't sell plot more than vacant area!")}
                         }>Update</button>
                     </div>
-                    //<FormSharedComponent
-                    //    inputArray={[
-                    //        {type:"text", label:"No. of plots in this Belt", name:"noOfPlots"},
-                    //        {type:"text", label:"Last plot number in this belt", name:"lastPlotNo"},
-                    //        {type:"text", label:"Plot base size", name:"baseSize"}
-                    //    ]}
-                    //    btnText="Update Plot Belt"
-                    //    onChangeFeildsHandler={onChangeHandler}
-                    //    onSubmitFormHandler={
-                    //        (siteData?.totalSize as number) - (trackedArea) > 0 ?
-                    //        updateSiteRowHandler
-                    //        :
-                    //        async() => {alert("Can't sell plot more than vacant area!")}
-                    //    }
-                    ///>
             }
 
             {
-                data.length !== 0 ?
+                allPlots.length !== 0 ?
                     <canvas ref={canvasRef}
                         style={{
                             border:"2px solid red",
@@ -264,7 +246,43 @@ const SingleSite = () => {
                 }
             </div>
 
-            <List
+            <ListHeading
+                headingRow={[
+                    {itemValue:"ID", itemWidth:"14%"},
+                    {itemValue:"Plot No.", itemWidth:"14%"},
+                    {itemValue:"Size", itemWidth:"14%"},
+                    {itemValue:"Rate", itemWidth:"14%"},
+                    {itemValue:"Status", itemWidth:"14%"},
+                    {itemValue:"Info", itemWidth:"14%"},
+                    {itemValue:"Add Plots", itemWidth:"14%"}
+                ]}
+            />
+            {
+                allPlots.map((plt) => (
+                    <ListItem
+                        cellWidth={[
+                            "14%",
+                            "14%",
+                            "14%",
+                            "14%",
+                            "14%",
+                            "14%",
+                            "14%"
+                        ]}
+                        row={[
+                            {itemValue:plt._id},
+                            {itemValue:plt.plotNo},
+                            {itemValue:plt.size},
+                            {itemValue:plt.rate},
+                            {itemValue:plt.plotStatus},
+                            {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)},
+                            {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotPageHandler()}
+                        ]}
+                    />
+                ))
+            }
+
+            {/*<List
                 data={data}
                 headings={[
                     {columnWidth:"20%", fieldHeading:"ID", fieldName:"_id"},
@@ -275,7 +293,7 @@ const SingleSite = () => {
                     {columnWidth:"12%", fieldHeading:"Info", fieldName:"info", isButton:true, infoNavigationHandler:navigateToSinglePageHandler},
                     {columnWidth:"20%", fieldHeading:"Add Plots", fieldName:"add", isButton:true, onClickButton:navigateToAddPlotPageHandler},
                 ]}
-            />
+            />*/}
         </>
     )
 };
