@@ -26,7 +26,7 @@ const Slips = () => {
     const paginationNumberHandler = () => {
         const arr = [];
         for(let i=0; i<5; i++){
-            arr.push(<button id={`page-${(limit*skip)+1+i}`} className="1_page page"
+            arr.push(<button id={`page-${(limit*skip)+1+i}`} key={i} className="1_page page"
                 onClick={() => onclickPagination(`page-${(limit*skip)+1+i}`, (limit*skip)+1+i)}
                 style={{
                     color:(limit*skip)+1+i<=totalPages?"#313131":"#d1d1d1",
@@ -99,20 +99,22 @@ const Slips = () => {
                 />
 
                 {
-                    slips.map((slp) => (
+                    slips.map((slp, index) => (
 
                         <ListItem
+                            key={`${slp._id}-${index}`}
+                            uniqeKey={slp._id}
                             cellWidth={[
-                                "10%",
-                                "10%",
-                                "10%",
-                                "10%",
-                                "10%",
-                                "10%",
-                                "10%",
-                                "10%",
-                                "10%",
-                                "10%"
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%"
                             ]}
                             row={[
                                 {itemValue:slp.createdAt, isDate:true},

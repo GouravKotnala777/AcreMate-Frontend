@@ -4,6 +4,7 @@ import { IconType } from "react-icons";
 
 
 interface ListItemTypes {
+    uniqeKey?:string;
     cellWidth:string[];
     row:{
         itemValue:unknown;
@@ -19,30 +20,15 @@ interface ListItemTypes {
     }[];
 }
 
-const ListItem = ({cellWidth, row}:ListItemTypes) => {
-    //const [itemArray, setItemArray] = useState<{
-    //    itemValue:unknown;
-    //    isDate?:boolean;
-    //    isButton?:boolean;
-    //    onClickHanlder?:()=>void;
-    //    btnIcon?:IconType;
-    //    style?:{
-    //        color?:string;
-    //        backgroundColor?:string;
-    //    };
-    //}[]>([]);
-
-    //useEffect(() => {
-    //    setItemArray(row)
-    //}, []);
+const ListItem = ({uniqeKey, cellWidth, row}:ListItemTypes) => {
 
     return(
-        <div className="list_item_cont" style={{
+        <div className="list_item_cont" key={uniqeKey} style={{
             gridTemplateColumns:cellWidth.join("")
         }}>
             {
                 row.map((i, ind) => (
-                    <>
+                    <div key={`${uniqeKey}-${ind}`}>
                         {
                             i.isButton ?
                                 <button className="cell_btn" key={ind} style={i.style} onClick={i.onClickHanlder}>
@@ -58,7 +44,7 @@ const ListItem = ({cellWidth, row}:ListItemTypes) => {
                                         {i.itemValue as string}
                                     </div>
                         }
-                    </>
+                    </div>
                 ))
             }
         </div>

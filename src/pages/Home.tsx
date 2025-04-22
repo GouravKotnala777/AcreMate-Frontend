@@ -81,21 +81,23 @@ const Home = () => {
                 />
 
                 {
-                    allPendingPlots.map((i) => (
+                    allPendingPlots.map((i, index) => (
                         <ListItem
+                            key={`${i._id}-${index}`}
+                            uniqeKey={i._id}
                             cellWidth={[
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%",
-                                "8%"
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%",
+                                "13%"
                             ]}
                             row={[
                                 {itemValue:i.clientDetailes.serialNumber},

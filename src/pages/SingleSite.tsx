@@ -193,7 +193,7 @@ const SingleSite = () => {
             <KeyValuePairs keyValuePairArray={[
                 {"Total Area":siteData?.totalSize},
                 {"Tracked Area":`${trackedArea??0} + ${(Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}`},
-                {"Untracked Area":(siteData?.totalSize as number) - trackedArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}
+                {"Untracked Area":(siteData?.totalSize??0) - trackedArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}
             ]} />
             <button onClick={resetSiteRowHandler}>Reset site belt</button>
             <button onClick={() => setIsSiteUpdateFormActive(true)}>Update site belt in map</button>
@@ -261,6 +261,8 @@ const SingleSite = () => {
                 {
                     allPlots.map((plt) => (
                         <ListItem
+                            key={plt._id}
+                            uniqeKey={plt._id}
                             cellWidth={[
                                 "14%",
                                 "14%",

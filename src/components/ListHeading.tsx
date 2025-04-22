@@ -14,12 +14,10 @@ const ListHeading = ({headingRow}:ListHeadingPropTypes) => {
             gridTemplateColumns:headingRow.map((w) => w.itemWidth).join("")
         }}>
             {
-                headingRow.map((hdng, ind) => (
-                    <>
-                        <div className="cell" key={ind}>
-                            {hdng.itemValue}
-                        </div>
-                    </>
+                headingRow.map((hdng, index) => (
+                    <div className="cell" key={index}>
+                        {hdng.itemValue}
+                    </div>
                 ))
             }
         </div>

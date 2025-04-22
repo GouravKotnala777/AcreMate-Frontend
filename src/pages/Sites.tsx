@@ -52,8 +52,10 @@ const Sites = () => {
                 />
 
                 {
-                    allSites.map((st) => (
+                    allSites.map((st, index) => (
                         <ListItem
+                            key={`${st._id}-${index}`}
+                            uniqeKey={st._id}
                             cellWidth={[
                                 "16%",
                                 "16%",
