@@ -2,19 +2,23 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
 import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../api";
-import { KeyValuePairs, ScrollableContainer } from "../shared/SharedComponents";
+import { KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
 import { BsInfo } from "react-icons/bs";
 import { CgAdd } from "react-icons/cg";
+import DataFlowHandler from "../components/DataFlow";
 
 
 const SingleSite = () => {
     const [query] = useSearchParams();
 
     const canvasRef = useRef<HTMLCanvasElement|null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<{success:boolean; message:string; jsonData:object}>({success:false, message:"", jsonData:{}});
+    const [isError, setIsError] = useState<boolean>(false);
     const [siteData, setSiteData] = useState<SiteTypes|null>(null);
     const [allPlots, setAllPlots] = useState<PlotTypes[]>([]);
     const [updateRowFormData, setUpdateRowFormData] = useState<UpdateSiteBodyTypes>({siteID:"", baseSize:0, noOfPlots:0});
@@ -166,10 +170,22 @@ const SingleSite = () => {
 
         findAllPlots(siteData?.siteName)
         .then((data) => {
-            setAllPlots(data.jsonData)
+            if (data.success) {
+                setAllPlots(data.jsonData);
+                setIsLoading(false);
+                setIsError(false);
+            }
+            else{
+                setError(data);
+                setIsLoading(false);
+                setIsError(true);
+            }
         })
         .catch((err) => {
             console.log(err);
+            setError(err);
+            setIsLoading(false);
+            setIsError(true);
         })
     }, [siteData]);
 
@@ -258,46 +274,63 @@ const SingleSite = () => {
                         {itemValue:"Add Plots", itemWidth:"14%"}
                     ]}
                 />
-                {
-                    allPlots.map((plt) => (
-                        <ListItem
-                            key={plt._id}
-                            uniqeKey={plt._id}
-                            cellWidth={[
-                                "14%",
-                                "14%",
-                                "14%",
-                                "14%",
-                                "14%",
-                                "14%",
-                                "14%"
-                            ]}
-                            row={[
-                                {itemValue:plt._id},
-                                {itemValue:plt.plotNo},
-                                {itemValue:plt.size},
-                                {itemValue:plt.rate},
-                                {itemValue:plt.plotStatus},
-                                {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)},
-                                {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotPageHandler()}
-                            ]}
-                        />
-                    ))
-                }
-            </ScrollableContainer>
 
-            {/*<List
-                data={data}
-                headings={[
-                    {columnWidth:"20%", fieldHeading:"ID", fieldName:"_id"},
-                    {columnWidth:"12%", fieldHeading:"Plot No.", fieldName:"plotNo"},
-                    {columnWidth:"12%", fieldHeading:"Size", fieldName:"size"},
-                    {columnWidth:"12%", fieldHeading:"Rate", fieldName:"rate"},
-                    {columnWidth:"12%", fieldHeading:"Status", fieldName:"plotStatus", style:{fontWeight:"700"}},
-                    {columnWidth:"12%", fieldHeading:"Info", fieldName:"info", isButton:true, infoNavigationHandler:navigateToSinglePageHandler},
-                    {columnWidth:"20%", fieldHeading:"Add Plots", fieldName:"add", isButton:true, onClickButton:navigateToAddPlotPageHandler},
-                ]}
-            />*/}
+                <DataFlowHandler
+                    isLoading={isLoading}
+                    isError={isError}
+                    dataArray={allPlots}
+                    
+                    LoadingComponent={
+                        <>
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                        </>
+                        
+                    }
+                    DataNotExistComponent={
+                        <div className="empty_list_cont">
+                            <h4 className="empty_list_heading">No Sites</h4>
+                            <p className="empty_list_para">Your sites will be shown here</p>
+                        </div>
+                    }
+                    DataExistComponent={
+                        allPlots.map((plt) => (
+                            <ListItem
+                                key={plt._id}
+                                uniqeKey={plt._id}
+                                cellWidth={[
+                                    "14%",
+                                    "14%",
+                                    "14%",
+                                    "14%",
+                                    "14%",
+                                    "14%",
+                                    "14%"
+                                ]}
+                                row={[
+                                    {itemValue:plt._id},
+                                    {itemValue:plt.plotNo},
+                                    {itemValue:plt.size},
+                                    {itemValue:plt.rate},
+                                    {itemValue:plt.plotStatus},
+                                    {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)},
+                                    {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotPageHandler()}
+                                ]}
+                            />
+                        ))
+                    }
+                    ErrorComponent={
+                        <div className="empty_list_cont">
+                            <h4 className="empty_list_heading">Something went wrong</h4>
+                            <p className="empty_list_para">{error.message}</p>
+                        </div>
+                    }
+                />
+            </ScrollableContainer>
         </>
     )
 };

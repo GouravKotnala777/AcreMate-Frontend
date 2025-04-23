@@ -8,6 +8,26 @@
     //    top: 0;
     //    left: 0;
     //}
+    .empty_list_cont{
+        //border: 2px solid red;
+        margin-top: 10px;
+        border: 1px solid $primaryLight;
+        border-radius: 4px;
+        text-align: center;
+        padding: 10px;
+        //background:url("../../../public/background1.png");
+        background-color: $primaryFade;
+        .empty_list_heading{
+            //border: 1px solid red;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+        .empty_list_para{
+            //border: 1px solid blue;
+            color: $fontPrimary;
+            font-size: 0.65rem;
+        }
+    }
     .agent_data_cont{
         display: flex;
         justify-content: space-around;

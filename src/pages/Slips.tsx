@@ -6,12 +6,16 @@ import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
-import { ScrollableContainer } from "../shared/SharedComponents";
+import { ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import DataFlowHandler from "../components/DataFlow";
 
 const recentSlip = 731;
 const limit = 5;
 
 const Slips = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<{success:boolean; message:string; jsonData:object}>({success:false, message:"", jsonData:{}});
+    const [isError, setIsError] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [skip, setSkip] = useState<number>(0);
@@ -71,10 +75,22 @@ const Slips = () => {
         findSlipsWithSlipNoRange(slipNoRange)
         .then((data) => {
             console.log(data);
-            setSlips(data.jsonData);
+            if (data.success) {
+                setSlips(data.jsonData);
+                setIsLoading(false);
+                setIsError(false);
+            }
+            else{
+                setError(data);
+                setIsLoading(false);
+                setIsError(true);
+            }
         })
         .catch((err) => {
             console.log(err);
+            setIsLoading(false);
+            setIsError(true);
+            setError(err);
         })
     }, [slipNoRange]);
 
@@ -83,54 +99,86 @@ const Slips = () => {
         <div className="slips_bg">
 
             <ScrollableContainer>
-                <ListHeading
-                    headingRow={[
-                        {itemValue:"Date", itemWidth:"10%"},
-                        {itemValue:"Slip No.", itemWidth:"10%"},
-                        {itemValue:"Type", itemWidth:"10%"},
-                        {itemValue:"Name", itemWidth:"10%"},
-                        {itemValue:"Guardian", itemWidth:"10%"},
-                        {itemValue:"Mobile", itemWidth:"10%"},
-                        {itemValue:"Plot No.", itemWidth:"10%"},
-                        {itemValue:"Amount", itemWidth:"10%"},
-                        {itemValue:"Mode", itemWidth:"10%"},
-                        {itemValue:"Transaction No.", itemWidth:"10%"},
-                    ]}
-                />
-
                 {
-                    slips.map((slp, index) => (
-
-                        <ListItem
-                            key={`${slp._id}-${index}`}
-                            uniqeKey={slp._id}
-                            cellWidth={[
-                                "13%",
-                                "13%",
-                                "13%",
-                                "13%",
-                                "13%",
-                                "13%",
-                                "13%",
-                                "13%",
-                                "13%",
-                                "13%"
-                            ]}
-                            row={[
-                                {itemValue:slp.createdAt, isDate:true},
-                                {itemValue:slp.slipNo},
-                                {itemValue:slp.slipType},
-                                {itemValue:slp.clientID.name},
-                                {itemValue:slp.clientID.guardian},
-                                {itemValue:slp.clientID.mobile},
-                                {itemValue:slp.plotID.plotNo},
-                                {itemValue:slp.amount},
-                                {itemValue:slp.modeOfPayment},
-                                {itemValue:slp.paymentID},
+                    slips.length !== 0 &&
+                        <ListHeading
+                            headingRow={[
+                                {itemValue:"Date", itemWidth:"10%"},
+                                {itemValue:"Slip No.", itemWidth:"10%"},
+                                {itemValue:"Type", itemWidth:"10%"},
+                                {itemValue:"Name", itemWidth:"10%"},
+                                {itemValue:"Guardian", itemWidth:"10%"},
+                                {itemValue:"Mobile", itemWidth:"10%"},
+                                {itemValue:"Plot No.", itemWidth:"10%"},
+                                {itemValue:"Amount", itemWidth:"10%"},
+                                {itemValue:"Mode", itemWidth:"10%"},
+                                {itemValue:"Transaction No.", itemWidth:"10%"},
                             ]}
                         />
-                    ))
                 }
+
+                <DataFlowHandler
+                    isLoading={isLoading}
+                    isError={isError}
+                    dataArray={slips}
+                    
+                    LoadingComponent={
+                        <>
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                            <Skeleton width="100%" height="25px" margin="10px 0" />
+                        </>
+                        
+                    }
+                    DataNotExistComponent={
+                        <div className="empty_list_cont">
+                            <h4 className="empty_list_heading">No Slips</h4>
+                            <p className="empty_list_para">Your slips will be shown here</p>
+                        </div>
+                    }
+                    DataExistComponent={
+                        slips.map((slp, index) => (
+                            <ListItem
+                                key={`${slp._id}-${index}`}
+                                uniqeKey={slp._id}
+                                cellWidth={[
+                                    "10%",
+                                    "10%",
+                                    "10%",
+                                    "10%",
+                                    "10%",
+                                    "10%",
+                                    "10%",
+                                    "10%",
+                                    "10%",
+                                    "10%"
+                                ]}
+                                row={[
+                                    {itemValue:slp.createdAt, isDate:true},
+                                    {itemValue:slp.slipNo},
+                                    {itemValue:slp.slipType},
+                                    {itemValue:slp.clientID.name},
+                                    {itemValue:slp.clientID.guardian},
+                                    {itemValue:slp.clientID.mobile},
+                                    {itemValue:slp.plotID.plotNo},
+                                    {itemValue:slp.amount},
+                                    {itemValue:slp.modeOfPayment},
+                                    {itemValue:slp.paymentID},
+                                ]}
+                            />
+                        ))
+                    }
+                    ErrorComponent={
+                        <div className="empty_list_cont">
+                            <h4 className="empty_list_heading">Something went wrong</h4>
+                            <p className="empty_list_para">{error.message}</p>
+                        </div>
+                    }
+                />
+
             </ScrollableContainer>
             <div className="slip_selectors_cont">
                 <button className="slip_selector_cont" onClick={() => setSlipNoRange({fromSlipNo:Number(currentPage+"01"), toSlipNo:Number(currentPage+"20")})}>
