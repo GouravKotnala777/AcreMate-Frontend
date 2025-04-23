@@ -54,6 +54,11 @@ interface TimerPropTypes{
     duration?:number;
     monthsCovered?:number;
 }
+interface SkeletonPropType{
+    width?:string;
+    height?:string;
+    margin?:string;
+}
 interface KeyValuePairsPropTypes{
     keyValuePairArray:Record<string, string|number|undefined>[];
     color?:string;
@@ -229,9 +234,13 @@ export const Timer = ({bgColor, monthsCovered, duration}:TimerPropTypes) => {
     )
 };
 
-export const Skeleton = () => {
+export const Skeleton = ({width, height, margin}:SkeletonPropType) => {
     return(
-        <div className="skeleton_cont">
+        <div className="skeleton_cont" style={{
+            width:width?width:"100px",
+            height:height?height:"20px",
+            margin:margin?margin:"0px"
+        }}>
 
         </div>
     )

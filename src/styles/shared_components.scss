@@ -121,8 +121,6 @@ select{
 .skeleton_cont{
     //border: 1px solid red;
     //padding: 10px;
-    height: 20px;
-    width: 100px;
     border-radius: 4px;
     background-color: #aaaaaa;
     animation: fade 1.4s linear infinite;
@@ -207,6 +205,7 @@ select{
 .scrollable_cont{
     //border: 2px solid red;
     overflow-x: auto;
+    padding: 10px;
 }
 
 @keyframes spin {
