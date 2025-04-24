@@ -70,6 +70,7 @@ const Header = () => {
         }
         else{
             undoSearchHandler();
+            setIsSearchInpFocused(true);
         }
     }
 
