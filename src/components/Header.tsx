@@ -2,7 +2,7 @@ import "../styles/components/header.component.scss";
 import { BsPerson } from "react-icons/bs";
 import { NavigateItem } from "../shared/SharedComponents";
 import logo from "/public/acremate_logo6.png";
-import { BiDownArrow, BiRegistered } from "react-icons/bi";
+import { BiRegistered } from "react-icons/bi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { GiSlipknot } from "react-icons/gi";
 import { FaMagnifyingGlass } from "react-icons/fa6";
@@ -16,7 +16,7 @@ import { CgRemove } from "react-icons/cg";
 let timerID:number|null = null;
 const Header = () => {
     const [isSuggessionActive, setIsSuggessionActive] = useState<boolean>(false);
-    const [isDropDownActive, setIsDropDownActive] = useState<boolean>(false);
+    
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isHamActive, setIsHamActive] = useState<boolean>(false);
@@ -46,18 +46,18 @@ const Header = () => {
 
     const undoSearchHandler = () => {
         setSearchQuery("");
-            setIsLoading(false);
-            setIsSearchInpFocused(false);
-            setIsSuggessionActive(false);
-            setSuggesstions({
-                allClientsOfName:[],
-                allClientsOfGuardianName:[],
-                allClientsOfSearialNo:[],
-                allPlots:[],
-                allSlips:[],
-                allNefts:[],
-                allDrafts:[]
-            });
+        setIsLoading(false);
+        setIsSearchInpFocused(false);
+        setIsSuggessionActive(false);
+        setSuggesstions({
+            allClientsOfName:[],
+            allClientsOfGuardianName:[],
+            allClientsOfSearialNo:[],
+            allPlots:[],
+            allSlips:[],
+            allNefts:[],
+            allDrafts:[]
+        });
     }
 
     const searchHandler = async(e:ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +93,6 @@ const Header = () => {
 
         undoSearchHandler();
         //setIsSearchInpFocused(false);
-        setIsDropDownActive(false);
     }
     const focusHandler = () => {
         const overlay = overlayRef.current;
@@ -134,6 +133,8 @@ const Header = () => {
 
     return(
         <>
+        {/*<button className="link" onClick={() => {navigate(`/create?plotID=""&plotStatus=""&formPanelFor=sites`); blurHandler();}}>Create Site</button>*/}
+        {/*<button className="link" onClick={() => {navigate(`/sites`); blurHandler();}}>All Sites</button>*/}
         <header className="header_cont">
             <NavLink to="/home" className="logo">
                 <img src={logo} alt={logo} />
@@ -267,29 +268,7 @@ const Header = () => {
                 }}
             ></div>
             <nav className="nav">
-                <div className="nav_item_dropdown">
-                    <div className="nav_heading"
-                        onMouseOver={() => {
-                            focusHandler();
-                            setIsDropDownActive(true);
-                            const searchInp = searchInpRef.current;
-                            if (!searchInp) {
-                                console.log("SSSSSSSSSSSSSSSSSSS");
-                                
-                                return;
-                            }
-                            searchInp.style.zIndex = "-1";
-                        }}
-                        >Create <BiDownArrow /></div>
-                    <div className="dropdown_list" tabIndex={1} style={{
-                        transform:isDropDownActive?`scale(1, 1)`:`scale(1, 0)`
-                    }}>
-                        <button className="link" onClick={() => {navigate(`/sites`); blurHandler();}}>All Sites</button>
-                        <button className="link" onClick={() => {navigate(`/create?plotID=""&plotStatus=""&formPanelFor=sites`); blurHandler();}}>Create Site</button>
-                        <button className="link">option3</button>
-                        <button className="link">option4</button>
-                    </div>
-                </div>
+                <NavigateItem Icon={BsPerson} text={"Sites" as "sites"} url="/sites" />
                 <div className="nav_item_blocks">
                     <NavigateItem Icon={BsPerson} text={"Agents" as "agents"} url="/agents" />
                     <NavigateItem Icon={GiSlipknot} text={"Slips" as "slips"} url="/slips"/>
