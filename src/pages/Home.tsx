@@ -7,7 +7,7 @@ import ListItem from "../components/ListItem";
 import { BsInfo } from "react-icons/bs";
 import { IoCall } from "react-icons/io5";
 import ListHeading from "../components/ListHeading";
-import { ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import { HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
 
 
@@ -109,10 +109,10 @@ const Home = () => {
                         
                     }
                     DataNotExistComponent={
-                        <div className="empty_list_cont">
-                            <h4 className="empty_list_heading">No Pendings</h4>
-                            <p className="empty_list_para">Your pendings will be shown here</p>
-                        </div>
+                        <HeadingParaCont
+                            heading="No Pendings"
+                            para="Your pendings will be shown here"
+                        />
                     }
                     DataExistComponent={
                         allPendingPlots.map((i, index) => (
@@ -151,10 +151,10 @@ const Home = () => {
                         ))
                     }
                     ErrorComponent={
-                        <div className="empty_list_cont">
-                            <h4 className="empty_list_heading">Something went wrong</h4>
-                            <p className="empty_list_para">{error.message}</p>
-                        </div>
+                        <HeadingParaCont
+                            heading="Something went wrong"
+                            para={error.message}
+                        />
                     }
                 />
             </ScrollableContainer>

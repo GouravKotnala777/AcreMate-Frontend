@@ -7,7 +7,7 @@ import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
 import { BsInfo } from "react-icons/bs";
 import { CgAdd } from "react-icons/cg";
-import { ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import { HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
 
 
@@ -84,10 +84,10 @@ const Sites = () => {
                         
                     }
                     DataNotExistComponent={
-                        <div className="empty_list_cont">
-                            <h4 className="empty_list_heading">No Sites</h4>
-                            <p className="empty_list_para">Your sites will be shown here</p>
-                        </div>
+                        <HeadingParaCont
+                            heading="No Sites"
+                            para="Your sites will be shown here"
+                        />
                     }
                     DataExistComponent={
                         allSites.map((st, index) => (
@@ -114,10 +114,10 @@ const Sites = () => {
                         ))
                     }
                     ErrorComponent={
-                        <div className="empty_list_cont">
-                            <h4 className="empty_list_heading">Something went wrong</h4>
-                            <p className="empty_list_para">{error.message}</p>
-                        </div>
+                        <HeadingParaCont
+                            heading="Something went wrong"
+                            para={error.message}
+                        />
                     }
                 />
             </ScrollableContainer>

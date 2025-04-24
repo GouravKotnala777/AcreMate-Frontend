@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
 import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../api";
-import { KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import { HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
 import ListHeading from "../components/ListHeading";
@@ -292,10 +292,10 @@ const SingleSite = () => {
                         
                     }
                     DataNotExistComponent={
-                        <div className="empty_list_cont">
-                            <h4 className="empty_list_heading">No Sites</h4>
-                            <p className="empty_list_para">Your sites will be shown here</p>
-                        </div>
+                        <HeadingParaCont
+                            heading="No Sites"
+                            para="Your sites will be shown here"
+                        />
                     }
                     DataExistComponent={
                         allPlots.map((plt) => (
@@ -324,10 +324,10 @@ const SingleSite = () => {
                         ))
                     }
                     ErrorComponent={
-                        <div className="empty_list_cont">
-                            <h4 className="empty_list_heading">Something went wrong</h4>
-                            <p className="empty_list_para">{error.message}</p>
-                        </div>
+                        <HeadingParaCont
+                            heading="Something went wrong"
+                            para={error.message}
+                        />
                     }
                 />
             </ScrollableContainer>

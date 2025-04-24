@@ -6,7 +6,7 @@ import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
-import { ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import { HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
 
 const recentSlip = 731;
@@ -134,10 +134,10 @@ const Slips = () => {
                         
                     }
                     DataNotExistComponent={
-                        <div className="empty_list_cont">
-                            <h4 className="empty_list_heading">No Slips</h4>
-                            <p className="empty_list_para">Your slips will be shown here</p>
-                        </div>
+                        <HeadingParaCont
+                            heading="No Slips"
+                            para="Your slips will be shown here"
+                        />
                     }
                     DataExistComponent={
                         slips.map((slp, index) => (
@@ -172,10 +172,10 @@ const Slips = () => {
                         ))
                     }
                     ErrorComponent={
-                        <div className="empty_list_cont">
-                            <h4 className="empty_list_heading">Something went wrong</h4>
-                            <p className="empty_list_para">{error.message}</p>
-                        </div>
+                        <HeadingParaCont
+                            heading="Something went wrong"
+                            para={error.message}
+                        />
                     }
                 />
 
