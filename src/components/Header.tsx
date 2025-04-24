@@ -291,6 +291,9 @@ const Header = () => {
                             <NavLink to="/home" className="ham_nav_item">
                                 Home
                             </NavLink>
+                            <NavLink to="/agents" className="ham_nav_item">
+                                Agents
+                            </NavLink>
                             <NavLink to="/sites" className="ham_nav_item">
                                 All Sites
                             </NavLink>

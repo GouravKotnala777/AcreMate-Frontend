@@ -63,6 +63,7 @@ interface KeyValuePairsPropTypes{
     keyValuePairArray:Record<string, string|number|undefined>[];
     color?:string;
     isLoading?:boolean;
+    margin?:string;
 }
 interface ScrollableContainerPropTypes{
     children:ReactNode;
@@ -251,16 +252,18 @@ export const Skeleton = ({width, height, margin}:SkeletonPropType) => {
     )
 };
 
-export const KeyValuePairs = ({keyValuePairArray, color, isLoading}:KeyValuePairsPropTypes) => {
+export const KeyValuePairs = ({keyValuePairArray, color, isLoading, margin}:KeyValuePairsPropTypes) => {
 
     return(
-        <div className="key_value_pairs_cont">
+        <div className="key_value_pairs_cont" style={{
+            margin:margin?margin:"unset"
+        }}>
             {
                 keyValuePairArray.map((item, index) => (
                     <div className="key_value_pair_cont" key={index}>
                         <div className="key">{Object.keys(item)[0]}:</div>
                         <div className="value" style={{
-                            color:color?color:"unset"
+                            color:color?color:"5px"
                         }}>{
                             isLoading?
                                 <Skeleton />
