@@ -70,8 +70,6 @@ const Home = () => {
 
     return(
         <div className="home_bg">
-            <button onClick={() => findPendingClientsHandler()}>Fetch Pendings</button>
-
             <ScrollableContainer>
 
                 {
@@ -159,7 +157,7 @@ const Home = () => {
                 />
             </ScrollableContainer>
 
-            {/*<pre>{JSON.stringify(allPendingPlots, null, `\t`)}</pre>*/}
+            <button className="load_more_btn" onClick={() => findPendingClientsHandler()}>load more...</button>
             <div className="scroll_bottom" ref={scrollBottomRef}>load more...</div>
         </div>
     )

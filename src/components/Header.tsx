@@ -134,8 +134,6 @@ const Header = () => {
 
     return(
         <>
-        {/*<button className="link" onClick={() => {navigate(`/create?plotID=""&plotStatus=""&formPanelFor=sites`); blurHandler();}}>Create Site</button>*/}
-        {/*<button className="link" onClick={() => {navigate(`/sites`); blurHandler();}}>All Sites</button>*/}
         <header className="header_cont">
             <NavLink to="/home" className="logo">
                 <img src={logo} alt={logo} />
@@ -277,7 +275,11 @@ const Header = () => {
                 </div>
             </nav>
             <div className="ham_nav_cont">
-                <button className="ham_toggler" onClick={() => setIsHamActive(!isHamActive)}>Ham</button>
+                <button className="ham_toggler" onClick={() => setIsHamActive(!isHamActive)}>
+                    <div className="ham_line"></div>
+                    <div className="ham_line"></div>
+                    <div className="ham_line"></div>
+                </button>
                 <div className="ham_nav_side_panel_closer"
                     onClick={() => setIsHamActive(false)}
                     style={{

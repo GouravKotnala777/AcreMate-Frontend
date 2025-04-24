@@ -9,6 +9,7 @@ import { BsInfo } from "react-icons/bs";
 import { CgAdd } from "react-icons/cg";
 import { HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
+import { BiAddToQueue } from "react-icons/bi";
 
 
 const Sites = () => {
@@ -49,23 +50,22 @@ const Sites = () => {
 
     return(
         <div className="sites_bg">
-            <h1>Sites</h1>
-            {/*<pre>{JSON.stringify(allSites, null, `\t`)}</pre>*/}
-            {/*<Table data={allSites} />*/}
-
-            <button onClick={() => navigate("/create?formPanelFor=sites")}>Create Site</button>
+            <button className="create_site_btn" onClick={() => navigate("/create?formPanelFor=sites")}>Create Site<BiAddToQueue/></button>
 
             <ScrollableContainer>
-                <ListHeading
-                    headingRow={[
-                        {itemValue:"ID", itemWidth:"16%"},
-                        {itemValue:"Site Name", itemWidth:"16%"},
-                        {itemValue:"Total Size", itemWidth:"16%"},
-                        {itemValue:"Sold Area", itemWidth:"16%"},
-                        {itemValue:"Info", itemWidth:"16%"},
-                        {itemValue:"Add Plots", itemWidth:"16%"}
-                    ]}
-                />
+                {
+                    allSites.length !== 0 &&
+                        <ListHeading
+                            headingRow={[
+                                {itemValue:"ID", itemWidth:"16%"},
+                                {itemValue:"Site Name", itemWidth:"16%"},
+                                {itemValue:"Total Size", itemWidth:"16%"},
+                                {itemValue:"Sold Area", itemWidth:"16%"},
+                                {itemValue:"Info", itemWidth:"16%"},
+                                {itemValue:"Add Plots", itemWidth:"16%"}
+                            ]}
+                        />
+                }
 
                 <DataFlowHandler
                     isLoading={isLoading}
