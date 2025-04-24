@@ -67,6 +67,11 @@ interface KeyValuePairsPropTypes{
 interface ScrollableContainerPropTypes{
     children:ReactNode;
 }
+interface HeadingParaContPropTypes{
+    heading:string;
+    para:string;
+    textPosition?:"left"|"center"|"right";
+}
 
 export const NavigateItem = ({Icon, text, url}:NavigateItemPropTypes) => {
 
@@ -316,3 +321,15 @@ export const ScrollableContainer = ({children}:ScrollableContainerPropTypes) => 
         </div>
     )
 };
+
+export const HeadingParaCont = ({heading, para, textPosition}:HeadingParaContPropTypes) => {
+
+    return(
+        <div className="heading_para_cont" style={{
+            textAlign:textPosition?textPosition:"center"
+            }}>
+            <h4 className="heading_cont">{heading}</h4>
+            <p className="para_cont">{para}</p>
+        </div>
+    )
+}

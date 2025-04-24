@@ -208,6 +208,26 @@ select{
     padding: 10px;
 }
 
+.heading_para_cont{
+    //border: 2px solid red;
+    margin-top: 10px;
+    border: 1px solid $primaryLight;
+    border-radius: 4px;
+    padding: 10px;
+    //background:url("../../../public/background1.png");
+    background-color: $primaryFade;
+    .heading_cont{
+        //border: 1px solid red;
+        font-size: 0.8rem;
+        margin: 0;
+    }
+    .para_cont{
+        //border: 1px solid blue;
+        color: $fontPrimary;
+        font-size: 0.65rem;
+    }
+}
+
 @keyframes spin {
     0%{
         rotate: 0deg;
