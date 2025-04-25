@@ -62,6 +62,7 @@ interface SkeletonPropType{
 interface KeyValuePairsPropTypes{
     keyValuePairArray:Record<string, string|number|undefined>[];
     color?:string;
+    backgroundColor?:string;
     isLoading?:boolean;
     margin?:string;
 }
@@ -252,18 +253,19 @@ export const Skeleton = ({width, height, margin}:SkeletonPropType) => {
     )
 };
 
-export const KeyValuePairs = ({keyValuePairArray, color, isLoading, margin}:KeyValuePairsPropTypes) => {
+export const KeyValuePairs = ({keyValuePairArray, color, backgroundColor, isLoading, margin}:KeyValuePairsPropTypes) => {
 
     return(
         <div className="key_value_pairs_cont" style={{
-            margin:margin?margin:"unset"
+            margin:margin?margin:"unset",
+            backgroundColor:backgroundColor?backgroundColor:"white"
         }}>
             {
                 keyValuePairArray.map((item, index) => (
                     <div className="key_value_pair_cont" key={index}>
                         <div className="key">{Object.keys(item)[0]}:</div>
                         <div className="value" style={{
-                            color:color?color:"5px"
+                            color:color?color:"black"
                         }}>{
                             isLoading?
                                 <Skeleton />

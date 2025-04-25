@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../styles/pages/agents.scss";
 import { agentsAndSoldArea } from "../api";
 import { KeyValuePairs } from "../shared/SharedComponents";
-import { PRIMARY_DARK } from "../utils/constants";
+import { PRIMARY_LIGHTER } from "../utils/constants";
 //import { PlotTypes } from "../utils/types";
 
 const siteArray = ["jajru (ist)", "jajru (iind)", "sec-58"];
@@ -65,19 +65,20 @@ const Agents = () => {
 
                 <div className="site_cont">
                     {
-                        siteArray.map((siteName) => (
-                            <>
+                        siteArray.map((siteName, ind) => (
+                            <span key={ind}>
                                 
                                 <KeyValuePairs
                                     keyValuePairArray={[
                                         {"Site":siteName}
                                     ]}
                                     margin="20px 0 0 0"
-                                    color={PRIMARY_DARK}
+                                    backgroundColor={PRIMARY_LIGHTER}
                                 />
                                 {
-                                    allAgentsDataTransformed[siteName]?.map((i) => (
+                                    allAgentsDataTransformed[siteName]?.map((i, index) => (
                                         <KeyValuePairs
+                                            key={index}
                                             keyValuePairArray={[
                                                 {"Agent Name":i.agentName},
                                                 {"Sold Area":i.soldArea},
@@ -88,7 +89,7 @@ const Agents = () => {
                                         />
                                     ))
                                 }
-                            </>
+                            </span>
                         ))
                     }
 
