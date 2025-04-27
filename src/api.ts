@@ -165,12 +165,6 @@ export const login = async(formData:LoginFormData) => {
         body:JSON.stringify(formData)
     });
 
-    if (data.success) {
-        setTimeout(() => {
-            window.location.href = "/home";
-        }, 2500);
-    }
-
     return data;
 };
 export const logout = async() => {
