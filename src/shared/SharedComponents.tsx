@@ -3,7 +3,7 @@ import "../styles/shared_components.scss";
 import { IconType } from "react-icons";
 import { ChangeEvent, Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { RoutesTypes, SlipTypes, UpdateSlipBodyTypes } from "../utils/types";
-import { BG_COLOR, PRIMARY_DARK } from "../utils/constants";
+import { BG_COLOR, FONT_PRIMARY, PRIMARY_DARK } from "../utils/constants";
 import { updateSlip } from "../api";
 
 interface NavigateItemPropTypes {
@@ -42,6 +42,17 @@ interface ButtonPropTypes {
     width?:string;
     margin?:string;
     onClickHandler:() => Promise<void>;
+}
+interface ButtonPrimaryPropTypes {
+    margin?:string;
+    padding?:string;
+    text:string;
+    Icon?:IconType;
+    color?:string;
+    bgColor?:string;
+    width?:string;
+    display?:string;
+    onClickHandler:() => Promise<void>|void;
 }
 interface FormSharedComponentPropTypes{
     inputArray:{type:"text"|"number"|"select"; label:string; name:string; display?:"block"|"none"; selectionOptionArray?:string[]}[];
@@ -182,7 +193,20 @@ export const Button = ({text, color, bgColor, width, margin, onClickHandler}:But
         }}>{text}</button>
     )
 };
-
+export const ButtonPrimary = ({text, Icon, color, bgColor, width, margin, padding, display, onClickHandler}:ButtonPrimaryPropTypes) => {
+    return(
+        <button className="primary_button_component" onClick={onClickHandler} style={{
+            margin:margin?margin:"10px 0 0 auto",
+            padding:padding?padding:"10px",
+            backgroundColor:bgColor?bgColor:"white",
+            color:color?color:FONT_PRIMARY,
+            width:width?width:"unset",
+            display:display?display:"flex"
+        }}>{text}
+        {Icon && <Icon /> }
+        </button>
+    )
+};
 export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler, onSubmitFormHandler}:FormSharedComponentPropTypes) => {
 
     return(

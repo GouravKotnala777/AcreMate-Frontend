@@ -7,7 +7,7 @@ import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
 import { BsInfo } from "react-icons/bs";
 import { CgAdd } from "react-icons/cg";
-import { HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import { ButtonPrimary, HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
 import { BiAddToQueue } from "react-icons/bi";
 
@@ -50,8 +50,11 @@ const Sites = () => {
 
     return(
         <div className="sites_bg">
-            <button className="create_site_btn" onClick={() => navigate("/create?formPanelFor=sites")}>Create Site<BiAddToQueue/></button>
-
+            <ButtonPrimary
+                text="Create Site"
+                Icon={BiAddToQueue}
+                onClickHandler={() => navigate("/create?formPanelFor=sites")}
+            />
             <ScrollableContainer>
                 {
                     allSites.length !== 0 &&

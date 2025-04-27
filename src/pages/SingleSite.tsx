@@ -2,14 +2,14 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
 import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../api";
-import { HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import { ButtonPrimary, HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
 import { BsInfo } from "react-icons/bs";
-import { CgAdd } from "react-icons/cg";
 import DataFlowHandler from "../components/DataFlow";
+import { BiAddToQueue } from "react-icons/bi";
 
 
 const SingleSite = () => {
@@ -204,13 +204,17 @@ const SingleSite = () => {
 
     return(
         <>
-            <h3>Single Site</h3>
+            <ButtonPrimary
+                text="Create Plots"
+                Icon={BiAddToQueue}
+                onClickHandler={navigateToAddPlotPageHandler}
+            />
             {/*<pre>{JSON.stringify(trackedArea, null, `\t`)}</pre>*/}
             <KeyValuePairs keyValuePairArray={[
                 {"Total Area":siteData?.totalSize},
                 {"Tracked Area":`${trackedArea??0} + ${(Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}`},
                 {"Untracked Area":(siteData?.totalSize??0) - trackedArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}
-            ]} />
+            ]} margin="10px 0" />
             <button onClick={resetSiteRowHandler}>Reset site belt</button>
             <button onClick={() => setIsSiteUpdateFormActive(true)}>Update site belt in map</button>
             {
@@ -270,8 +274,7 @@ const SingleSite = () => {
                         {itemValue:"Size", itemWidth:"14%"},
                         {itemValue:"Rate", itemWidth:"14%"},
                         {itemValue:"Status", itemWidth:"14%"},
-                        {itemValue:"Info", itemWidth:"14%"},
-                        {itemValue:"Add Plots", itemWidth:"14%"}
+                        {itemValue:"Info", itemWidth:"14%"}
                     ]}
                 />
 
@@ -308,7 +311,6 @@ const SingleSite = () => {
                                     "14%",
                                     "14%",
                                     "14%",
-                                    "14%",
                                     "14%"
                                 ]}
                                 row={[
@@ -317,8 +319,7 @@ const SingleSite = () => {
                                     {itemValue:plt.size},
                                     {itemValue:plt.rate},
                                     {itemValue:plt.plotStatus},
-                                    {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)},
-                                    {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotPageHandler()}
+                                    {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)}
                                 ]}
                             />
                         ))

@@ -1,365 +1,17 @@
 import { MouseEvent, UIEvent, useEffect, useRef, useState } from "react";
-import { DialogBox, Heading, KeyValuePairs, Timer } from "../shared/SharedComponents";
+import { ButtonPrimary, DialogBox, KeyValuePairs, ScrollableContainer, Timer } from "../shared/SharedComponents";
 import "../styles/pages/single_item_page.scss";
-import { detachClientFromPlot, findSingleClientAllSlips, findSinglePlot } from "../api";
+import { detachClientFromPlot, findSinglePlot } from "../api";
 import { PlotTypes, SlipTypes } from "../utils/types";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { useSelectedRoute } from "../Context";
 import { getMonthsCovered } from "../utils/utilFunctions";
-import Table from "../shared/Table";
 import { BsThreeDots } from "react-icons/bs";
 import { BiDownArrow } from "react-icons/bi";
+import { RxReset } from "react-icons/rx";
+import { MdPayment, MdSell } from "react-icons/md";
 
-export const SingleUser = () => {
-
-    return(
-        <div className="single_plot_bg">
-
-        </div>
-    )
-};
-export const SingleAgent = () => {
-
-    useEffect(() => {
-        
-    }, []);
-
-    return(
-        <div className="single_plot_bg">
-            
-        </div>
-    )
-};
-export const SingleClient = () => {
-    const [clientAllSlips, setClientAllSlips] = useState<SlipTypes[]>([]);
-    const {clientID} = useParams();
-
-    useEffect(() => {
-        if (clientID) {
-            findSingleClientAllSlips(clientID)
-            .then((data) => {
-                setClientAllSlips(data.jsonData)
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        }
-    }, [clientID]);
-
-    return(
-        <div className="single_plot_bg">
-            <Heading text="Client All Slips" textAlign="center" />
-            <Table data={clientAllSlips} />
-            {/*<pre>{JSON.stringify(clientAllSlips, null, `\t`)}</pre>*/}
-        </div>
-    )
-};
-//const dummyDat = {
-//    shouldPay:9000,
-//    payments:[
-//        {
-//            amount:10000,
-//            pending:2000,
-//            createdAt:"20-01-25"            
-//        },
-//        {
-//            amount:7000,
-//            pending:2000,
-//            createdAt:"21-02-25"            
-//        },
-//        {
-//            amount:100000,
-//            pending:2000,
-//            createdAt:"19-03-25"            
-//        },
-//        {
-//            amount:10000,
-//            pending:2000,
-//            createdAt:"21-04-25"            
-//        },
-//        {
-//            amount:8000,
-//            pending:2000,
-//            createdAt:"19-05-25"            
-//        },
-//        {
-//            amount:9000,
-//            pending:2000,
-//            createdAt:"24-06-25"            
-//        },
-//        {
-//            amount:10000,
-//            pending:2000,
-//            createdAt:"20-07-25"            
-//        },
-//        {
-//            amount:11000,
-//            pending:2000,
-//            createdAt:"22-08-25"            
-//        },
-//        {
-//            amount:9000,
-//            pending:2000,
-//            createdAt:"24-09-25"            
-//        },
-//        {
-//            amount:10000,
-//            pending:2000,
-//            createdAt:"20-10-25"            
-//        },
-//        {
-//            amount:11000,
-//            pending:2000,
-//            createdAt:"22-11-25"            
-//        },
-//        {
-//            amount:8000,
-//            pending:2000,
-//            createdAt:"19-12-25"            
-//        },
-//        {
-//            amount:7000,
-//            pending:2000,
-//            createdAt:"21-13-25"            
-//        },
-//        {
-//            amount:8000,
-//            pending:2000,
-//            createdAt:"19-14-25"            
-//        },
-//        {
-//            amount:9000,
-//            pending:2000,
-//            createdAt:"24-15-25"            
-//        },
-//        {
-//            amount:10000,
-//            pending:2000,
-//            createdAt:"20-16-25"            
-//        },
-//        {
-//            amount:11000,
-//            pending:2000,
-//            createdAt:"22-17-25"            
-//        },
-//        {
-//            amount:7000,
-//            pending:2000,
-//            createdAt:"21-18-25"            
-//        },
-//        {
-//            amount:8000,
-//            pending:2000,
-//            createdAt:"19-19-25"            
-//        },
-//        //{
-//        //    amount:13000,
-//        //    pending:2000,
-//        //    createdAt:"24-20-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"20-21-25"            
-//        //},
-//        //{
-//        //    amount:11000,
-//        //    pending:2000,
-//        //    createdAt:"22-22-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"24-23-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"22-17-25"            
-//        //},
-//        //{
-//        //    amount:7000,
-//        //    pending:2000,
-//        //    createdAt:"21-18-25"            
-//        //},
-//        //{
-//        //    amount:8000,
-//        //    pending:2000,
-//        //    createdAt:"19-19-25"            
-//        //},
-//        //{
-//        //    amount:9000,
-//        //    pending:2000,
-//        //    createdAt:"24-20-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"20-21-25"            
-//        //},
-//        //{
-//        //    amount:11000,
-//        //    pending:2000,
-//        //    createdAt:"22-22-25"            
-//        //},
-//        {
-//            amount:100000,
-//            pending:2000,
-//            createdAt:"24-23-25"            
-//        },
-//        {
-//            amount:10000,
-//            pending:2000,
-//            createdAt:"20-01-25"            
-//        },
-//        {
-//            amount:7000,
-//            pending:2000,
-//            createdAt:"21-02-25"            
-//        },
-//        //{
-//        //    amount:8000,
-//        //    pending:2000,
-//        //    createdAt:"19-03-25"            
-//        //},
-//        //{
-//        //    amount:7000,
-//        //    pending:2000,
-//        //    createdAt:"21-04-25"            
-//        //},
-//        //{
-//        //    amount:8000,
-//        //    pending:2000,
-//        //    createdAt:"19-05-25"            
-//        //},
-//        //{
-//        //    amount:9000,
-//        //    pending:2000,
-//        //    createdAt:"24-06-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"20-07-25"            
-//        //},
-//        //{
-//        //    amount:11000,
-//        //    pending:2000,
-//        //    createdAt:"22-08-25"            
-//        //},
-//        //{
-//        //    amount:9000,
-//        //    pending:2000,
-//        //    createdAt:"24-09-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"20-10-25"            
-//        //},
-//        //{
-//        //    amount:11000,
-//        //    pending:2000,
-//        //    createdAt:"22-11-25"            
-//        //},
-//        //{
-//        //    amount:8000,
-//        //    pending:2000,
-//        //    createdAt:"19-12-25"            
-//        //},
-//        //{
-//        //    amount:7000,
-//        //    pending:2000,
-//        //    createdAt:"21-13-25"            
-//        //},
-//        //{
-//        //    amount:8000,
-//        //    pending:2000,
-//        //    createdAt:"19-14-25"            
-//        //},
-//        //{
-//        //    amount:9000,
-//        //    pending:2000,
-//        //    createdAt:"24-15-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"20-16-25"            
-//        //},
-//        //{
-//        //    amount:11000,
-//        //    pending:2000,
-//        //    createdAt:"22-17-25"            
-//        //},
-//        //{
-//        //    amount:7000,
-//        //    pending:2000,
-//        //    createdAt:"21-18-25"            
-//        //},
-//        //{
-//        //    amount:8000,
-//        //    pending:2000,
-//        //    createdAt:"19-19-25"            
-//        //},
-//        //{
-//        //    amount:100000,
-//        //    pending:2000,
-//        //    createdAt:"24-20-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"20-21-25"            
-//        //},
-//        //{
-//        //    amount:11000,
-//        //    pending:2000,
-//        //    createdAt:"22-22-25"            
-//        //},
-//        //{
-//        //    amount:9000,
-//        //    pending:2000,
-//        //    createdAt:"24-23-25"            
-//        //},
-//        //{
-//        //    amount:11000,
-//        //    pending:2000,
-//        //    createdAt:"22-17-25"            
-//        //},
-//        //{
-//        //    amount:7000,
-//        //    pending:2000,
-//        //    createdAt:"21-18-25"            
-//        //},
-//        //{
-//        //    amount:8000,
-//        //    pending:2000,
-//        //    createdAt:"19-19-25"            
-//        //},
-//        //{
-//        //    amount:9000,
-//        //    pending:2000,
-//        //    createdAt:"24-20-25"            
-//        //},
-//        //{
-//        //    amount:10000,
-//        //    pending:2000,
-//        //    createdAt:"20-21-25"            
-//        //},
-//        //{
-//        //    amount:11000,
-//        //    pending:2000,
-//        //    createdAt:"22-22-25"            
-//        //},
-//        //{
-//        //    amount:9000,
-//        //    pending:2000,
-//        //    createdAt:"24-23-25"            
-//        //}
-//    ]
-//};
 export const SinglePlot = () => {
     const [singlePlotData, setSinglePlotData] = useState<PlotTypes|null>(null);
 
@@ -616,21 +268,9 @@ export const SinglePlot = () => {
         ctx.stroke();
     }, [allSlipsData, tooltip]);
 
-
-    const gg = () => {
-        console.log(yRange);
-        console.log(nodeValue);        
-        console.log(allSlipsData);
-        console.log(tooltipCollection);
-    }
-    
-
     useEffect(() => {
         getHighestAmount();
     }, [allSlipsData]);
-
-
-
     
     useEffect(() => {        
         if (!plotID || plotID === "null" || plotID === "undefined") {
@@ -685,13 +325,18 @@ export const SinglePlot = () => {
         <>
         <DialogBox isOpen={isEditDialogOpen} setIsOpen={setIsEditDialogOpen} updateItemID={selectedSlipID} setAllSlipsData={setAllSlipsData} />
         <div className="single_plot_bg">
-            {/*<Heading text={`Plot No. ${plotID}`} />*/}
-            {/*<button onClick={assignPlotHandler}>Assign plot</button>*/}
-            {/*<pre>{JSON.stringify(nodeValue, null, `\t`)}</pre>*/}
-            <button onClick={resetPlotAssignmentHandler}>Reset Plot Assignment</button>
-            <button onClick={payEMIHandler}>{singlePlotData?.plotStatus === "vacant"?"Sell To Client":"Pay EMI"}</button>
-
-            <button onClick={gg}>EMIs</button>
+            <ButtonPrimary
+                text="Reset Plot Assignment"
+                Icon={RxReset}
+                display="inline-flex"
+                onClickHandler={resetPlotAssignmentHandler}
+            />
+            <ButtonPrimary
+                text={singlePlotData?.plotStatus === "vacant"?"Sell To Client":"Pay EMI"}
+                Icon={singlePlotData?.plotStatus === "vacant"?MdSell:MdPayment}
+                display="inline-flex"
+                onClickHandler={payEMIHandler}
+            />
 
             <div className="canvas_scrollable" onScroll={(e) => aHandler(e)}>
                 <canvas ref={canvasRef} className="emi_chart" onMouseMove={(e) => tooltipHandler(e)}>
@@ -725,10 +370,13 @@ export const SinglePlot = () => {
                     {"Plot Rate":`₹${singlePlotData?.rate}/-`},
                     {"Dimensions":`${singlePlotData?.breath}X${singlePlotData?.length}`}
                 ]} isLoading={!singlePlotData} />
-                <KeyValuePairs keyValuePairArray={[
-                    {"Agent":singlePlotData?.agentID},
-                    {"Client":singlePlotData?.clientID}
-                ]} isLoading={!singlePlotData} />
+                {
+                    (singlePlotData?.clientID && singlePlotData?.agentID) &&
+                        <KeyValuePairs keyValuePairArray={[
+                            {"Agent":singlePlotData?.agentID},
+                            {"Client":singlePlotData?.clientID}
+                        ]} isLoading={!singlePlotData} />
+                }
                 <KeyValuePairs keyValuePairArray={[
                     {"Duration":`${singlePlotData?.duration}months`},
                     {"Time Convered":getMonthsCovered(firstSlipData?.createdAt)},
@@ -749,13 +397,15 @@ export const SinglePlot = () => {
                 
 
                 {
-                    (singlePlotData?.shouldPay&&singlePlotData?.paid)&&
+                    (singlePlotData?.shouldPay&&singlePlotData?.paid) ?
                         <KeyValuePairs
                             keyValuePairArray={[
                                 {[-(singlePlotData.shouldPay - singlePlotData.paid)<=0?"Pending":"Extra"]:`${-(singlePlotData.shouldPay - singlePlotData.paid)}/-`}
                             ]}
                             color={singlePlotData.shouldPay - singlePlotData.paid>0?"red":"#00cc00"}
                         />
+                        :
+                        <></>
                 }
 
                 {
@@ -765,84 +415,71 @@ export const SinglePlot = () => {
                                 {"Total Slips":allSlipsData.length},
                                 {"Slips (cleared)":allSlipsData.reduce((acc, iter) => iter.isCancelled === false?acc+1:acc, 0)},
                                 {"Slips (cancelled)":allSlipsData.reduce((acc, iter) => iter.isCancelled === true?acc+1:acc, 0)},
-                                {"Total EMIs cleared":Number(singlePlotData?.paid/singlePlotData?.shouldPay).toFixed(2)}
+                                {"Total EMIs cleared":Number((singlePlotData?.paid||0)/(singlePlotData?.shouldPay||1)).toFixed(2)}
                             ]}
                         />
                 }
 
                 <Timer bgColor={BG_COLOR} monthsCovered={getMonthsCovered(firstSlipData?.createdAt)} duration={singlePlotData?.duration} />
             </div>
-            <div className="slips_cont">
-                <div className="slip_cont" style={{
-                    backgroundColor:PRIMARY_LIGHT
-                }}>
-                    <div className="upper_part">
-                        <div className="date slip_content">Date</div>
-                        <div className="slip_type slip_content">Slip Type</div>
-                        <div className="slip_number slip_content">Slip No.</div>
-                        <div className="client_name slip_content">Client Name</div>
-                        <div className="amount slip_content">Amount</div>
-                        <div className="mode slip_content">Mode Of Payment</div>
-                        <div className="mode slip_content">PaymentID</div>
-                        {/*<div className="mode slip_content">Status</div>*/}
-                        <div className="edit_btn slip_content">edit</div>
-                        {/*<div className="mode slip_content">Cancelled For</div>*/}
-                        {/*<div className="mode slip_content">Remark</div>*/}
-                    </div>
-                </div>
-                
-                {
-                    allSlipsData.map((slp) => (
-                        <div className="slip_cont" key={slp._id} style={{
-                            backgroundColor:slp.isCancelled ?
-                                "#ff000050"
-                                :
-                                "white"
-                        }}>
-                            <div className="upper_part">
-                                <div className="date slip_content">{new Date(slp.createdAt).toLocaleDateString(undefined, {day:"2-digit", month:"2-digit", year:"numeric"})}</div>
-                                <div className="slip_type slip_content">
-                                    {slp.slipType}
-                                </div>
-                                <div className="slip_number slip_content">{slp.slipNo}</div>
-                                <div className="client_name slip_content">{slp.clientID}</div>
-                                <div className="amount slip_content">₹{slp.amount}/-</div>
-                                {/*<div className="admin slip_content"></div>*/}
-                                <div className="mode slip_content">{slp.modeOfPayment}</div>
-                                <div className="mode slip_content">{slp.paymentID}</div>
-                                {/*<div className="is_cancelled slip_content">{slp.isCancelled.toString()}</div>*/}
-                                <button className="edit_btn slip_content" onClick={() => {setIsEditDialogOpen(!isEditDialogOpen); setSelectedSlipID(slp._id);}}><BsThreeDots /></button>
 
-                                {
-                                    slp.isCancelled &&
-                                        <button className="edit_btn slip_content" onClick={() => {func(`slip_${slp._id}`);}}><BiDownArrow /></button>
-                                }
-                            </div>
-                            <div id={`slip_${slp._id}`} className="lower_part">
-                                <p>{slp.cancelledFor}</p>
-                                <p>{slp.remark}</p>
-                            </div>
-
-                            {/*<select className="is_cancelled slip_content selectable" defaultValue={slp.isCancelled.toString()}>
-                                <option value="downpay">true</option>
-                                <option value="token">false</option>
-                            </select>*/}
-                            {/*<div className="cancelled_for slip_content">{slp.cancelledFor?slp.cancelledFor:"------"}</div>*/}
-                            {/*<div className="remark slip_content">{slp.remark?slp.remark:"------"}</div>*/}
+            <ScrollableContainer>
+                <div className="slips_cont">
+                    <div className="slip_cont" style={{
+                        backgroundColor:PRIMARY_LIGHT
+                    }}>
+                        <div className="upper_part">
+                            <div className="date slip_content">Date</div>
+                            <div className="slip_type slip_content">Slip Type</div>
+                            <div className="slip_number slip_content">Slip No.</div>
+                            <div className="client_name slip_content">Client Name</div>
+                            <div className="amount slip_content">Amount</div>
+                            <div className="mode slip_content">Mode Of Payment</div>
+                            <div className="mode slip_content">PaymentID</div>
+                            {/*<div className="mode slip_content">Status</div>*/}
+                            <div className="edit_btn slip_content">edit</div>
+                            {/*<div className="mode slip_content">Cancelled For</div>*/}
+                            {/*<div className="mode slip_content">Remark</div>*/}
                         </div>
-                    ))
-                }
-            </div>
+                    </div>
+                    
+                    {
+                        allSlipsData.map((slp) => (
+                            <div className="slip_cont" key={slp._id} style={{
+                                backgroundColor:slp.isCancelled ?
+                                    "#ff000050"
+                                    :
+                                    "white"
+                            }}>
+                                <div className="upper_part">
+                                    <div className="date slip_content">{new Date(slp.createdAt).toLocaleDateString(undefined, {day:"2-digit", month:"2-digit", year:"numeric"})}</div>
+                                    <div className="slip_type slip_content">
+                                        {slp.slipType}
+                                    </div>
+                                    <div className="slip_number slip_content">{slp.slipNo}</div>
+                                    <div className="client_name slip_content">{slp.clientID}</div>
+                                    <div className="amount slip_content">₹{slp.amount}/-</div>
+                                    {/*<div className="admin slip_content"></div>*/}
+                                    <div className="mode slip_content">{slp.modeOfPayment}</div>
+                                    <div className="mode slip_content">{slp.paymentID}</div>
+                                    {/*<div className="is_cancelled slip_content">{slp.isCancelled.toString()}</div>*/}
+                                    <button className="edit_btn slip_content" onClick={() => {setIsEditDialogOpen(!isEditDialogOpen); setSelectedSlipID(slp._id);}}><BsThreeDots /></button>
+
+                                    {
+                                        slp.isCancelled &&
+                                            <button className="edit_btn slip_content" onClick={() => {func(`slip_${slp._id}`);}}><BiDownArrow /></button>
+                                    }
+                                </div>
+                                <div id={`slip_${slp._id}`} className="lower_part">
+                                    <p>{slp.cancelledFor}</p>
+                                    <p>{slp.remark}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </ScrollableContainer>
         </div>
         </>
     )
 };
-export const SingleSlip = () => {
-
-    return(
-        <div className="single_plot_bg">
-
-        </div>
-    )
-};
-

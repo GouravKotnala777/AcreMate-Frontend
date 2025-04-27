@@ -61,8 +61,6 @@ const Agents = () => {
 
     return(
         <div className="agents_bg">
-            <h1>Agents</h1>
-
                 <div className="site_cont">
                     {
                         siteArray.map((siteName, ind) => (
@@ -72,7 +70,7 @@ const Agents = () => {
                                     keyValuePairArray={[
                                         {"Site":siteName}
                                     ]}
-                                    margin="20px 0 0 0"
+                                    margin="20px auto 0 auto"
                                     backgroundColor={PRIMARY_LIGHTER}
                                 />
                                 {
@@ -86,6 +84,7 @@ const Agents = () => {
                                                 {"Paid":i.paid},
                                                 {"Pendings":i.pending}
                                             ]}
+                                            margin="auto"
                                         />
                                     ))
                                 }
