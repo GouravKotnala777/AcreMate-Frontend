@@ -12,4 +12,23 @@
         display: flex;
         flex-direction: column;
     }
+    .login_lower_part{
+        display: flex;
+        font-size: 0.8rem;
+        justify-content: space-between;
+        margin: 20px 0 10px 0;
+        .forget_pass{
+            .forget_pass_link{
+
+            }
+        }
+        .dont_have_acc{
+            .dont_have_acc_heading{
+
+            }
+            .register_link{
+
+            }
+        }
+    }
 }

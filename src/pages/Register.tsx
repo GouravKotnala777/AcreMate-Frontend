@@ -3,6 +3,7 @@ import { Button, Heading, Input, Select } from "../shared/SharedComponents";
 import { BG_COLOR } from "../utils/constants";
 import { ChangeEvent, useState } from "react";
 import { register } from "../api";
+import { Link } from "react-router-dom";
 
 export interface RegisterFormData{
     firstName:string;
@@ -41,6 +42,16 @@ const Register = () => {
                 <Input label="Mobile" name="mobile" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Input label="Password" name="password" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Button text="Register" onClickHandler={onClickHandler}  />
+
+            </div>
+            <div className="login_lower_part">
+                <div className="forget_pass">
+                    <Link className="forget_pass_link" to="/forget-password">Forget Password</Link>
+                </div>
+                <div className="dont_have_acc">
+                    <span className="dont_have_acc_heading">Already have accont?</span>
+                    <Link className="register_link" to="/login">Login</Link>
+                </div>
             </div>
         </div>
     )
