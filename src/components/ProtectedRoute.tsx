@@ -1,5 +1,5 @@
-import { ReactElement, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { ReactElement } from "react";
+import Login from "../pages/Login";
 
 
 interface ProtectedRoutePropType{
@@ -8,10 +8,7 @@ interface ProtectedRoutePropType{
 }
 
 const ProtectedRoute = ({userRole, ChildElement}:ProtectedRoutePropType) => {
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (!userRole) {navigate("/login"); return;}
-    }, []);
+    if (!userRole) return <Login/>;
 
     return ChildElement;
 };
