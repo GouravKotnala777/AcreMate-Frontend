@@ -35,7 +35,7 @@ interface SelectPropTypes {
     display?:"block"|"none";
     onChangeHandler:(e:ChangeEvent<HTMLSelectElement>) => void;
 }
-interface ButtonPropTypes {
+interface ButtonSecondaryPropTypes {
     text:string;
     color?:string;
     bgColor?:string;
@@ -183,7 +183,7 @@ export const Select = ({label, name, options, color, bgColor, border, display, o
     )
 };
 
-export const Button = ({text, color, bgColor, width, margin, onClickHandler}:ButtonPropTypes) => {
+export const ButtonSecondary = ({text, color, bgColor, width, margin, onClickHandler}:ButtonSecondaryPropTypes) => {
     return(
         <button id="button_component" onClick={onClickHandler} style={{
             backgroundColor:bgColor?bgColor:"black",
@@ -230,7 +230,7 @@ export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler,
                             <h3 key={index}>input type = "{inp.type}"</h3>
                 ))
             }
-            <Button text={btnText} width="100%" margin="10px 0 15px 0" onClickHandler={onSubmitFormHandler} />
+            <ButtonSecondary text={btnText} width="100%" margin="10px 0 15px 0" onClickHandler={onSubmitFormHandler} />
             {/*<button onClick={onSubmitFormHandler}></button>*/}
         </div>
     )
@@ -336,7 +336,7 @@ export const DialogBox = ({isOpen, setIsOpen, updateItemID, setAllSlipsData}:{se
                 <label className="dialog_label">Cancellation Reason</label>
                 <Select label="reason" border={`1px solid ${PRIMARY_DARK}`} name="cancelledFor" options={["bounced", "cash not received", "transaction failed"]} onChangeHandler={onChangeHandler} />
                 <Input label="Remark" name="remark" onChangeHandler={onChangeHandler} />
-                <Button text="Update Slip" width="100%" onClickHandler={onClickHandler} />
+                <ButtonSecondary text="Update Slip" width="100%" onClickHandler={onClickHandler} />
             </div>
         </div>
     )

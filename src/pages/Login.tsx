@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { BG_COLOR } from "../utils/constants";
-import { Button, Heading, Input } from "../shared/SharedComponents";
+import { ButtonSecondary, Heading, Input } from "../shared/SharedComponents";
 import { RegisterFormData } from "./Register";
 import { login } from "../api";
 import { useLoginUser } from "../Context";
@@ -38,7 +38,7 @@ const Login = () => {
             <div className="form">
                 <Input label="Email" name="email" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Input label="Password" name="password" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
-                <Button text="Login" onClickHandler={onClickHandler}  />
+                <ButtonSecondary text="Login" onClickHandler={onClickHandler}  />
             </div>
             <div className="login_lower_part">
                 <div className="forget_pass">

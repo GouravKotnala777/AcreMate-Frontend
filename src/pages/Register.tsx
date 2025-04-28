@@ -1,5 +1,5 @@
 import "../styles/pages/register.scss";
-import { Button, Heading, Input, Select } from "../shared/SharedComponents";
+import { ButtonSecondary, Heading, Input, Select } from "../shared/SharedComponents";
 import { BG_COLOR } from "../utils/constants";
 import { ChangeEvent, useState } from "react";
 import { register } from "../api";
@@ -41,7 +41,7 @@ const Register = () => {
                 <Select label="Gender" name="gender" options={["male", "female", "other"]} border="1px solid rgb(78, 255, 175)" onChangeHandler={onChangeHandler} />
                 <Input label="Mobile" name="mobile" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Input label="Password" name="password" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
-                <Button text="Register" onClickHandler={onClickHandler}  />
+                <ButtonSecondary text="Register" onClickHandler={onClickHandler}  />
 
             </div>
             <div className="login_lower_part">

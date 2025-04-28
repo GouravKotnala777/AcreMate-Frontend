@@ -1,7 +1,6 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./pages/Home.tsx";
 import { Toaster } from "react-hot-toast";
-import Clients from "./pages/Clients.tsx";
 import Slips from "./pages/Slips.tsx";
 import Sites from "./pages/Sites.tsx";
 import Login from "./pages/Login.tsx";
@@ -41,7 +40,6 @@ function App() {
         <Routes>
           <Route path="/" element={<ProtectedRoute ChildElement={<Home />} userRole={loginUser?.role} />} />
           <Route path="/home" element={<ProtectedRoute ChildElement={<Home />} userRole={loginUser?.role} />} />
-          <Route path="/clients" element={<ProtectedRoute ChildElement={<Clients />} userRole={loginUser?.role} />} />
           <Route path="/agents" element={<ProtectedRoute ChildElement={<Agents />} userRole={loginUser?.role} />} />
           <Route path="/slips" element={<ProtectedRoute ChildElement={<Slips />} userRole={loginUser?.role} />} />
           <Route path="/sites" element={<ProtectedRoute ChildElement={<Sites />} userRole={loginUser?.role} />} />
