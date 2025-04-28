@@ -12,7 +12,7 @@ import { BiDownArrow } from "react-icons/bi";
 import { RxReset } from "react-icons/rx";
 import { MdPayment, MdSell } from "react-icons/md";
 
-export const SinglePlot = () => {
+const SinglePlot = () => {
     const [singlePlotData, setSinglePlotData] = useState<PlotTypes|null>(null);
 
     // we will take 'firstSlipData' & 'lastSlipData' from 'allSlipsData'
@@ -483,3 +483,6 @@ export const SinglePlot = () => {
         </>
     )
 };
+
+
+export default SinglePlot;
