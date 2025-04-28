@@ -3,7 +3,7 @@ import { BG_COLOR } from "../utils/constants";
 import { Button, Heading, Input } from "../shared/SharedComponents";
 import { RegisterFormData } from "./Register";
 import { login } from "../api";
-import { useSelectedRoute } from "../Context";
+import { useLoginUser } from "../Context";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -14,7 +14,7 @@ export interface LoginFormData{
 
 
 const Login = () => {
-    const {setLoginUser} = useSelectedRoute();
+    const {setLoginUser} = useLoginUser();
     const [formData, setFormData] = useState<Pick<RegisterFormData, "email"|"password">>({email:"", password:""});
     const navigate = useNavigate();
     

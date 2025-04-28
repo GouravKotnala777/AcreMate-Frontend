@@ -5,7 +5,6 @@ import { detachClientFromPlot, findSinglePlot } from "../api";
 import { PlotTypes, SlipTypes } from "../utils/types";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
-import { useSelectedRoute } from "../Context";
 import { getMonthsCovered } from "../utils/utilFunctions";
 import { BsThreeDots } from "react-icons/bs";
 import { BiDownArrow } from "react-icons/bi";
@@ -44,7 +43,6 @@ const SinglePlot = () => {
 
     const [query] = useSearchParams();
     const navigate = useNavigate();
-    const {setSelectedRoute, setSelectedPanel} = useSelectedRoute();
 
 
     const plotID = query.get("plotID");
@@ -57,13 +55,9 @@ const SinglePlot = () => {
 
         if (singlePlotData?.plotStatus === "vacant") {
             navigate(`/create?plotID=${singlePlotData._id}&plotStatus=${singlePlotData?.plotStatus}&formPanelFor=slips`);
-            setSelectedRoute("slips");
-            setSelectedPanel("create");
         }
         else{
             navigate(`/create?plotID=${singlePlotData?._id}&plotStatus=${singlePlotData?.plotStatus}&formPanelFor=slips`);
-            setSelectedRoute("slips");
-            setSelectedPanel("create");
         }
     };
     const resetPlotAssignmentHandler = async() => {
