@@ -159,7 +159,7 @@ const Header = () => {
                     Icon={BiCross}
                     onClickHandler={() => setIsSearchPanelMobileActive(false)}
                     display="inline-flex"
-                    margin="10px 0 10px 10px"
+                    margin="10px 0px"
                 />
                 
                 <SearchComponent
@@ -196,6 +196,9 @@ const Header = () => {
                             </NavLink>
                             <NavLink to="/sites" className="ham_nav_item">
                                 All Sites
+                            </NavLink>
+                            <NavLink to="/slips" className="ham_nav_item">
+                                All Slips
                             </NavLink>
                             <NavLink to="/create?plotID=''&plotStatus=''&formPanelFor=sites" className="ham_nav_item">
                                 Create Site

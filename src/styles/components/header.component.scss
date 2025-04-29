@@ -30,7 +30,6 @@
         padding: 4px;
         border: none;
         background-color: transparent;
-
     }
     .search_panel_mobile{
         //border: 2px solid red;
@@ -41,6 +40,7 @@
         width: 100vw;
         height: 100vh;
         box-sizing: border-box;
+        padding: 0 10px;
         z-index: 4;
     }
     .nav{
@@ -262,14 +262,8 @@
             margin-left: auto;
         }
         .search_panel_mobile{
-            border: 2px solid red;
+            //border: 2px solid red;
             //background-color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            box-sizing: border-box;
         }
         .nav{
             //border: 2px solid green;

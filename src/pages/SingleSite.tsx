@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
 import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../api";
 import { ButtonPrimary, HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
-import { PRIMARY_LIGHT } from "../utils/constants";
+import { PRIMARY_LIGHT, PRIMARY_LIGHTER } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
@@ -86,7 +86,7 @@ const SingleSite = () => {
 
         const canvas = canvasRef.current;
         
-        canvas.width = window.innerWidth;
+        //canvas.width = window.innerWidth;
         canvas.height = 300;
         
         const ctx = canvas.getContext("2d");
@@ -234,14 +234,15 @@ const SingleSite = () => {
 
             {
                 allPlots.length !== 0 ?
-                    <canvas ref={canvasRef}
-                        style={{
-                            border:"2px solid red",
-                            width:"100%",
-                            height:"300px"
-                        }}
-                    >
-                    </canvas>
+                    <ScrollableContainer>
+                        <canvas width={1200} ref={canvasRef}
+                            style={{
+                                backgroundColor:PRIMARY_LIGHTER,
+                                height:"300px"
+                            }}
+                        >
+                        </canvas>
+                    </ScrollableContainer>
                     :
                     <h3>Your Site Chart will show here</h3>
 
