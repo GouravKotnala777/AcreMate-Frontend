@@ -7,8 +7,9 @@ import ListItem from "../components/ListItem";
 import { BsInfo } from "react-icons/bs";
 import { IoCall } from "react-icons/io5";
 import ListHeading from "../components/ListHeading";
-import { HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import { ButtonPrimary, HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
+import { BiLoader } from "react-icons/bi";
 
 
 const Home = () => {
@@ -19,7 +20,9 @@ const Home = () => {
         {lastSlip:{_id:string; amount:number; createdAt:Date;}}
     )[]>([]);
     const [skip, setSkip] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isScreenLoading, setIsScreenLoading] = useState<boolean>(true);
+    const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
+    const [isDisable, setIsDisable] = useState<boolean>(false);
     const [error, setError] = useState<{success:boolean; message:string; jsonData:object}>({success:false, message:"", jsonData:{}});
     const [isError, setIsError] = useState<boolean>(false);
     const scrollBottomRef = useRef<HTMLDivElement|null>(null);
@@ -28,18 +31,29 @@ const Home = () => {
 
     const findPendingClientsHandler = async() => {
         if ((typeof skip !== "number") || (skip < 0 )) return;
+        setIsButtonLoading(true);
         const res = await findPendingClients(skip);
-        if (res.success) {
-            setAllPendingPlots((prev) => [...prev, ...res.jsonData]);
-            setSkip((prev) => prev+1);
-            setIsLoading(false);
-            setIsError(false);
+        if (res.success){
+            if (res.jsonData.length !== 0){
+                setAllPendingPlots((prev) => [...prev, ...res.jsonData]);
+                setSkip((prev) => prev+1);
+                setIsError(false);
+                setIsDisable(false);
+                //setIsScreenLoading(false);
+            }
+            else{
+                setIsError(false);
+                //setIsScreenLoading(false);
+                
+                setIsDisable(true);
+            }
         }
         else{
             setError(res);
-            setIsLoading(false);
             setIsError(true);
         }
+        setIsScreenLoading(false);
+        setIsButtonLoading(false);
     };
 
     const navigateToSinglePage = (plotID:string) => {
@@ -93,7 +107,7 @@ const Home = () => {
                 }
 
                 <DataFlowHandler
-                    isLoading={isLoading}
+                    isLoading={isScreenLoading}
                     isError={isError}
                     dataArray={allPendingPlots}
                     
@@ -157,7 +171,14 @@ const Home = () => {
                 />
             </ScrollableContainer>
 
-            <button className="load_more_btn" onClick={() => findPendingClientsHandler()}>load more...</button>
+            <ButtonPrimary
+                text="load more"
+                Icon={BiLoader}
+                onClickHandler={findPendingClientsHandler}
+                margin="10px auto"
+                isLoading={isButtonLoading}
+                isDisable={isDisable}
+            />
             <div className="scroll_bottom" ref={scrollBottomRef}>load more...</div>
         </div>
     )
