@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "../styles/shared_components.scss";
 import { IconType } from "react-icons";
-import { ChangeEvent, Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, ReactNode, SetStateAction, UIEvent, useState } from "react";
 import { RoutesTypes, SlipTypes, UpdateSlipBodyTypes } from "../utils/types";
 import { BG_COLOR, FONT_PRIMARY, PRIMARY_DARK } from "../utils/constants";
 import { updateSlip } from "../api";
@@ -85,6 +85,7 @@ interface KeyValuePairsPropTypes{
 }
 interface ScrollableContainerPropTypes{
     children:ReactNode;
+    tableStickyColumn?:string[];
 }
 interface HeadingParaContPropTypes{
     heading:string;
@@ -355,10 +356,31 @@ export const DialogBox = ({isOpen, setIsOpen, updateItemID, setAllSlipsData}:{se
     )
 };
 
-export const ScrollableContainer = ({children}:ScrollableContainerPropTypes) => {
+export const ScrollableContainer = ({children, tableStickyColumn}:ScrollableContainerPropTypes) => {
+    const [isStickColumnVisible, setIsStickColumnVisible] = useState(false);
+    const [scrolledLength, setScrolledLength] = useState<number>(0);
 
+
+    const horizontalScrollingHandler = (e:UIEvent<HTMLDivElement>) => {
+        setScrolledLength(e.currentTarget.scrollLeft);
+        if (e.currentTarget.scrollLeft >= 100) {
+            setIsStickColumnVisible(true);
+        }
+        else{
+            setIsStickColumnVisible(false);
+        }
+    }
     return(
-        <div className="scrollable_cont">
+        <div className="scrollable_cont" onScroll={(e) => horizontalScrollingHandler(e)}>
+            <div className="sticky_column" style={{
+                left:isStickColumnVisible?`${scrolledLength}px`:"-130px"
+            }}>
+                {
+                    tableStickyColumn?.map((na, index) => (
+                        <div className="value" key={index}>{na}</div>
+                    ))
+                }
+            </div>
             {children}
         </div>
     )

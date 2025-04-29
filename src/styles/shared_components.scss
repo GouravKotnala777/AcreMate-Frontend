@@ -214,6 +214,22 @@ select{
     //border: 2px solid red;
     overflow-x: auto;
     padding: 10px;
+    position: relative;
+    .sticky_column{
+        //border: 2px solid violet;
+        position: absolute;
+        bottom: 10px;
+        .value{
+            //border: 2px solid indigo;
+            width: 100px;
+            font-size: 0.65rem;
+            background-color: $primaryLight;
+            color: #313131;
+            padding: 10px;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+    }
 }
 
 .heading_para_cont{

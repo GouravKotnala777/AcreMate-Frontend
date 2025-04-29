@@ -301,7 +301,7 @@ const SingleSite = () => {
                 }
             </div>
 
-            <ScrollableContainer>
+            <ScrollableContainer tableStickyColumn={allPlots.map((plt) => ("Plot No. " + plt.plotNo.toString()))}>
                 <ListHeading
                     headingRow={[
                         {itemValue:"ID", itemWidth:"14%"},

@@ -84,7 +84,7 @@ const Home = () => {
 
     return(
         <div className="home_bg">
-            <ScrollableContainer>
+            <ScrollableContainer tableStickyColumn={allPendingPlots.map((plt) => plt.clientDetailes.name)}>
 
                 {
                     allPendingPlots.length !== 0 &&
