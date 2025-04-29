@@ -5,6 +5,8 @@ import { ChangeEvent, Dispatch, ReactNode, SetStateAction, useState } from "reac
 import { RoutesTypes, SlipTypes, UpdateSlipBodyTypes } from "../utils/types";
 import { BG_COLOR, FONT_PRIMARY, PRIMARY_DARK } from "../utils/constants";
 import { updateSlip } from "../api";
+import { TbDisabled } from "react-icons/tb";
+import Spinner from "../components/Spinner";
 
 interface NavigateItemPropTypes {
     Icon:IconType;
@@ -41,6 +43,8 @@ interface ButtonSecondaryPropTypes {
     bgColor?:string;
     width?:string;
     margin?:string;
+    isLoading?:boolean;
+    isDisable?:boolean;
     onClickHandler:() => Promise<void>;
 }
 interface ButtonPrimaryPropTypes {
@@ -52,6 +56,8 @@ interface ButtonPrimaryPropTypes {
     bgColor?:string;
     width?:string;
     display?:string;
+    isLoading?:boolean;
+    isDisable?:boolean;
     onClickHandler:() => Promise<void>|void;
 }
 interface FormSharedComponentPropTypes{
@@ -183,17 +189,21 @@ export const Select = ({label, name, options, color, bgColor, border, display, o
     )
 };
 
-export const ButtonSecondary = ({text, color, bgColor, width, margin, onClickHandler}:ButtonSecondaryPropTypes) => {
+export const ButtonSecondary = ({text, color, bgColor, width, margin, isLoading, isDisable, onClickHandler}:ButtonSecondaryPropTypes) => {
     return(
         <button id="button_component" onClick={onClickHandler} style={{
             backgroundColor:bgColor?bgColor:"black",
             color:color?color:"white",
             width:width?width:"unset",
-            margin:margin?margin:"0"
-        }}>{text}</button>
+            margin:margin?margin:"0",
+            opacity:isDisable?0.4:1
+        }}>{isLoading?"loading...":text}
+        {(isLoading && !isDisable) && <Spinner />}
+        {(!isLoading && isDisable) && <TbDisabled />}
+        </button>
     )
 };
-export const ButtonPrimary = ({text, Icon, color, bgColor, width, margin, padding, display, onClickHandler}:ButtonPrimaryPropTypes) => {
+export const ButtonPrimary = ({text, Icon, color, bgColor, width, margin, padding, display, isLoading, isDisable, onClickHandler}:ButtonPrimaryPropTypes) => {
     return(
         <button className="primary_button_component" onClick={onClickHandler} style={{
             margin:margin?margin:"10px 0 0 auto",
@@ -201,9 +211,12 @@ export const ButtonPrimary = ({text, Icon, color, bgColor, width, margin, paddin
             backgroundColor:bgColor?bgColor:"white",
             color:color?color:FONT_PRIMARY,
             width:width?width:"unset",
-            display:display?display:"flex"
-        }}>{text}
-        {Icon && <Icon /> }
+            display:display?display:"flex",
+            opacity:(isLoading||isDisable)?0.4:1,
+        }} disabled={isLoading||isDisable}>{isLoading?"loading...":text}
+        {(isLoading && !isDisable) && <Spinner />}
+        {(!isLoading && isDisable) && <TbDisabled />}
+        {(Icon && !isLoading && !isDisable) && <Icon />}
         </button>
     )
 };
