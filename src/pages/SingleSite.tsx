@@ -209,9 +209,43 @@ const SingleSite = () => {
                 Icon={BiAddToQueue}
                 onClickHandler={navigateToAddPlotPageHandler}
             />
-            {/*<pre>{JSON.stringify(trackedArea, null, `\t`)}</pre>*/}
             <KeyValuePairs keyValuePairArray={[
                 {"Total Area":siteData?.totalSize},
+                {"Sold Area":allPlots.reduce((acc, iter) => {
+                    if (iter.hasSold) {
+                        acc += iter.size;
+                    }
+                    return acc;
+                }, 0)},
+                {"Remaining Area":allPlots.reduce((acc, iter) => {
+                    if (!iter.hasSold) {
+                        acc += iter.size;
+                    }
+                    return acc;
+                }, 0)},
+            ]}
+            />
+            <KeyValuePairs keyValuePairArray={[
+                {"Should Pay":allPlots.reduce((acc, iter) => {
+                    if (iter.hasSold) {
+                        acc += iter.shouldPay; // shouldPay is one EMI of one month i will multiply with time covered to get shouldPay of one plot after a certain time covered
+                    }
+                    return acc;
+                }, 0)},
+                {"Paid":allPlots.reduce((acc, iter) => {
+                    if (iter.hasSold) {
+                        acc += iter.paid;
+                    }
+                    return acc;
+                }, 0)},
+                {"Total Pendings":allPlots.reduce((acc, iter) => {
+                    if (iter.hasSold) {
+                        acc += (iter.paid - iter.shouldPay);
+                    }
+                    return acc;
+                }, 0)},
+            ]} margin="10px 0" backgroundColor={PRIMARY_LIGHT} />
+            <KeyValuePairs keyValuePairArray={[
                 {"Tracked Area":`${trackedArea??0} + ${(Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}`},
                 {"Untracked Area":(siteData?.totalSize??0) - trackedArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}
             ]} margin="10px 0" />
