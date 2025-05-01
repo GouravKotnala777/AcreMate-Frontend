@@ -4,12 +4,12 @@ import { PlotTypes } from "../utils/types";
 import { findPendingClients, sendMessageToClient } from "../api";
 import { useNavigate } from "react-router-dom";
 import ListItem from "../components/ListItem";
-import { BsInfo } from "react-icons/bs";
-import { IoCall } from "react-icons/io5";
+import { BsInfoSquare } from "react-icons/bs";
 import ListHeading from "../components/ListHeading";
 import { ButtonPrimary, HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
-import { BiLoader } from "react-icons/bi";
+import { TbArrowDownDashed } from "react-icons/tb";
+import { BiMessageDetail } from "react-icons/bi";
 
 
 const Home = () => {
@@ -156,8 +156,8 @@ const Home = () => {
                                     {itemValue:i.clientDetailes.mobile},
                                     {itemValue:i.timeCovered},
                                     {itemValue:i.pending, style:{color:"red", fontWeight:"600"}},
-                                    {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePage(i._id.toString())},
-                                    {itemValue:"call", isButton:true, btnIcon:IoCall, onClickHanlder:()=>sendMessageToClientHandler(i.clientDetailes.mobile, `Hello ${i.clientDetailes.name} your pending is ${i.pending}₹`)}
+                                    {itemValue:"info", isButton:true, btnIcon:BsInfoSquare, onClickHanlder:()=>navigateToSinglePage(i._id.toString())},
+                                    {itemValue:"call", isButton:true, btnIcon:BiMessageDetail, onClickHanlder:()=>sendMessageToClientHandler(i.clientDetailes.mobile, `Hello ${i.clientDetailes.name} your pending is ${i.pending}₹`)}
                                 ]}
                             />
                         ))
@@ -173,7 +173,7 @@ const Home = () => {
 
             <ButtonPrimary
                 text="load more"
-                Icon={BiLoader}
+                Icon={TbArrowDownDashed}
                 onClickHandler={findPendingClientsHandler}
                 margin="10px auto"
                 isLoading={isButtonLoading}

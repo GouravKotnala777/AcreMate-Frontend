@@ -9,7 +9,7 @@ import { getMonthsCovered } from "../utils/utilFunctions";
 import { BsThreeDots } from "react-icons/bs";
 import { BiDownArrow } from "react-icons/bi";
 import { RxReset } from "react-icons/rx";
-import { MdPayment, MdSell } from "react-icons/md";
+import { MdCurrencyRupee, MdDeleteOutline, MdPayment, MdSell } from "react-icons/md";
 
 const SinglePlot = () => {
     const [singlePlotData, setSinglePlotData] = useState<PlotTypes|null>(null);
@@ -321,13 +321,13 @@ const SinglePlot = () => {
         <div className="single_plot_bg">
             <ButtonPrimary
                 text="Reset Plot Assignment"
-                Icon={RxReset}
+                Icon={MdDeleteOutline}
                 display="inline-flex"
                 onClickHandler={resetPlotAssignmentHandler}
             />
             <ButtonPrimary
                 text={singlePlotData?.plotStatus === "vacant"?"Sell To Client":"Pay EMI"}
-                Icon={singlePlotData?.plotStatus === "vacant"?MdSell:MdPayment}
+                Icon={singlePlotData?.plotStatus === "vacant"?MdSell:MdCurrencyRupee}
                 display="inline-flex"
                 onClickHandler={payEMIHandler}
             />

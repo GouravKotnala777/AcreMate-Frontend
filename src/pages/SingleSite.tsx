@@ -7,7 +7,7 @@ import { PRIMARY_LIGHT, PRIMARY_LIGHTER } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
-import { BsInfo } from "react-icons/bs";
+import { BsInfoSquare } from "react-icons/bs";
 import DataFlowHandler from "../components/DataFlow";
 import { BiAddToQueue } from "react-icons/bi";
 
@@ -354,7 +354,7 @@ const SingleSite = () => {
                                     {itemValue:plt.size},
                                     {itemValue:plt.rate},
                                     {itemValue:plt.plotStatus},
-                                    {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)}
+                                    {itemValue:"info", isButton:true, btnIcon:BsInfoSquare, onClickHanlder:()=>navigateToSinglePageHandler(plt._id)}
                                 ]}
                             />
                         ))

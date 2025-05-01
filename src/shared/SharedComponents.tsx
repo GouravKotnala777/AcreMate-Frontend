@@ -5,8 +5,8 @@ import { ChangeEvent, Dispatch, ReactNode, SetStateAction, UIEvent, useState } f
 import { RoutesTypes, SlipTypes, UpdateSlipBodyTypes } from "../utils/types";
 import { BG_COLOR, FONT_PRIMARY, PRIMARY_DARK } from "../utils/constants";
 import { updateSlip } from "../api";
-import { TbDisabled } from "react-icons/tb";
 import Spinner from "../components/Spinner";
+import { GoStop } from "react-icons/go";
 
 interface NavigateItemPropTypes {
     Icon:IconType;
@@ -200,7 +200,7 @@ export const ButtonSecondary = ({text, color, bgColor, width, margin, isLoading,
             opacity:isDisable?0.4:1
         }}>{isLoading?"loading...":text}
         {(isLoading && !isDisable) && <Spinner />}
-        {(!isLoading && isDisable) && <TbDisabled />}
+        {(!isLoading && isDisable) && <GoStop />}
         </button>
     )
 };
@@ -216,7 +216,7 @@ export const ButtonPrimary = ({text, Icon, color, bgColor, width, margin, paddin
             opacity:(isLoading||isDisable)?0.4:1,
         }} disabled={isLoading||isDisable}>{isLoading?"loading...":text}
         {(isLoading && !isDisable) && <Spinner />}
-        {(!isLoading && isDisable) && <TbDisabled />}
+        {(!isLoading && isDisable) && <GoStop />}
         {(Icon && !isLoading && !isDisable) && <Icon />}
         </button>
     )

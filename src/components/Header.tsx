@@ -1,11 +1,8 @@
 import "../styles/components/header.component.scss";
-import { BsPerson } from "react-icons/bs";
 import { ButtonPrimary, NavigateItem } from "../shared/SharedComponents";
 import logo from "/public/acremate_logo6.png";
-import { BiCross, BiRegistered } from "react-icons/bi";
+import { BiCross } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
-import { GiSlipknot } from "react-icons/gi";
-import { FaMagnifyingGlass } from "react-icons/fa6";
 //import Spinner from "./Spinner";
 //import { FONT_PRIMARY } from "../utils/constants";
 import { useState } from "react";
@@ -13,6 +10,11 @@ import { useState } from "react";
 //import { ClientTypes, PlotTypes, SlipTypes } from "../utils/types";
 //import { CgRemove } from "react-icons/cg";
 import SearchComponent from "./SearchComponent";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { LuLandPlot } from "react-icons/lu";
+import { MdOutlineRealEstateAgent } from "react-icons/md";
+import { CiMemoPad } from "react-icons/ci";
+import { HiOutlineLogin } from "react-icons/hi";
 
 //let timerID:number|null = null;
 const Header = () => {
@@ -167,11 +169,11 @@ const Header = () => {
                 />
             </div>
             <nav className="nav">
-                <NavigateItem Icon={BsPerson} text={"Sites" as "sites"} url="/sites" />
+                <NavigateItem Icon={LuLandPlot} text={"Sites" as "sites"} url="/sites" />
                 <div className="nav_item_blocks">
-                    <NavigateItem Icon={BsPerson} text={"Agents" as "agents"} url="/agents" />
-                    <NavigateItem Icon={GiSlipknot} text={"Slips" as "slips"} url="/slips"/>
-                    <NavigateItem Icon={BiRegistered} text={"Login" as "login"} url="/login"/>
+                    <NavigateItem Icon={MdOutlineRealEstateAgent} text={"Agents" as "agents"} url="/agents" />
+                    <NavigateItem Icon={CiMemoPad} text={"Slips" as "slips"} url="/slips"/>
+                    <NavigateItem Icon={HiOutlineLogin} text={"Login" as "login"} url="/login"/>
                 </div>
             </nav>
             <div className="ham_nav_cont">

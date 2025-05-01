@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import "../styles/pages/sites.scss";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
-import { BsInfo } from "react-icons/bs";
-import { CgAdd } from "react-icons/cg";
+import { BsInfoSquare } from "react-icons/bs";
 import { ButtonPrimary, HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
 import { BiAddToQueue } from "react-icons/bi";
+import { VscDiffAdded } from "react-icons/vsc";
 
 
 const Sites = () => {
@@ -110,8 +110,8 @@ const Sites = () => {
                                     {itemValue:st.siteName},
                                     {itemValue:st.totalSize},
                                     {itemValue:st.soldArea},
-                                    {itemValue:"info", isButton:true, btnIcon:BsInfo, onClickHanlder:()=>navigateToSinglePageHandler(st._id)},
-                                    {itemValue:"add plots", isButton:true, btnIcon:CgAdd, onClickHanlder:()=>navigateToAddPlotsHandler()},
+                                    {itemValue:"info", isButton:true, btnIcon:BsInfoSquare, onClickHanlder:()=>navigateToSinglePageHandler(st._id)},
+                                    {itemValue:"add plots", isButton:true, btnIcon:VscDiffAdded, onClickHanlder:()=>navigateToAddPlotsHandler()},
                                 ]}
                             />
                         ))

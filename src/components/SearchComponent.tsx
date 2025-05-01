@@ -1,13 +1,13 @@
-import { FaMagnifyingGlass } from "react-icons/fa6";
 import "../styles/components/search_component.scss";
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { ClientTypes, PlotTypes, SlipTypes } from "../utils/types";
 import { useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
 import { FONT_PRIMARY } from "../utils/constants";
-import { CgRemove } from "react-icons/cg";
 import { getSearchedSuggesstions } from "../api";
 import { HeadingParaCont } from "../shared/SharedComponents";
+import { TbSearch } from "react-icons/tb";
+import { RxCross1 } from "react-icons/rx";
 
 
 
@@ -138,7 +138,7 @@ const SearchComponent = ({setIsSearchPanelMobileActive}:{setIsSearchPanelMobileA
     return(
         <>
             <div className="search_cont" ref={searchInpContRef}>
-                <div className="search_icon"><FaMagnifyingGlass /></div>
+                <div className="search_icon"><TbSearch /></div>
                 <input ref={searchInpRef} type="text" name="search" className="search_inp" value={searchQuery}
                     onChange={(e) => searchHandler(e)}
                     onFocus={() => {
@@ -174,7 +174,7 @@ const SearchComponent = ({setIsSearchPanelMobileActive}:{setIsSearchPanelMobileA
                     }
                     {
                         !isLoading && searchQuery &&
-                            <button className="undo_search_btn" onClick={() => {undoSearchHandler(); setIsSearchInpFocused(true);}}><CgRemove /></button>
+                            <button className="undo_search_btn" onClick={() => {undoSearchHandler(); setIsSearchInpFocused(true);}}><RxCross1 /></button>
                     }
                 </div>
                 <div className="suggesstions_cont" style={{
