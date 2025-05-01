@@ -7,6 +7,7 @@ import Spinner from "./Spinner";
 import { FONT_PRIMARY } from "../utils/constants";
 import { CgRemove } from "react-icons/cg";
 import { getSearchedSuggesstions } from "../api";
+import { HeadingParaCont } from "../shared/SharedComponents";
 
 
 
@@ -254,6 +255,24 @@ const SearchComponent = ({setIsSearchPanelMobileActive}:{setIsSearchPanelMobileA
                             suggesstions.allDrafts.map((slp) => (
                                 <button className="suggesstion_value" key={slp._id} onClick={() => navigateThroughSuggesstion(`/single-plot?slipID=${slp._id}`)}>{slp.paymentID}</button>
                             ))
+                        }
+                    </div>
+                    <div className="suggesstion_section eight_section">
+                        {
+                            (
+                                suggesstions.allClientsOfName.length === 0 &&
+                                suggesstions.allClientsOfGuardianName.length === 0 &&
+                                suggesstions.allClientsOfSearialNo.length === 0 &&
+                                suggesstions.allDrafts.length === 0 &&
+                                suggesstions.allNefts.length === 0 &&
+                                suggesstions.allPlots.length === 0 &&
+                                suggesstions.allSlips.length === 0
+                            )
+                            &&
+                                <HeadingParaCont
+                                    heading="Result not found"
+                                    para="No item found for searched query"
+                                />
                         }
                     </div>
                 </div>
