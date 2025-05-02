@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
+import { ApiResponseTypes, PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
 import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../api";
 import { ButtonPrimary, HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT, PRIMARY_LIGHTER } from "../utils/constants";
@@ -19,11 +19,13 @@ const SingleSite = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<{success:boolean; message:string; jsonData:object}>({success:false, message:"", jsonData:{}});
     const [isError, setIsError] = useState<boolean>(false);
-    const [siteData, setSiteData] = useState<SiteTypes|null>(null);
+    const [siteData, setSiteData] = useState<SiteTypes|Record<string, never>>({});
     const [allPlots, setAllPlots] = useState<PlotTypes[]>([]);
     const [updateRowFormData, setUpdateRowFormData] = useState<UpdateSiteBodyTypes>({siteID:"", baseSize:0, noOfPlots:0});
     const [isSiteUpdateFormActive, setIsSiteUpdateFormActive] = useState<boolean>(false);
     const [trackedArea, setTrackedArea] = useState<number>(0);
+    const [totalSiteCalculations, setTotalSiteCalculations] = useState<{totalSoldArea:number; totalRemainingArea:number; totalShouldPay:number; totalPaid:number; totalPending:number;}>({totalSoldArea:0, totalRemainingArea:0, totalShouldPay:0, totalPaid:0, totalPending:0});
+    //const [aa, setAa] = useState<{}>({});
     const noOfPlots = useRef<HTMLInputElement|null>(null);
     const lastPlotNo = useRef<HTMLInputElement|null>(null);
     const baseSize = useRef<HTMLInputElement|null>(null);
@@ -35,22 +37,24 @@ const SingleSite = () => {
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
         setUpdateRowFormData({...updateRowFormData, [e.target.name]:e.target.value});        
     };
-    const updateSiteRowHandler = async() => {
+    const updateResetSiteRowHandler = async(fore:"update"|"reset") => {
         if (!siteID) return;
-        const res = await updateSiteRows({...updateRowFormData, siteID:siteID});
+        let res:ApiResponseTypes<SiteTypes|Record<string, never>> = {success:false, message:"", jsonData:{}};
+
+        if (fore === "update") {
+            res = await updateSiteRows({...updateRowFormData, siteID:siteID});
+
+        }
+        else if (fore === "reset") {
+            res = await resetSiteRows({siteID});
+        }
+        else{
+            console.log("didn't found updateResetSiteRowHandler's parameter 'fore'");
+        }
         setSiteData(res.jsonData);
         setTrackedArea(res.jsonData.plotsInSingleRow.reduce((acc, iter) => {
             return (acc += (iter.baseSize * iter.noOfPlots)) || 0;
         }, 0));
-        updateUI();
-    };
-    const resetSiteRowHandler = async() => {
-        if (!siteID) return;
-        const res = await resetSiteRows({siteID});
-        setSiteData(res.jsonData);
-        setTrackedArea(res.jsonData.plotsInSingleRow.reduce((acc, iter) => {
-            return (acc += (iter.baseSize * iter.noOfPlots))||0;
-        }, 0))
         updateUI();
     };
 
@@ -94,7 +98,7 @@ const SingleSite = () => {
         if (!ctx) return;
         
 
-        if (!siteData || siteData?.plotsInSingleRow.length === 0) {
+        if (!siteData || siteData?.plotsInSingleRow?.length === 0) {
             alert("siteData.plotsInSingleRow is empty");
             //throw new Error("siteData.plotsInSingleRow is empty or null");
             return;
@@ -174,6 +178,37 @@ const SingleSite = () => {
                 setAllPlots(data.jsonData);
                 setIsLoading(false);
                 setIsError(false);
+                setTotalSiteCalculations(
+                    data.jsonData.reduce((acc, iter) => {
+                        if (iter.hasSold) {
+                            acc.totalShouldPay += iter.shouldPay; // shouldPay is one EMI of one month i will multiply with time covered to get shouldPay of one plot after a certain time covered
+                            acc.totalPaid += iter.paid;
+                            acc.totalPending += (iter.paid-iter.shouldPay);
+                            acc.totalSoldArea += iter.size;
+                        }
+                        else{
+                            acc.totalRemainingArea += iter.size;
+                        }
+                        return acc;
+                    }, {
+                        totalSoldArea:0,
+                        totalRemainingArea:0,
+                        totalShouldPay:0,
+                        totalPaid:0,
+                        totalPending:0
+                    })
+                );
+                //setTotalSiteCalculations(
+                //    data.jsonData.reduce((acc, iter) => {
+                //        if (iter.hasSold) {
+                //            acc.totalSoldArea += iter.size;
+                //        }
+                //        else{
+                //            acc.totalRemainigArea += iter.size;
+                //        }
+                //        return acc;
+                //    }, {totalSoldArea:0, totalRemainigArea:0, totalShouldPay:0, totalPaid:0, totalPending:0})
+                //);
             }
             else{
                 setError(data);
@@ -211,45 +246,20 @@ const SingleSite = () => {
             />
             <KeyValuePairs keyValuePairArray={[
                 {"Total Area":siteData?.totalSize},
-                {"Sold Area":allPlots.reduce((acc, iter) => {
-                    if (iter.hasSold) {
-                        acc += iter.size;
-                    }
-                    return acc;
-                }, 0)},
-                {"Remaining Area":allPlots.reduce((acc, iter) => {
-                    if (!iter.hasSold) {
-                        acc += iter.size;
-                    }
-                    return acc;
-                }, 0)},
+                {"Sold Area":totalSiteCalculations.totalSoldArea},
+                {"Remaining Area":totalSiteCalculations.totalRemainingArea},
             ]} margin="10px auto"
             />
             <KeyValuePairs keyValuePairArray={[
-                {"Should Pay":allPlots.reduce((acc, iter) => {
-                    if (iter.hasSold) {
-                        acc += iter.shouldPay; // shouldPay is one EMI of one month i will multiply with time covered to get shouldPay of one plot after a certain time covered
-                    }
-                    return acc;
-                }, 0)},
-                {"Paid":allPlots.reduce((acc, iter) => {
-                    if (iter.hasSold) {
-                        acc += iter.paid;
-                    }
-                    return acc;
-                }, 0)},
-                {"Total Pendings":allPlots.reduce((acc, iter) => {
-                    if (iter.hasSold) {
-                        acc += (iter.paid - iter.shouldPay);
-                    }
-                    return acc;
-                }, 0)},
+                {"Should Pay":totalSiteCalculations.totalShouldPay},
+                {"Paid":totalSiteCalculations.totalPaid},
+                {"Total Pendings":totalSiteCalculations.totalPending},
             ]} margin="10px auto" backgroundColor={PRIMARY_LIGHT} />
             <KeyValuePairs keyValuePairArray={[
                 {"Tracked Area":`${trackedArea??0} + ${(Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}`},
                 {"Untracked Area":(siteData?.totalSize??0) - trackedArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}
             ]} margin="10px auto" />
-            <button onClick={resetSiteRowHandler}>Reset site belt</button>
+            <button onClick={() => updateResetSiteRowHandler("reset")}>Reset site belt</button>
             <button onClick={() => setIsSiteUpdateFormActive(true)}>Update site belt in map</button>
             {
                 isSiteUpdateFormActive &&
@@ -259,9 +269,9 @@ const SingleSite = () => {
                         <input type="text" ref={baseSize} name="baseSize" placeholder="Base size" onChange={onChangeHandler} />
                         <button onClick={
                             (siteData?.totalSize as number) - (trackedArea) > 0 ?
-                                    updateSiteRowHandler
+                                    () => updateResetSiteRowHandler("update")
                                     :
-                                    async() => {alert("Can't sell plot more than vacant area!")}
+                                    () => {alert("Can't sell plot more than vacant area!")}
                         }>Update</button>
                     </div>
             }
@@ -290,7 +300,7 @@ const SingleSite = () => {
                     <div className="base_size">Base Size</div>
                 </div>
                 {
-                    siteData?.plotsInSingleRow.map((belt, index) => (
+                    siteData?.plotsInSingleRow?.map((belt, index) => (
                         <div className="belt" key={index}>
                             <div className="plot_quantity">{`(${index+1})`}</div>
                             <div className="plot_quantity">{belt.noOfPlots}</div>

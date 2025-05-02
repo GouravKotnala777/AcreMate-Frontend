@@ -17,6 +17,7 @@ const SinglePlot = () => {
     const [firstSlipData, setFirstSlipData] = useState<SlipTypes|null>(null);
     const [lastSlipData, setLastSlipData] = useState<SlipTypes|null>(null);
     const [allSlipsData, setAllSlipsData] = useState<SlipTypes[]>([]);
+    const [clearedSlips, setClearedSlips] = useState<{cleared:number; cancelled:number;}>({cleared:0, cancelled:0});
 
 
     
@@ -67,7 +68,6 @@ const SinglePlot = () => {
     }
     const func = (expendedSlipI:string) => {
         if (expendedSlipIDs.includes(expendedSlipI)) {
-            console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
             setExpendedSlipIDs((prev) => prev.filter((s) => s !== expendedSlipI))
 
             const expendedSlip = document.getElementById(expendedSlipI);
@@ -76,18 +76,14 @@ const SinglePlot = () => {
             expendedSlip.style.fontSize = "0px";
         }
         else{
-            console.log("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
             setExpendedSlipIDs((prev) => [...prev, expendedSlipI]);
             
             const expendedSlip = document.getElementById(expendedSlipI);
             if (!expendedSlip) return null;
             expendedSlip.style.gridTemplateRows = "100px";
             expendedSlip.style.fontSize = "0.8rem";
-
         }
     };
-
-
 
     const getHighestAmount = () => {
         let lowestNum = 0;
@@ -276,6 +272,15 @@ const SinglePlot = () => {
             setFirstSlipData(data.jsonData.firstSlip);
             setLastSlipData(data.jsonData.lastSlip);
             setAllSlipsData(data.jsonData.allSlips);
+            setClearedSlips(data.jsonData.allSlips.reduce((acc, iter) => {
+                if (iter.isCancelled) {
+                    acc.cancelled += 1;
+                }
+                else{
+                    acc.cleared += 1;
+                }
+                return acc;
+            }, {cleared:0, cancelled:0}))
         })
         .catch((err) => {
             console.log(err);
@@ -406,8 +411,8 @@ const SinglePlot = () => {
                         <KeyValuePairs
                             keyValuePairArray={[
                                 {"Total Slips":allSlipsData.length},
-                                {"Slips (cleared)":allSlipsData.reduce((acc, iter) => iter.isCancelled === false?acc+1:acc, 0)},
-                                {"Slips (cancelled)":allSlipsData.reduce((acc, iter) => iter.isCancelled === true?acc+1:acc, 0)},
+                                {"Slips (cleared)":clearedSlips.cleared},
+                                {"Slips (cancelled)":clearedSlips.cancelled},
                                 {"Total EMIs cleared":Number((singlePlotData?.paid||0)/(singlePlotData?.shouldPay||1)).toFixed(2)}
                             ]}
                         />
