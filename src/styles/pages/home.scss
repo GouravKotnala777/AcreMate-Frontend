@@ -24,7 +24,7 @@
         overflow-y: auto;
         .slip_cont{
             //border: 2px solid blue;
-            font-size: 0.65rem;
+            font-size: $xs;
             display: grid;
             grid-template-columns: 7% 7% 9% 7% 13% 7% 10% 11% 6% 13% 5% 5%;
             grid-template-rows: 40px;

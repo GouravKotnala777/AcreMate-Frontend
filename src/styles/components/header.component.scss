@@ -2,11 +2,9 @@
 
 .header_cont{
     //border: 2px solid red;
-    display: flex;
-    justify-content: space-between;
+    @include flex();
     //padding: 2px 5px;
     border-radius: 8px;
-    align-items: center;
     //background-color: white;
     //z-index: 99;
     .logo{
@@ -26,7 +24,7 @@
     }
     .search_cont_mobile{
         display: none;
-        font-size: 0.9rem;
+        font-size: $l;
         padding: 4px;
         border: none;
         background-color: transparent;
@@ -45,18 +43,13 @@
     }
     .nav{
         //border: 2px solid indigo;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        justify-content: space-between;
+        @include flex(unset, unset, unset, 10px);
+
         .nav_item_blocks{
             width: 270px;
             //border: 2px solid green;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(125deg, white 10%, $primaryLight 0%);
+            @include flex(flex-end, unset, unset, 10px);
+            background: linear-gradient(125deg, $bgColor 10%, $primaryLight 0%);
             border-radius: 0 6px 6px 0;
             //background: red;
             padding: 5px;
@@ -68,9 +61,7 @@
         z-index: 3;
         .ham_toggler{
             //border: 2px solid indigo;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            @include flex(unset, unset, column, 5px);
             background-color: transparent;
             border: none;
             .ham_line{
@@ -103,11 +94,7 @@
                 //transition: 0.4s;
                 .ham_nav_items{
                     //border: 2px solid green;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 30px;
+                    @include flex(unset, center, column, 30px);
                     padding: 30px 10px;
                     .ham_nav_item{
                         //border: 2px solid yellow;
@@ -130,7 +117,7 @@
             .nav_item_dropdown{
                 .nav_heading{
                     //border: 2px solid violet;
-                    font-size: 0.7rem;
+                    font-size: $s;
                 }
                 .dropdown_list{
                     .link{
@@ -148,7 +135,7 @@
             .nav_item_dropdown{
                 .nav_heading{
                     //border: 2px solid violet;
-                    font-size: 0.7rem;
+                    font-size: $s;
                 }
                 .dropdown_list{
                     .link{
@@ -179,7 +166,7 @@
         //display: inline-flex;
         //width: 100%;
         //box-sizing: border-box;
-        gap: 12px;
+        //@include flex(unset, unset, unset, 12px);
         .logo{
         }
         .search_cont_outer{
@@ -271,7 +258,7 @@
             .nav_item_dropdown{
                 .nav_heading{
                     //border: 2px solid violet;
-                    font-size: 0.7rem;
+                    font-size: $s;
                 }
                 .dropdown_list{
                     .link{

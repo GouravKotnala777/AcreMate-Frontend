@@ -1,7 +1,29 @@
 
+// theme related variables
 $bgColor:#eafff5;
 $primaryFade:#c5ffec87;
 $primaryLighter:#e0fff5;
 $primaryLight:#c5ffec;
 $primaryDark:#7dffd4;
 $fontPrimary:#5b766d;
+
+//font related variables
+$xl:1rem;
+$l:0.9rem;
+$med:0.8rem;
+$s:0.7rem;
+$xs:0.65rem;
+
+// display related patoni
+@mixin flex(
+    $justify-content:space-between,
+    $align-items:center,
+    $flex-direction:row,
+    $gap:10px
+    ){
+    display: flex;
+    justify-content: $justify-content;
+    align-items: $align-items;
+    flex-direction: $flex-direction;
+    gap:$gap;
+}

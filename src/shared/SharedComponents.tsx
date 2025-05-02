@@ -377,7 +377,10 @@ export const ScrollableContainer = ({children, tableStickyColumn}:ScrollableCont
             }}>
                 {
                     tableStickyColumn?.map((na, index) => (
-                        <div className="value" key={index}>{na}</div>
+                        <div className="value" key={index} style={{
+                            //border:"1px solid red"
+                            marginBottom:`${(0.7*(tableStickyColumn.length-(index+1)))}px`
+                        }}>{na}</div>
                     ))
                 }
             </div>

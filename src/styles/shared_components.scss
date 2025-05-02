@@ -1,17 +1,17 @@
 
 @import "./utils.scss";
+
 .navigate_item_cont{
     //border: 2px solid red;
-    display: flex;
     padding: 5px 7px;
     width: max-content;
     border-radius: 6px;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8rem;
+    font-size: $med;
     background-color: white;
     color: $fontPrimary;
     text-decoration: none;
+
+    @include flex();
     .icon{
         //border: 2px solid green;
         //align-content: center;
@@ -65,7 +65,7 @@ select{
     transition: 0.3s;
     width: 100%;
     box-sizing: border-box;
-    font-size: 1rem;
+    font-size: $xl;
     margin: 10px 0;
     option{
         border: 2px solid indigo;
@@ -75,7 +75,7 @@ select{
 #button_component{
     margin-top: 10px;
     padding: 15px;
-    font-size: 1rem;
+    font-size: $xl;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -107,21 +107,18 @@ select{
     box-shadow: 0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
     .key_value_pair_cont{
         //border: 2px solid violet;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
+        @include flex(space-between, unset, row, 10px);
+
         margin-top: 5px;
         color: #555555;
         .key{
             //border: 2px solid indigo;
-            font-size: 0.9rem;
+            font-size: $s;
             font-weight: 500;
         }
         .value{
             //border: 2px solid blue;
-            font-size: 0.9rem;
+            font-size: $s;
         }
     }
 }
@@ -146,8 +143,8 @@ select{
         //border: 2px solid red;
         height: 20px;
         text-align: center;
-        font-size: 0.8rem;
-        font-size: 0.9rem;
+        font-size: $med;
+        font-size: $l;
         font-weight: 500;
         color: #555555;
     }
@@ -173,7 +170,7 @@ select{
                 box-sizing: border-box;
                 border-radius: 50%;
                 background-color: white;
-                font-size: 0.9rem;
+                font-size: $l;
                 color: #555555;
             }
         }
@@ -223,7 +220,7 @@ select{
         .value{
             //border: 2px solid indigo;
             width: 100px;
-            font-size: 0.65rem;
+            font-size: $xs;
             background-color: $primaryLight;
             color: #313131;
             padding: 10px;
@@ -243,13 +240,13 @@ select{
     background-color: $primaryFade;
     .heading_cont{
         //border: 1px solid red;
-        font-size: 0.8rem;
+        font-size: $med;
         margin: 0;
     }
     .para_cont{
         //border: 1px solid blue;
         color: $fontPrimary;
-        font-size: 0.65rem;
+        font-size: $xs;
     }
 }
 
@@ -277,7 +274,7 @@ select{
     .navigate_item_cont{
         //border: 2px solid red;
         //padding: 5px 7px;
-        font-size: 0.7rem;
+        font-size: $s;
         .icon{
             //border: 2px solid green;
             //align-content: center;

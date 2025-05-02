@@ -223,7 +223,7 @@ const SingleSite = () => {
                     }
                     return acc;
                 }, 0)},
-            ]}
+            ]} margin="10px auto"
             />
             <KeyValuePairs keyValuePairArray={[
                 {"Should Pay":allPlots.reduce((acc, iter) => {
@@ -244,11 +244,11 @@ const SingleSite = () => {
                     }
                     return acc;
                 }, 0)},
-            ]} margin="10px 0" backgroundColor={PRIMARY_LIGHT} />
+            ]} margin="10px auto" backgroundColor={PRIMARY_LIGHT} />
             <KeyValuePairs keyValuePairArray={[
                 {"Tracked Area":`${trackedArea??0} + ${(Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}`},
                 {"Untracked Area":(siteData?.totalSize??0) - trackedArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}
-            ]} margin="10px 0" />
+            ]} margin="10px auto" />
             <button onClick={resetSiteRowHandler}>Reset site belt</button>
             <button onClick={() => setIsSiteUpdateFormActive(true)}>Update site belt in map</button>
             {

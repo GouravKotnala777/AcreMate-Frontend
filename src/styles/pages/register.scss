@@ -1,4 +1,4 @@
-
+@import "../utils.scss";
 
 .register_bg{
     //border: 2px solid red;
@@ -14,7 +14,7 @@
     }
     .login_lower_part{
         display: flex;
-        font-size: 0.8rem;
+        font-size: $med;
         justify-content: space-between;
         margin: 20px 0 10px 0;
         .forget_pass{

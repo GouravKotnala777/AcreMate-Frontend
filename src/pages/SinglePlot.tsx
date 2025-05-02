@@ -8,8 +8,7 @@ import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
 import { getMonthsCovered } from "../utils/utilFunctions";
 import { BsThreeDots } from "react-icons/bs";
 import { BiDownArrow } from "react-icons/bi";
-import { RxReset } from "react-icons/rx";
-import { MdCurrencyRupee, MdDeleteOutline, MdPayment, MdSell } from "react-icons/md";
+import { MdCurrencyRupee, MdDeleteOutline, MdSell } from "react-icons/md";
 
 const SinglePlot = () => {
     const [singlePlotData, setSinglePlotData] = useState<PlotTypes|null>(null);

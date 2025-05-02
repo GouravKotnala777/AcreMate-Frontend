@@ -11,7 +11,7 @@
         overflow-y: auto;
         .slip_cont{
             //border: 2px solid blue;
-            font-size: 0.65rem;
+            font-size: $xs;
             display: grid;
             grid-template-columns: 7% 7% 14% 14% 15% 6% 6% 11% 6% 14%;
             grid-template-rows: 40px;
@@ -34,15 +34,13 @@
     }
     .slip_selectors_cont{
         //border: 2px solid red;
-        display: flex;
-        //justify-content: space-around;
-        gap: 15px;
+        @include flex(unset, unset, unset, 15px);
         width: max-content;
         margin: 10px auto;
         .slip_selector_cont{
             //border: 2px solid violet;
             display: flex;
-            font-size: 0.7rem;
+            font-size: $s;
             padding: 5px;
             cursor: pointer;
             //border: 1px solid $primaryDark;
@@ -64,8 +62,7 @@
     }
     .pagination_cont{
         //border: 2px solid green;
-        display: flex;
-        gap: 10px;
+        @include flex(unset, unset, unset, 10px);
         margin: 10px auto;
         width: max-content;
         .left_arrow{

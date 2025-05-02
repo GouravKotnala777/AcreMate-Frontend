@@ -3,10 +3,10 @@
 .search_cont{
     //border: 1px solid red;
     display: flex;
+    align-items: center;
     //width: 30%;
     //padding: 6px;
     border-radius: 8px;
-    align-items: center;
     padding: 0 5px;
     border: 1px solid $primaryDark;
     background-color: $bgColor;
@@ -30,7 +30,7 @@
         //border: 2px solid green;
         flex: 1;
         padding: 8px 6px;
-        font-size: 0.8rem;
+        font-size: $med;
         border: none;
         outline: none;
         color:$fontPrimary;
@@ -42,7 +42,7 @@
         position: absolute;
         top: 7px;
         left: 35px;
-        font-size: 0.8rem;
+        font-size: $med;
         color: #5b766da7;
         .value{
             //border: 1px solid blue;
@@ -91,12 +91,12 @@
             //border: 2px solid green;
             margin: 10px 5px;
             .suggesstion_heading{
-                font-size: 0.8rem;
+                font-size: $med;
                 font-weight: 500;
             }
             .suggesstion_value{
                 //border: 2px solid blue;
-                font-size: 0.7rem;
+                font-size: $s;
                 padding: 6px 6px;
                 border-radius: 4px;
                 border: none;
@@ -281,14 +281,14 @@
                 //border: 2px solid green;
                 flex: 1;
                 padding: 8px 6px;
-                font-size: 0.8rem;
+                font-size: $med;
             }
             .placeholder_animation_cont{
                 //border: 1px solid red;
                 position: absolute;
                 top: 7px;
                 left: 30px;
-                font-size: 0.8rem;
+                font-size: $med;
                 .value{
                     width: 150px;
                 }
@@ -348,7 +348,7 @@
             .nav_item_dropdown{
                 .nav_heading{
                     //border: 2px solid violet;
-                    font-size: 0.7rem;
+                    font-size: $s;
                 }
                 .dropdown_list{
                     .link{

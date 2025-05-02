@@ -10,8 +10,8 @@
         padding: 10px;
         border-radius: 4px;
         margin:10px 0 0 auto;
-        display: flex;
-        gap: 6px;
+        @include flex(unset, unset, unset, 6px);
+
         color: $fontPrimary;
         background-color: white;
     }
@@ -21,7 +21,7 @@
         overflow-y: auto;
         .slip_cont{
             //border: 2px solid blue;
-            font-size: 0.65rem;
+            font-size: $xs;
             display: grid;
             grid-template-columns: 16.66% 16.66% 10.66% 10.66% 22.66% 22.66%;
             grid-template-rows: 40px;
