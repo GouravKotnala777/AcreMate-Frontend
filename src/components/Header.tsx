@@ -15,6 +15,7 @@ import { LuLandPlot } from "react-icons/lu";
 import { MdOutlineRealEstateAgent } from "react-icons/md";
 import { CiMemoPad } from "react-icons/ci";
 import { HiOutlineLogin } from "react-icons/hi";
+import { PRIMARY_DARK } from "../utils/constants";
 
 //let timerID:number|null = null;
 const Header = () => {
@@ -169,7 +170,7 @@ const Header = () => {
                 />
             </div>
             <nav className="nav">
-                <NavigateItem Icon={LuLandPlot} text={"Sites" as "sites"} url="/sites" />
+                <NavigateItem Icon={LuLandPlot} text={"Sites" as "sites"} url="/sites" margin="4px 0" border={`1px solid ${PRIMARY_DARK}`} />
                 <div className="nav_item_blocks">
                     <NavigateItem Icon={MdOutlineRealEstateAgent} text={"Agents" as "agents"} url="/agents" />
                     <NavigateItem Icon={CiMemoPad} text={"Slips" as "slips"} url="/slips"/>

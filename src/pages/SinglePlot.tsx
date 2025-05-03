@@ -11,7 +11,7 @@ import { BiDownArrow } from "react-icons/bi";
 import { MdCurrencyRupee, MdDeleteOutline, MdSell } from "react-icons/md";
 
 const SinglePlot = () => {
-    const [singlePlotData, setSinglePlotData] = useState<PlotTypes|null>(null);
+    const [singlePlotData, setSinglePlotData] = useState<({clientID:{name:string;}; agentID:{name:string;};}&PlotTypes)|null>(null);
 
     // we will take 'firstSlipData' & 'lastSlipData' from 'allSlipsData'
     const [firstSlipData, setFirstSlipData] = useState<SlipTypes|null>(null);
@@ -371,8 +371,8 @@ const SinglePlot = () => {
                 {
                     (singlePlotData?.clientID && singlePlotData?.agentID) &&
                         <KeyValuePairs keyValuePairArray={[
-                            {"Agent":singlePlotData?.agentID},
-                            {"Client":singlePlotData?.clientID}
+                            {"Agent":singlePlotData?.agentID.name},
+                            {"Client":singlePlotData?.clientID.name}
                         ]} isLoading={!singlePlotData} />
                 }
                 <KeyValuePairs keyValuePairArray={[

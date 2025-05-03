@@ -134,8 +134,9 @@ select{
 .timer_cont{
     //border: 2px solid blue;
     width: 300px;
+    padding: 8px;
     //height: 160px;
-    box-sizing: border-box;
+    //box-sizing: border-box;
     border-radius: 8px;
     background-color: white;
     box-shadow: 0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
@@ -154,6 +155,7 @@ select{
         width: 140px;
         box-sizing: border-box;
         padding: 10px;
+        margin: 0 auto;
         .watch_outer{
             //border: 2px solid green;
             width: 100%;

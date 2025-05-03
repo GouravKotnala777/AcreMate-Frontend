@@ -12,6 +12,8 @@ interface NavigateItemPropTypes {
     Icon:IconType;
     text:RoutesTypes;
     url:string;
+    margin?:string;
+    border?:string;
 }
 interface HeadingPropTypes {
     text:string;
@@ -93,10 +95,13 @@ interface HeadingParaContPropTypes{
     textPosition?:"left"|"center"|"right";
 }
 
-export const NavigateItem = ({Icon, text, url}:NavigateItemPropTypes) => {
+export const NavigateItem = ({Icon, text, url, margin, border}:NavigateItemPropTypes) => {
 
     return(
-        <NavLink to={url} className="navigate_item_cont" tabIndex={1}>
+        <NavLink to={url} className="navigate_item_cont" tabIndex={1} style={{
+            margin:margin?margin:"unset",
+            border:border?border:"unset"
+        }}>
             <div className="icon"><Icon/></div>
             <div className="text">{text}</div>
         </NavLink>

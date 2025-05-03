@@ -276,7 +276,7 @@ export const findSinglePlot = async({clientID, plotID, slipID, siteID, agentID}:
     slipID?:string;
     siteID?:string;
     agentID?:string}) => {
-    const data = await fetchAPIHandler<{singlePlot:PlotTypes; firstSlip:SlipTypes|null; lastSlip:SlipTypes|null; allSlips:SlipTypes[];}>({
+    const data = await fetchAPIHandler<{singlePlot:({clientID:{name:string;}; agentID:{name:string;};}&PlotTypes); firstSlip:SlipTypes|null; lastSlip:SlipTypes|null; allSlips:SlipTypes[];}>({
         apiName:"findSinglePlot",
         endpoint:`/plot/single-plot?plotID=${plotID}&clientID=${clientID}&slipID=${slipID}&siteID=${siteID}&agentID=${agentID}`,
         method:"GET",
