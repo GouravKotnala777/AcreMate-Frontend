@@ -2,7 +2,7 @@ import "../styles/pages/slips.scss"
 import { useEffect, useState } from "react";
 import { findSlipsWithSlipNoRange } from "../api";
 import { SlipTypes } from "../utils/types";
-import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
+import { BG_COLOR, FONT_SECONDARY, PRIMARY_LIGHT } from "../utils/constants";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
@@ -21,7 +21,7 @@ const Slips = () => {
     const [skip, setSkip] = useState<number>(0);
     const [hoveringPage, setHoveringPage] = useState<string>("");
     const [slipNoRange, setSlipNoRange] = useState<{fromSlipNo:number; toSlipNo:number;}>({fromSlipNo:1, toSlipNo:20});
-    const [slips, setSlips] = useState<(SlipTypes&{clientID:{name:string; guardian:string; mobile:string;}}&{plotID:{plotNo:number; site:string;}})[]>([]);
+    const [slips, setSlips] = useState<(SlipTypes&{clientID:{name:string; guardian:string; mobile:string;};}&{plotID:{plotNo:number; site:string;};}&{agentID:{name:string;};})[]>([]);
 
 
 
@@ -104,15 +104,17 @@ const Slips = () => {
                         <ListHeading
                             headingRow={[
                                 {itemValue:"Date", itemWidth:"10%"},
-                                {itemValue:"Slip No.", itemWidth:"10%"},
+                                {itemValue:"Slip No.", itemWidth:"4%"},
                                 {itemValue:"Type", itemWidth:"10%"},
                                 {itemValue:"Name", itemWidth:"10%"},
                                 {itemValue:"Guardian", itemWidth:"10%"},
-                                {itemValue:"Mobile", itemWidth:"10%"},
-                                {itemValue:"Plot No.", itemWidth:"10%"},
+                                {itemValue:"Mobile", itemWidth:"9%"},
+                                {itemValue:"Plot No.", itemWidth:"5%"},
+                                {itemValue:"Site Name", itemWidth:"6%"},
                                 {itemValue:"Amount", itemWidth:"10%"},
-                                {itemValue:"Mode", itemWidth:"10%"},
+                                {itemValue:"Mode", itemWidth:"6%"},
                                 {itemValue:"Transaction No.", itemWidth:"10%"},
+                                {itemValue:"T.L", itemWidth:"10%"},
                             ]}
                         />
                 }
@@ -146,27 +148,31 @@ const Slips = () => {
                                 uniqeKey={slp._id}
                                 cellWidth={[
                                     "10%",
+                                    "4%",
                                     "10%",
                                     "10%",
                                     "10%",
+                                    "9%",
+                                    "5%",
+                                    "6%",
                                     "10%",
-                                    "10%",
-                                    "10%",
-                                    "10%",
+                                    "6%",
                                     "10%",
                                     "10%"
                                 ]}
                                 row={[
-                                    {itemValue:slp.createdAt, isDate:true},
-                                    {itemValue:slp.slipNo},
-                                    {itemValue:slp.slipType},
-                                    {itemValue:slp.clientID.name},
-                                    {itemValue:slp.clientID.guardian},
-                                    {itemValue:slp.clientID.mobile},
-                                    {itemValue:slp.plotID.plotNo},
-                                    {itemValue:slp.amount},
-                                    {itemValue:slp.modeOfPayment},
+                                    {itemValue:slp.createdAt, isDate:true, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.slipNo, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.slipType, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.clientID.name, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.clientID.guardian, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.clientID.mobile, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.plotID.plotNo, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.plotID.site, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.amount, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
+                                    {itemValue:slp.modeOfPayment, style:{color:slp.isCancelled?"red":FONT_SECONDARY}},
                                     {itemValue:slp.paymentID},
+                                    {itemValue:slp.agentID.name}
                                 ]}
                             />
                         ))

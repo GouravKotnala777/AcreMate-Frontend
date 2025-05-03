@@ -84,6 +84,7 @@ interface KeyValuePairsPropTypes{
     backgroundColor?:string;
     isLoading?:boolean;
     margin?:string;
+    width?:string;
 }
 interface ScrollableContainerPropTypes{
     children:ReactNode;
@@ -296,10 +297,11 @@ export const Skeleton = ({width, height, margin}:SkeletonPropType) => {
     )
 };
 
-export const KeyValuePairs = ({keyValuePairArray, color, backgroundColor, isLoading, margin}:KeyValuePairsPropTypes) => {
+export const KeyValuePairs = ({keyValuePairArray, color, backgroundColor, isLoading, margin, width}:KeyValuePairsPropTypes) => {
 
     return(
         <div className="key_value_pairs_cont" style={{
+            width:width?width:"300px",
             margin:margin?margin:"unset",
             backgroundColor:backgroundColor?backgroundColor:"white"
         }}>

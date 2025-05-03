@@ -13,9 +13,6 @@ import { MdCurrencyRupee, MdDeleteOutline, MdSell } from "react-icons/md";
 const SinglePlot = () => {
     const [singlePlotData, setSinglePlotData] = useState<({clientID:{name:string;}; agentID:{name:string;};}&PlotTypes)|null>(null);
 
-    // we will take 'firstSlipData' & 'lastSlipData' from 'allSlipsData'
-    const [firstSlipData, setFirstSlipData] = useState<SlipTypes|null>(null);
-    const [lastSlipData, setLastSlipData] = useState<SlipTypes|null>(null);
     const [allSlipsData, setAllSlipsData] = useState<SlipTypes[]>([]);
     const [clearedSlips, setClearedSlips] = useState<{cleared:number; cancelled:number;}>({cleared:0, cancelled:0});
 
@@ -269,8 +266,6 @@ const SinglePlot = () => {
         findSinglePlot({plotID})
         .then((data) => {
             setSinglePlotData(data.jsonData.singlePlot);
-            setFirstSlipData(data.jsonData.firstSlip);
-            setLastSlipData(data.jsonData.lastSlip);
             setAllSlipsData(data.jsonData.allSlips);
             setClearedSlips(data.jsonData.allSlips.reduce((acc, iter) => {
                 if (iter.isCancelled) {
@@ -294,8 +289,6 @@ const SinglePlot = () => {
         findSinglePlot({clientID})
         .then((data) => {
             setSinglePlotData(data.jsonData.singlePlot);
-            setFirstSlipData(data.jsonData.firstSlip);
-            setLastSlipData(data.jsonData.lastSlip);
             setAllSlipsData(data.jsonData.allSlips);
         })
         .catch((err) => {
@@ -304,14 +297,11 @@ const SinglePlot = () => {
     }, [clientID]);
     useEffect(() => {
         if (!slipID || slipID === "null" || slipID === "undefined") {
-//alert("clientID not found");
             return;
         }
         findSinglePlot({slipID})
         .then((data) => {
             setSinglePlotData(data.jsonData.singlePlot);
-            setFirstSlipData(data.jsonData.firstSlip);
-            setLastSlipData(data.jsonData.lastSlip);
             setAllSlipsData(data.jsonData.allSlips);
         })
         .catch((err) => {
@@ -354,6 +344,7 @@ const SinglePlot = () => {
                                 {"Date":getDateByString(hoveringDotDate as string)},
                                 {"Amount":hoveringDotAmount}
                             ]}
+                            width="100px"
                         />
                     </div>
             }
@@ -377,20 +368,20 @@ const SinglePlot = () => {
                 }
                 <KeyValuePairs keyValuePairArray={[
                     {"Duration":`${singlePlotData?.duration}months`},
-                    {"Time Convered":getMonthsCovered(firstSlipData?.createdAt)},
+                    {"Time Convered":getMonthsCovered(allSlipsData[0]?.createdAt)},
                     {"Should Pay":`₹${singlePlotData?.shouldPay}/-`},
                     {"Paid":`₹${singlePlotData?.paid}/-`},
                     {"Status":singlePlotData?.plotStatus}
                 ]} isLoading={!singlePlotData} />
 
                 {
-                    firstSlipData &&
+                    allSlipsData[0] &&
                         <KeyValuePairs keyValuePairArray={[
-                            {"First Payment Date":getDateByString(firstSlipData?.createdAt)},
-                            {"First Payment Amount":`₹${firstSlipData?.amount}/-`},
-                            {"Last Payment Date":getDateByString(lastSlipData?.createdAt)},
-                            {"Last Payment Amount":`₹${lastSlipData?.amount}/-`}
-                        ]} isLoading={!firstSlipData} />
+                            {"First Payment Date":getDateByString(allSlipsData[0]?.createdAt)},
+                            {"First Payment Amount":`₹${allSlipsData[0]?.amount}/-`},
+                            {"Last Payment Date":getDateByString(allSlipsData[allSlipsData.length-1]?.createdAt)},
+                            {"Last Payment Amount":`₹${allSlipsData[allSlipsData.length-1]?.amount}/-`}
+                        ]} isLoading={!allSlipsData[0]} />
                 }
                 
 
@@ -418,7 +409,7 @@ const SinglePlot = () => {
                         />
                 }
 
-                <Timer bgColor={BG_COLOR} monthsCovered={getMonthsCovered(firstSlipData?.createdAt)} duration={singlePlotData?.duration} />
+                <Timer bgColor={BG_COLOR} monthsCovered={getMonthsCovered(allSlipsData[0]?.createdAt)} duration={singlePlotData?.duration} />
             </div>
 
             <ScrollableContainer>
@@ -430,7 +421,6 @@ const SinglePlot = () => {
                             <div className="date slip_content">Date</div>
                             <div className="slip_type slip_content">Slip Type</div>
                             <div className="slip_number slip_content">Slip No.</div>
-                            <div className="client_name slip_content">Client Name</div>
                             <div className="amount slip_content">Amount</div>
                             <div className="mode slip_content">Mode Of Payment</div>
                             <div className="mode slip_content">PaymentID</div>
@@ -455,7 +445,6 @@ const SinglePlot = () => {
                                         {slp.slipType}
                                     </div>
                                     <div className="slip_number slip_content">{slp.slipNo}</div>
-                                    <div className="client_name slip_content">{slp.clientID}</div>
                                     <div className="amount slip_content">₹{slp.amount}/-</div>
                                     {/*<div className="admin slip_content"></div>*/}
                                     <div className="mode slip_content">{slp.modeOfPayment}</div>

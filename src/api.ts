@@ -276,7 +276,7 @@ export const findSinglePlot = async({clientID, plotID, slipID, siteID, agentID}:
     slipID?:string;
     siteID?:string;
     agentID?:string}) => {
-    const data = await fetchAPIHandler<{singlePlot:({clientID:{name:string;}; agentID:{name:string;};}&PlotTypes); firstSlip:SlipTypes|null; lastSlip:SlipTypes|null; allSlips:SlipTypes[];}>({
+    const data = await fetchAPIHandler<{singlePlot:({clientID:{name:string;}; agentID:{name:string;};}&PlotTypes); allSlips:SlipTypes[];}>({
         apiName:"findSinglePlot",
         endpoint:`/plot/single-plot?plotID=${plotID}&clientID=${clientID}&slipID=${slipID}&siteID=${siteID}&agentID=${agentID}`,
         method:"GET",
@@ -372,7 +372,7 @@ export const findAllSlips = async({skip}:{skip:number;}) => {
     return data;
 };
 export const findSlipsWithSlipNoRange = async({fromSlipNo, toSlipNo}:{fromSlipNo:number; toSlipNo:number;}) => {
-    const data = await fetchAPIHandler<(SlipTypes&{clientID:{name:string; guardian:string; mobile:string;}}&{plotID:{plotNo:number; site:string;}})[]>({
+    const data = await fetchAPIHandler<(SlipTypes&{clientID:{name:string; guardian:string; mobile:string;};}&{plotID:{plotNo:number; site:string;};}&{agentID:{name:string;};})[]>({
         apiName:"findSlipsWithSlipNoRange",
         endpoint:`/slip/all-slipss?fromSlipNo=${fromSlipNo}&toSlipNo=${toSlipNo}`,
         credentials:true,
