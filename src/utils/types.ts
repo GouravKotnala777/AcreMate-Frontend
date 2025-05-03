@@ -70,8 +70,8 @@ export interface SlipTypes{
     cancelledFor:"bounced"|"cash not received"|"transaction failed";
     paymentID?:string;
     remark:string;
-    createdAt:Date;
-    updatedAt:Date;
+    createdAt:string;
+    updatedAt:string;
 }
 export type CreateSlipBodyTypes = Pick<SlipTypes, "slipType"|"slipNo"|"modeOfPayment"|"paymentID"|"amount"|"clientID"|"plotID"|"agentID">;
 export type UpdateSlipBodyTypes = Partial<Pick<SlipTypes, "slipType"|"isCancelled"|"cancelledFor"|"remark">>&{slipID:string};

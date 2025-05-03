@@ -5,7 +5,7 @@ import { detachClientFromPlot, findSinglePlot } from "../api";
 import { PlotTypes, SlipTypes } from "../utils/types";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { BG_COLOR, PRIMARY_LIGHT } from "../utils/constants";
-import { getMonthsCovered } from "../utils/utilFunctions";
+import { getDateByString, getMonthsCovered } from "../utils/utilFunctions";
 import { BsThreeDots } from "react-icons/bs";
 import { BiDownArrow } from "react-icons/bi";
 import { MdCurrencyRupee, MdDeleteOutline, MdSell } from "react-icons/md";
@@ -29,13 +29,13 @@ const SinglePlot = () => {
     const canvasRef = useRef<HTMLCanvasElement|null>(null);
     const [nodeValue, setNodeValue] = useState<{lowest:number; highest:number;}>({lowest:0, highest:0});
     const [yRange, setYRange] = useState<number[]>([]);
-    const [tooltipCollection, setTooltipCollection] = useState<{x:number; y:number; amount:number; date:Date;}[]>([]);
+    const [tooltipCollection, setTooltipCollection] = useState<{x:number; y:number; amount:number; date:string;}[]>([]);
     const [tooltip, setTooltip] = useState<{x:number; y:number; amount:number}>({x:0, y:0, amount:0});
     const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
     const [hoveringDotAmount, setHoveringDotAmount] = useState<number>(0);
     const [scrollLeft, setScrollLeft] = useState<number>(0);
     const [clientWidth, setClientWidth] = useState<number>(0);
-    const [hoveringDotDate, setHoveringDotDate] = useState<Date|null>(null);
+    const [hoveringDotDate, setHoveringDotDate] = useState<string|null>(null);
     const [isTooltipAtEnd, setIsTooltipAtEnd] = useState<boolean>(false);
     
 
@@ -351,7 +351,7 @@ const SinglePlot = () => {
                     >
                         <KeyValuePairs
                             keyValuePairArray={[
-                                {"Date":new Date(hoveringDotDate)?.toLocaleDateString(undefined, {day:"2-digit", month:"short", year:"2-digit"})},
+                                {"Date":getDateByString(hoveringDotDate as string)},
                                 {"Amount":hoveringDotAmount}
                             ]}
                         />
@@ -386,9 +386,9 @@ const SinglePlot = () => {
                 {
                     firstSlipData &&
                         <KeyValuePairs keyValuePairArray={[
-                            {"First Payment Date":new Date(firstSlipData?.createdAt||"27-02-2025")?.toLocaleString(undefined, {day:"numeric", month:"short", year:"numeric"})},
+                            {"First Payment Date":getDateByString(firstSlipData?.createdAt)},
                             {"First Payment Amount":`₹${firstSlipData?.amount}/-`},
-                            {"Last Payment Date":new Date(lastSlipData?.createdAt||"27-02-2025")?.toLocaleString(undefined, {day:"numeric", month:"short", year:"numeric"})},
+                            {"Last Payment Date":getDateByString(lastSlipData?.createdAt)},
                             {"Last Payment Amount":`₹${lastSlipData?.amount}/-`}
                         ]} isLoading={!firstSlipData} />
                 }
@@ -450,7 +450,7 @@ const SinglePlot = () => {
                                     "white"
                             }}>
                                 <div className="upper_part">
-                                    <div className="date slip_content">{new Date(slp.createdAt).toLocaleDateString(undefined, {day:"2-digit", month:"2-digit", year:"numeric"})}</div>
+                                    <div className="date slip_content">{getDateByString(slp.createdAt)}</div>
                                     <div className="slip_type slip_content">
                                         {slp.slipType}
                                     </div>

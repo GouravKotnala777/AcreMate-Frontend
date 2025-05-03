@@ -1,6 +1,7 @@
 //import { useEffect, useState } from "react";
 import "../styles/components/list_item.scss";
 import { IconType } from "react-icons";
+import { getDateByString } from "../utils/utilFunctions";
 
 
 interface ListItemTypes {
@@ -37,7 +38,7 @@ const ListItem = ({uniqeKey, cellWidth, row}:ListItemTypes) => {
                                 :
                                 i.isDate ?
                                     <div className="cell" key={ind} style={i.style}>
-                                        {new Date(i.itemValue as string).toLocaleDateString("en-GB")}
+                                        {getDateByString(i.itemValue as string)}
                                     </div>
                                     :
                                     <div className="cell" key={ind} style={i.style}>
