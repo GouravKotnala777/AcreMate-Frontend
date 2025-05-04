@@ -1,0 +1,45 @@
+@import "../utils.scss";
+
+.modal_cont{
+    //border: 2px solid violet;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+    background-color: rgba(0,0,0,0.7);
+    .modal_content{
+        //border: 2px solid indigo;
+        position: absolute;
+        top: 50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        width: 70%;
+        max-width: 400px;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: $bgColor;
+        .modal_heading{
+            font-size: $xl;
+            text-align: center;
+        }
+        .modal_submit_btn{
+            background-color: white;
+        }
+        .modal_cancel_btn{
+            //border: 1px solid red;
+            width: 100%;
+            padding: 12px;
+            font-size: $xl;
+            border: 1px solid red;
+            color: red;
+            border-radius: 4px;
+            background-color: transparent;
+            cursor: pointer;
+            &:hover{
+                background-color: rgba(255,146,146,0.1);
+            }
+        }
+    }
+}
