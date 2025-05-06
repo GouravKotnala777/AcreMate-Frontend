@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ApiResponseTypes, PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
-import { findAllPlots, findSingleSite, resetSiteRows, updateSiteRows } from "../api";
+import { findAllPlots, findSingleSite, resetSiteRows, updateSite, updateSiteRows } from "../api";
 import { ButtonPrimary, HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT, PRIMARY_LIGHTER } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
@@ -10,6 +10,8 @@ import ListItem from "../components/ListItem";
 import { BsInfoSquare } from "react-icons/bs";
 import DataFlowHandler from "../components/DataFlow";
 import { BiAddToQueue } from "react-icons/bi";
+import { GrUpdate } from "react-icons/gr";
+import Modal from "../components/Modal";
 
 
 const SingleSite = () => {
@@ -22,9 +24,11 @@ const SingleSite = () => {
     const [siteData, setSiteData] = useState<SiteTypes|Record<string, never>>({});
     const [allPlots, setAllPlots] = useState<PlotTypes[]>([]);
     const [updateRowFormData, setUpdateRowFormData] = useState<UpdateSiteBodyTypes>({siteID:"", baseSize:0, noOfPlots:0});
-    const [isSiteUpdateFormActive, setIsSiteUpdateFormActive] = useState<boolean>(false);
+    const [isSiteRowsUpdateFormActive, setIsSiteRowsUpdateFormActive] = useState<boolean>(false);
+    const [isUpdateSiteFormActive, setIsUpdateSiteFormActive] = useState<boolean>(false);
     const [trackedArea, setTrackedArea] = useState<number>(0);
     const [totalSiteCalculations, setTotalSiteCalculations] = useState<{totalSoldArea:number; totalRemainingArea:number; totalShouldPay:number; totalPaid:number; totalPending:number;}>({totalSoldArea:0, totalRemainingArea:0, totalShouldPay:0, totalPaid:0, totalPending:0});
+    const [updateSiteForm, setUpdateSiteForm] = useState<UpdateSiteBodyTypes>({siteID:"", soldArea:0, totalSize:0});
     //const [aa, setAa] = useState<{}>({});
     const noOfPlots = useRef<HTMLInputElement|null>(null);
     const lastPlotNo = useRef<HTMLInputElement|null>(null);
@@ -78,6 +82,17 @@ const SingleSite = () => {
     const navigateToAddPlotPageHandler = () => {
         navigate(`/create?formPanelFor=plots`);
     };
+
+    const changeUpdateSiteHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+        setUpdateSiteForm({...updateSiteForm, [e.target.name]:e.target.value});
+    }
+    const updateSiteHandler = async() => {
+        updateSite({...updateSiteForm, siteID:siteData._id});
+        console.log({...updateSiteForm, siteID:siteData._id});
+    }
+    const cancelUpdateSiteHandler = () => {
+        console.log("cancelled");
+    }
 
 
     useEffect(() => {
@@ -239,10 +254,25 @@ const SingleSite = () => {
 
     return(
         <>
+            <Modal
+                heading="Update Site"
+                isOpen={isUpdateSiteFormActive}
+                setIsOpen={setIsUpdateSiteFormActive}
+                onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => changeUpdateSiteHandler(e)}
+                onSubmitHandler={updateSiteHandler}
+                onCancelHandler={cancelUpdateSiteHandler}
+            />
+            <ButtonPrimary
+                text="Update Site"
+                Icon={GrUpdate}
+                onClickHandler={() => setIsUpdateSiteFormActive(true)}
+                display="inline-flex"
+            />
             <ButtonPrimary
                 text="Create Plots"
                 Icon={BiAddToQueue}
                 onClickHandler={navigateToAddPlotPageHandler}
+                display="inline-flex"
             />
             <KeyValuePairs keyValuePairArray={[
                 {"Total Area":siteData?.totalSize},
@@ -260,9 +290,9 @@ const SingleSite = () => {
                 {"Untracked Area":(siteData?.totalSize??0) - trackedArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}
             ]} margin="10px auto" />
             <button onClick={() => updateResetSiteRowHandler("reset")}>Reset site belt</button>
-            <button onClick={() => setIsSiteUpdateFormActive(true)}>Update site belt in map</button>
+            <button onClick={() => setIsSiteRowsUpdateFormActive(true)}>Update site belt in map</button>
             {
-                isSiteUpdateFormActive &&
+                isSiteRowsUpdateFormActive &&
                     <div className="site_update_form">
                         <input type="text" ref={noOfPlots} name="noOfPlots" placeholder="No. of plots" onChange={onChangeHandler} />
                         <input type="text" ref={lastPlotNo} name="lastPlotNo" placeholder="Last plot no." onChange={onChangeHandler} />

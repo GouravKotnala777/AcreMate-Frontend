@@ -62,16 +62,16 @@ export const fetchAPIHandler = async<T>({
 };
 
 // User related apis
-export const findAllUsers = async() => {
-    const data = await fetchAPIHandler<UserTypes[]>({
-        apiName:"findAllUsers",
-        endpoint:"/user/all-users",
-        credentials:true,
-        method:"GET"
-    });
+//export const findAllUsers = async() => {
+//    const data = await fetchAPIHandler<UserTypes[]>({
+//        apiName:"findAllUsers",
+//        endpoint:"/user/all-users",
+//        credentials:true,
+//        method:"GET"
+//    });
 
-    return data;
-};
+//    return data;
+//};
 export const getSearchedSuggesstions = async({searchQuery}:{searchQuery:string;}) => {
     const data = await fetchAPIHandler<{
         allClientsOfName:ClientTypes[];
@@ -110,26 +110,26 @@ export const agentsAndSoldArea = async() => {
 
     return data;
 };
-export const agentAndSite = async() => {
-    const data = await fetchAPIHandler<PlotTypes[]>({
-        apiName:"agentAndSite",
-        endpoint:"/user/sold-area2",
-        credentials:true,
-        method:"GET"
-    });
+//export const agentAndSite = async() => {
+//    const data = await fetchAPIHandler<PlotTypes[]>({
+//        apiName:"agentAndSite",
+//        endpoint:"/user/sold-area2",
+//        credentials:true,
+//        method:"GET"
+//    });
 
-    return data;
-};
-export const findSingleUser = async(userID:string) => {
-    const data = await fetchAPIHandler<UserTypes>({
-        apiName:"findSingleUser",
-        endpoint:`/user/single-user?userID=${userID}`,
-        method:"GET",
-        credentials:true
-    });
+//    return data;
+//};
+//export const findSingleUser = async(userID:string) => {
+//    const data = await fetchAPIHandler<UserTypes>({
+//        apiName:"findSingleUser",
+//        endpoint:`/user/single-user?userID=${userID}`,
+//        method:"GET",
+//        credentials:true
+//    });
 
-    return data;
-};
+//    return data;
+//};
 export const myProfile = async() => {
     const data = await fetchAPIHandler<UserTypes>({
         apiName:"myProfile",
@@ -182,36 +182,36 @@ export const logout = async() => {
 };
 
 // Client related apis
-export const findAllClients = async() => {
-    const data = await fetchAPIHandler<ClientTypes[]>({
-        apiName:"findAllClients",
-        endpoint:"/client/all-clients",
-        credentials:true,
-        method:"GET"
-    });
+//export const findAllClients = async() => {
+//    const data = await fetchAPIHandler<ClientTypes[]>({
+//        apiName:"findAllClients",
+//        endpoint:"/client/all-clients",
+//        credentials:true,
+//        method:"GET"
+//    });
 
-    return data;
-};
-export const findSingleClient = async(clientID:string) => {
-    const data = await fetchAPIHandler<ClientTypes>({
-        apiName:"findSingleClient",
-        endpoint:`/client/single-client2?clientID=${clientID}`,
-        method:"GET",
-        credentials:true
-    });
+//    return data;
+//};
+//export const findSingleClient = async(clientID:string) => {
+//    const data = await fetchAPIHandler<ClientTypes>({
+//        apiName:"findSingleClient",
+//        endpoint:`/client/single-client2?clientID=${clientID}`,
+//        method:"GET",
+//        credentials:true
+//    });
 
-    return data;
-};
-export const findSingleClientAllSlips = async(clientID:string) => {
-    const data = await fetchAPIHandler<SlipTypes[]>({
-        apiName:"findSingleClientAllSlips",
-        endpoint:`/client/single-client?clientID=${clientID}`,
-        method:"GET",
-        credentials:true
-    });
+//    return data;
+//};
+//export const findSingleClientAllSlips = async(clientID:string) => {
+//    const data = await fetchAPIHandler<SlipTypes[]>({
+//        apiName:"findSingleClientAllSlips",
+//        endpoint:`/client/single-client?clientID=${clientID}`,
+//        method:"GET",
+//        credentials:true
+//    });
 
-    return data;
-};
+//    return data;
+//};
 export const createClient = async(formData:CreateClientBodyTypes, navigate:NavigateFunction, url:string) => {
     const data = await fetchAPIHandler<ClientTypes>({
         apiName:"createClient",
@@ -238,17 +238,17 @@ export const sendMessageToClient = async(formData:{to:string, message:string}) =
 
     return data;
 };
-export const cancelClient = async(clientID:string) => {
-    const data = await fetchAPIHandler<null>({
-        apiName:"cancelClent",
-        endpoint:"/client/cancel",
-        credentials:true,
-        method:"DELETE",
-        body:JSON.stringify(clientID)
-    });
+//export const cancelClient = async(clientID:string) => {
+//    const data = await fetchAPIHandler<null>({
+//        apiName:"cancelClent",
+//        endpoint:"/client/cancel",
+//        credentials:true,
+//        method:"DELETE",
+//        body:JSON.stringify(clientID)
+//    });
 
-    return data;
-};
+//    return data;
+//};
 
 // Plot related apis
 export const findAllPlots = async(siteName:string) => {
@@ -348,29 +348,29 @@ export const updatePlot = async(formData:UpdatePlotBodyTypes) => {
 
     return data;
 };
-export const deletePlot = async(plotID:string) => {
-    const data = await fetchAPIHandler<null>({
-        apiName:"deletePlot",
-        endpoint:"/plot/delete",
-        credentials:true,
-        method:"DELETE",
-        body:JSON.stringify(plotID)
-    });
+//export const deletePlot = async(plotID:string) => {
+//    const data = await fetchAPIHandler<null>({
+//        apiName:"deletePlot",
+//        endpoint:"/plot/delete",
+//        credentials:true,
+//        method:"DELETE",
+//        body:JSON.stringify(plotID)
+//    });
 
-    return data;
-};
+//    return data;
+//};
 
 // Slip related apis
-export const findAllSlips = async({skip}:{skip:number;}) => {
-    const data = await fetchAPIHandler<SlipTypes[]>({
-        apiName:"findAllSlips",
-        endpoint:`/slip/all-slips?skip=${skip}`,
-        credentials:true,
-        method:"GET"
-    });
+//export const findAllSlips = async({skip}:{skip:number;}) => {
+//    const data = await fetchAPIHandler<SlipTypes[]>({
+//        apiName:"findAllSlips",
+//        endpoint:`/slip/all-slips?skip=${skip}`,
+//        credentials:true,
+//        method:"GET"
+//    });
 
-    return data;
-};
+//    return data;
+//};
 export const findSlipsWithSlipNoRange = async({fromSlipNo, toSlipNo}:{fromSlipNo:number; toSlipNo:number;}) => {
     const data = await fetchAPIHandler<(SlipTypes&{clientID:{name:string; guardian:string; mobile:string;};}&{plotID:{plotNo:number; site:string;};}&{agentID:{name:string;};})[]>({
         apiName:"findSlipsWithSlipNoRange",
@@ -381,16 +381,16 @@ export const findSlipsWithSlipNoRange = async({fromSlipNo, toSlipNo}:{fromSlipNo
 
     return data;
 };
-export const findSingleSlip = async(slipID:string) => {
-    const data = await fetchAPIHandler<SlipTypes>({
-        apiName:"findSingleSlip",
-        endpoint:`/slip/single-slip?slipID=${slipID}`,
-        method:"GET",
-        credentials:true
-    });
+//export const findSingleSlip = async(slipID:string) => {
+//    const data = await fetchAPIHandler<SlipTypes>({
+//        apiName:"findSingleSlip",
+//        endpoint:`/slip/single-slip?slipID=${slipID}`,
+//        method:"GET",
+//        credentials:true
+//    });
 
-    return data;
-};
+//    return data;
+//};
 export const createSlip = async(formData:CreateSlipBodyTypes, navigate:NavigateFunction, url:string) => {
     const data = await fetchAPIHandler<SlipTypes>({
         apiName:"createSlip",
