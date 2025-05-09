@@ -49,6 +49,10 @@ export interface PlotTypes{
     agentID?:string;
     beltRange:number[];
     plotStatus:"pending"|"completed"|"registered"|"vacant";
+    coordinates:{
+        x:number;
+        y:number;
+    }
     createdAt:Date;
     updatedAt:Date;
 }
@@ -91,7 +95,7 @@ export interface SiteTypes{
     plotsInSingleRow:PlotBeltTypes[];
 }
 export type CreateSiteBodyTypes = Pick<SiteTypes, "siteName"|"totalSize">;
-export type UpdateSiteBodyTypes = Partial<Pick<SiteTypes, "totalSize"|"soldArea">>&{siteID:string;}&{noOfPlots?:number; lastPlotNo?:number; baseSize?:number;};
+export type UpdateSiteBodyTypes = Partial<Pick<SiteTypes, "totalSize"|"soldArea">>&{siteID:string;}&{noOfPlots?:number; firstPlotNo?:number; quantity?:number; lastPlotNo?:number; baseSize?:number;};
 
 export interface FetchAPIHandlerArgTypes {
     apiName:string;
