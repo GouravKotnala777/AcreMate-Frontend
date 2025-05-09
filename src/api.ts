@@ -285,8 +285,8 @@ export const findSinglePlot = async({clientID, plotID, slipID, siteID, agentID}:
 
     return data;
 };
-export const createPlots = async(formData:CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes) => {
-    const data = await fetchAPIHandler<PlotTypes[]>({
+export const createPlots = async(formData:CreatePlotBodyTypes&{x:number; y:number;}) => {
+    const data = await fetchAPIHandler<PlotTypes>({
         apiName:"createPlots",
         endpoint:"/plot/create-plots",
         credentials:true,
