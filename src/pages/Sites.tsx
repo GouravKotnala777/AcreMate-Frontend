@@ -9,7 +9,6 @@ import { BsInfoSquare } from "react-icons/bs";
 import { ButtonPrimary, HeadingParaCont, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import DataFlowHandler from "../components/DataFlow";
 import { BiAddToQueue } from "react-icons/bi";
-import { VscDiffAdded } from "react-icons/vsc";
 
 
 const Sites = () => {
@@ -21,9 +20,6 @@ const Sites = () => {
 
     const navigateToSinglePageHandler = (siteID:string) => {
         navigate(`/single-site?siteID=${siteID}`)
-    }
-    const navigateToAddPlotsHandler = () => {
-        navigate(`/create?formPanelFor=plots`)
     }
 
     useEffect(() => {
@@ -64,8 +60,7 @@ const Sites = () => {
                                 {itemValue:"Site Name", itemWidth:"16%"},
                                 {itemValue:"Total Size", itemWidth:"16%"},
                                 {itemValue:"Sold Area", itemWidth:"16%"},
-                                {itemValue:"Info", itemWidth:"16%"},
-                                {itemValue:"Add Plots", itemWidth:"16%"}
+                                {itemValue:"Info", itemWidth:"16%"}
                             ]}
                         />
                 }
@@ -102,7 +97,6 @@ const Sites = () => {
                                     "16%",
                                     "16%",
                                     "16%",
-                                    "16%",
                                     "16%"
                                 ]}
                                 row={[
@@ -110,8 +104,7 @@ const Sites = () => {
                                     {itemValue:st.siteName},
                                     {itemValue:st.totalSize},
                                     {itemValue:st.soldArea},
-                                    {itemValue:"info", isButton:true, btnIcon:BsInfoSquare, onClickHanlder:()=>navigateToSinglePageHandler(st._id)},
-                                    {itemValue:"add plots", isButton:true, btnIcon:VscDiffAdded, onClickHanlder:()=>navigateToAddPlotsHandler()},
+                                    {itemValue:"info", isButton:true, btnIcon:BsInfoSquare, onClickHanlder:()=>navigateToSinglePageHandler(st._id)}
                                 ]}
                             />
                         ))

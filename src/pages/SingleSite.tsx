@@ -1,9 +1,9 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, DragEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ApiResponseTypes, PlotBeltTypes, PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
-import { findAllPlots, findSingleSite, resetSiteRows, updateSite, updateSiteRows } from "../api";
+import { PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
+import { createPlots, findAllPlots, findSingleSite, updatePlotCoordinates, updateSite } from "../api";
 import { ButtonPrimary, HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
-import { PRIMARY_LIGHT, PRIMARY_LIGHTER } from "../utils/constants";
+import { PRIMARY_LIGHT } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
 import ListHeading from "../components/ListHeading";
 import ListItem from "../components/ListItem";
@@ -12,75 +12,68 @@ import DataFlowHandler from "../components/DataFlow";
 import { BiAddToQueue } from "react-icons/bi";
 import { GrUpdate } from "react-icons/gr";
 import Modal from "../components/Modal";
+import { LuGrab, LuMapPinCheck } from "react-icons/lu";
+import toast from "react-hot-toast";
+import { MdSell } from "react-icons/md";
+import { VscGitPullRequestCreate } from "react-icons/vsc";
+import { RxCross1 } from "react-icons/rx";
 
 
 const SingleSite = () => {
     const [query] = useSearchParams();
 
-    const canvasRef = useRef<HTMLCanvasElement|null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<{success:boolean; message:string; jsonData:object}>({success:false, message:"", jsonData:{}});
     const [isError, setIsError] = useState<boolean>(false);
     const [siteData, setSiteData] = useState<SiteTypes|Record<string, never>>({});
     const [allPlots, setAllPlots] = useState<PlotTypes[]>([]);
-    const [updateRowFormData, setUpdateRowFormData] = useState<UpdateSiteBodyTypes>({siteID:"", baseSize:0, noOfPlots:0});
-    const [isSiteRowsUpdateFormActive, setIsSiteRowsUpdateFormActive] = useState<boolean>(false);
+    //const [updateRowFormData, setUpdateRowFormData] = useState<UpdateSiteBodyTypes>({siteID:"", baseSize:0, noOfPlots:0});
     const [isUpdateSiteFormActive, setIsUpdateSiteFormActive] = useState<boolean>(false);
-    const [trackedArea, setTrackedArea] = useState<number>(0);
+    const [isPlotTooltipVisible, setIsPlotTooltipVisible] = useState<boolean>(false);
     const [totalSiteCalculations, setTotalSiteCalculations] = useState<{totalSoldArea:number; totalRemainingArea:number; totalShouldPay:number; totalPaid:number; totalPending:number;}>({totalSoldArea:0, totalRemainingArea:0, totalShouldPay:0, totalPaid:0, totalPending:0});
     const [updateSiteForm, setUpdateSiteForm] = useState<UpdateSiteBodyTypes>({siteID:"", soldArea:0, totalSize:0});
     //const [aa, setAa] = useState<{}>({});
-    const noOfPlots = useRef<HTMLInputElement|null>(null);
-    const lastPlotNo = useRef<HTMLInputElement|null>(null);
-    const baseSize = useRef<HTMLInputElement|null>(null);
-    //const [vacantArea, setVacantArea] = useState<number>(0);
+    const [siteMapForm, setSiteMapForm] = useState<{size:number; rate:number; length:number; breath:number; duration:number; firstPlotNo:number; quantity:number;}>({size:0, rate:0, length:0, breath:0, duration:0, firstPlotNo:0, quantity:0});
+    const [siteMapePlots, setSiteMapPlots] = useState<{plotID?:string; size:number; plotNo:number; rate:number; length:number; breath:number; duration:number; x:number; y:number;}[]>([]);
+    const parentContRef = useRef<HTMLDivElement|null>(null);
+    const selectedPlotIndex = useRef<number|null>(null);
+    const [selectedPlot, setSelectedPlot] = useState<{plotID?:string; size:number; plotNo:number; rate:number; length:number; breath:number; duration:number; x:number; y:number; isDragging:boolean;}>({plotID:undefined, plotNo:0, size:0, rate:0, length:0, breath:0, duration:0, x:0, y:0, isDragging:false});
+    const [offset, setOffset] = useState<{x:number; y:number;}>({x:0, y:0});
+    
+    const firstPlotNoRef = useRef<HTMLInputElement|null>(null);
+    const sizeRef = useRef<HTMLInputElement|null>(null);
+    const rateRef = useRef<HTMLInputElement|null>(null);
+    const lengthRef = useRef<HTMLInputElement|null>(null);
+    const breathRef = useRef<HTMLInputElement|null>(null);
+    const durationRef = useRef<HTMLInputElement|null>(null);
+    const quantityRef = useRef<HTMLInputElement|null>(null);
+    const [updateingPlots, setUpdateingPlots] = useState<{plotID?:string; plotNo:number; length:number; breath:number; x:number; y:number;}[]>([]);
+    const [isUpdateMapMode, setIsUpdateMapMode] = useState<boolean>(true);
+    const [isCreateMapMode, setIsCreateMapMode] = useState<boolean>(true);
+
+
+
+    //const [plotBoxTooltip, set]
     const navigate = useNavigate();
 
     const siteID = query.get("siteID");
 
-    const onChangeHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
-        setUpdateRowFormData({...updateRowFormData, [e.target.name]:e.target.value});        
-    };
-    const updateResetSiteRowHandler = async(fore:"update"|"reset") => {
-        if (!siteID) return;
-        let res:ApiResponseTypes<SiteTypes|Record<string, never>> = {success:false, message:"", jsonData:{}};
 
-        if (fore === "update") {
-            res = await updateSiteRows({...updateRowFormData, siteID:siteID});
+    //const updateUI = () => {
+    //    const no_of_plots = noOfPlots.current;
+    //    const last_plot_no = lastPlotNo.current;
+    //    const base_size = baseSize.current;
 
-        }
-        else if (fore === "reset") {
-            res = await resetSiteRows({siteID});
-        }
-        else{
-            console.log("didn't found updateResetSiteRowHandler's parameter 'fore'");
-        }
-        setSiteData(res.jsonData);
-        setTrackedArea(res.jsonData.plotsInSingleRow.reduce((acc, iter) => {
-            return (acc += (iter.baseSize * iter.noOfPlots)) || 0;
-        }, 0));
-        updateUI();
-    };
+    //    if (!no_of_plots || !last_plot_no || !base_size) return;
 
-    const updateUI = () => {
-        const no_of_plots = noOfPlots.current;
-        const last_plot_no = lastPlotNo.current;
-        const base_size = baseSize.current;
-
-        if (!no_of_plots || !last_plot_no || !base_size) return;
-
-        no_of_plots.value = "";
-        last_plot_no.value = "";
-        base_size.value = "";
-        setUpdateRowFormData({...updateRowFormData, baseSize:0, lastPlotNo:0, noOfPlots:0});
-    }
+    //    no_of_plots.value = "";
+    //    last_plot_no.value = "";
+    //    base_size.value = "";
+    //    setUpdateRowFormData({...updateRowFormData, baseSize:0, lastPlotNo:0, noOfPlots:0});
+    //}
 
     const navigateToSinglePageHandler = (plotID:string) => {
         navigate(`/single-plot?plotID=${plotID}`);
-    };
-
-    const navigateToAddPlotPageHandler = () => {
-        navigate(`/create?formPanelFor=plots`);
     };
 
     const changeUpdateSiteHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
@@ -93,76 +86,282 @@ const SingleSite = () => {
     const cancelUpdateSiteHandler = () => {
         console.log("cancelled");
     }
+        
+    const changeSiteMapFormHandler = (e:ChangeEvent<HTMLInputElement>) => {
+        setSiteMapForm({...siteMapForm, [e.target.name]:Number(e.target.value)});
+    }
+    const addPlotBoxesToMap = () => {
+        console.log({siteMapForm});
+        for (let x=0; x<siteMapForm.quantity; x++){
+            if (siteMapePlots.find((plt) => plt.plotNo === Number(siteMapForm.firstPlotNo)+x)) {
+                toast.error(`Plot no ${Number(siteMapForm.firstPlotNo)+x} has already added`)
+                return;
+            }
+            setSiteMapPlots((prev) => [
+                //...allPlots.map((plt) => ({
+                //    plotID:undefined,
+                //    plotNo:plt.plotNo,
+                //    size:plt.size,
+                //    rate:plt.rate,
+                //    length:plt.length,
+                //    breath:plt.breath,
+                //    duration:plt.duration,
+                //    x:plt.coordinates.x,
+                //    y:plt.coordinates.y
+                //})),
+                 ...prev,
+                {
+                    plotID:undefined,
+                    plotNo:Number(siteMapForm.firstPlotNo)+x,
+                    size:Number(siteMapForm.size),
+                    rate:Number(siteMapForm.rate),
+                    length:Number(siteMapForm.length),
+                    breath:Number(siteMapForm.breath),
+                    duration:Number(siteMapForm.duration),
+                    x:100,
+                    y:100
+                }
+            ]);
+        }
+        setIsCreateMapMode(true);
+        setIsUpdateMapMode(false);
+        console.log(siteMapePlots);
+    }
+    const createPlotsHanlder = async() => {
+        for(const plt of siteMapePlots){
+            const res = await createPlots({
+                plotNo:plt.plotNo,
+                size:plt.size,
+                rate:plt.rate,
+                length:plt.length,
+                breath:plt.breath,
+                site:siteData.siteName,
+                duration:plt.duration,
+                x:plt.x, y:plt.y
+            });
 
+            if (res.success) {
+                setAllPlots((prev) => [...prev, res.jsonData]);
+                setSiteMapPlots([]);
+                setSiteMapForm({
+                    firstPlotNo:0,
+                    size:0,
+                    rate:0,
+                    quantity:0,
+                    length:0,
+                    breath:0,
+                    duration:0
+                });
+                if (!firstPlotNoRef.current ||
+                    !sizeRef.current ||
+                    !rateRef.current ||
+                    !lengthRef.current ||
+                    !breathRef.current ||
+                    !durationRef.current ||
+                    !quantityRef.current) return;
 
-    useEffect(() => {
-        if (allPlots.length === 0) return;
-        
-        const boxH = 30;
-        const boxY = 10;
-        
-        if (!canvasRef.current) return;
+                firstPlotNoRef.current.value = "";
+                sizeRef.current.value = "";
+                rateRef.current.value = "";
+                lengthRef.current.value = "";
+                breathRef.current.value = "";
+                durationRef.current.value = "";
+                quantityRef.current.value = "";
+            }
+        }
+        console.log(siteMapePlots);
+    }
 
-        const canvas = canvasRef.current;
-        
-        //canvas.width = window.innerWidth;
-        canvas.height = 300;
-        
-        const ctx = canvas.getContext("2d");
-        
-        if (!ctx) return;
-        
+    const dragStartHandler = (e:DragEvent<HTMLDivElement>, index:number) => {
+        const parentCont = parentContRef.current?.getBoundingClientRect();
+        if (!parentCont) return;
+        selectedPlotIndex.current = index;
+        const mouseX = e.clientX - parentCont.left;
+        const mouseY = e.clientY - parentCont.top;
 
-        if (!siteData || siteData?.plotsInSingleRow?.length === 0) {
-            alert("siteData.plotsInSingleRow is empty");
-            //throw new Error("siteData.plotsInSingleRow is empty or null");
-            return;
+        const targetPlot = siteMapePlots[index];
+
+        setOffset({
+            x:mouseX - targetPlot.x,
+            y:mouseY - targetPlot.y
+        });
+        setSelectedPlot({
+            plotID:targetPlot.plotID,
+            size:targetPlot.size,
+            plotNo:targetPlot.plotNo,
+            rate:targetPlot.rate,
+            length:targetPlot.length,
+            breath:targetPlot.breath,
+            duration:targetPlot.duration,
+            x:targetPlot.x,
+            y:targetPlot.y,
+            isDragging:true
+        });
+    }
+    const dragHandler = (e:DragEvent<HTMLDivElement>) => {
+        const parentCont = parentContRef.current?.getBoundingClientRect();
+        if (!parentCont) return;
+        const mouseX = e.clientX - parentCont.left;
+        const mouseY = e.clientY - parentCont.top;
+
+        setSelectedPlot((prev) => ({
+            ...prev,
+            x:mouseX-offset.x,
+            y:mouseY-offset.y
+        }));
+    }
+    const dropHandler = () => {
+        if (selectedPlotIndex.current === null) return;
+
+        const newPlots = [...siteMapePlots];
+
+        newPlots[selectedPlotIndex.current] = {
+            ...newPlots[selectedPlotIndex.current],
+            x:selectedPlot.x,
+            y:selectedPlot.y
         }
 
-        for(const objIndex in (siteData?.plotsInSingleRow as PlotBeltTypes[])){
-            let rowWidth:number = 0;
-            let soldArea:number = 0;
-            let finalWidth = 0;
-            for(let i=(Number(siteData.plotsInSingleRow[Number(objIndex)].lastPlotNo)-Number(siteData.plotsInSingleRow[Number(objIndex)].noOfPlots)); i<siteData.plotsInSingleRow[Number(objIndex)].lastPlotNo; i++){
-                const w = allPlots[i]?.size;
-                finalWidth = rowWidth+allPlots[Number(i)]?.size-w;
+        setUpdateingPlots((prev) => [...prev, selectedPlot]);
 
-                if (allPlots[Number(i)]?.hasSold) {
-                    soldArea += allPlots[i]?.size;
-                }
-                //if (data[Number(i)].plotStatus === "completed" || data[Number(i)].plotStatus === "pending" || data[Number(i)].plotStatus === "registered") {
-                //    soldArea += data[i].size;
-                //}
-                if (allPlots[Number(i)]?.plotStatus === "vacant") {
-                    ctx.fillStyle = "#ffa0a0";
-                }
-                else if (allPlots[Number(i)]?.plotStatus === "registered" || allPlots[Number(objIndex)]?.plotStatus === "completed") {
-                    ctx.fillStyle = "#23a949";
+        setSiteMapPlots(newPlots);
+        selectedPlotIndex.current = null;
+        setSelectedPlot({
+            plotID:undefined,
+            plotNo:0,
+            size:0,
+            rate:0,
+            length:0,
+            breath:0,
+            duration:0,
+            x:0,
+            y:0,
+            isDragging:false
+        });
+    }
+
+    const handleClick = (e:MouseEvent<HTMLDivElement>) => {
+        const target = (e.target as HTMLElement);
+    
+        if (target.dataset.type === 'item') {
+          console.log(target.id);
+          const selectedPlt = allPlots.find((plt) => plt._id === target.id);
+          if (!selectedPlt) return;
+
+          setIsPlotTooltipVisible(true);
+          setSelectedPlot({
+            plotID:selectedPlt._id,
+            plotNo:selectedPlt?.plotNo,
+            size:selectedPlt?.size,
+            rate:selectedPlt?.rate,
+            length:selectedPlt?.length,
+            breath:selectedPlt?.breath,
+            duration:selectedPlt?.duration,
+            x:selectedPlt?.coordinates.x,
+            y:selectedPlt?.coordinates.y,
+            isDragging:false
+          });
+        }
+        else{
+            setIsPlotTooltipVisible(false);
+            setSelectedPlot({
+                plotID:undefined,
+                plotNo:0,
+                size:0,
+                rate:0,
+                length:0,
+                breath:0,
+                duration:0,
+                x:0,
+                y:0,
+                isDragging:false
+            });
+        }
+    };
+
+    const aaaaa = () => {
+        const as = allPlots.map((plt) => ({
+            plotID:plt._id,
+            plotNo:plt.plotNo,
+            size:plt.size,
+            rate:plt.rate,
+            length:plt.length,
+            breath:plt.breath,
+            duration:plt.duration,
+            x:plt.coordinates.x,
+            y:plt.coordinates.y,
+            isDragging:false
+        }));
+        setSiteMapPlots(as);
+        setIsCreateMapMode(false);
+    }
+    
+    const bbbbb = async() => {
+
+        for(let i=0; i<updateingPlots.length; i++){
+            if (updateingPlots.length === 0) return;
+            if (updateingPlots[i].plotID) {
+                const res = await updatePlotCoordinates({
+                    plotID:updateingPlots[i].plotID as string,
+                    x:updateingPlots[i].x,
+                    y:updateingPlots[i].y
+                });
+                console.log(res.jsonData);
+
+                if (res.success) {
+                    //const plotsWithNewPosition = allPlots.filter((plt) => plt.plotNo !== res.jsonData.plotNo);
+                    const plotsWithNewPosition = allPlots.map((plt) => {
+                        if (plt.plotNo === res.jsonData.plotNo) {
+                            return {...plt, coordinates:{x:res.jsonData.coordinates.x, y:res.jsonData.coordinates.y}}
+                        }
+                        else{
+                            return plt;
+                        }
+                    });
+    
+                    setAllPlots(plotsWithNewPosition);
+                    setSiteMapPlots([]);
+                    setUpdateingPlots([]);
+                    selectedPlotIndex.current = null;
+                    
+                    console.log({plotsWithNewPosition});
+                    
                 }
                 else{
-                    ctx.fillStyle = "#60ff60";
+                    console.log("error occured line 324 SingleSite.tsx");
                 }
 
-                rowWidth += w;
                 
-                ctx.fillRect(finalWidth, (Number(objIndex)*boxY)+(Number(objIndex)*boxH), w, boxH);
-
-
-                ctx.strokeStyle = "black";
-                ctx.strokeRect(finalWidth, (Number(objIndex)*boxY)+(Number(objIndex)*boxH), w, boxH);
-                
-
-                ctx.fillStyle = "black";
-                ctx.font = "12px Arial";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(`${allPlots[i]?.plotNo}`, finalWidth+w/2, (boxH/2)+(Number(objIndex)*boxY)+(Number(objIndex)*boxH)-5);
-                ctx.fillText(`${allPlots[i]?.size}`, finalWidth+w/2, (boxH/2)+(Number(objIndex)*boxY)+(Number(objIndex)*boxH)+10);
             }
-            ctx.fillText(`=> ${soldArea}sqyd / ${rowWidth}sqyd`, rowWidth+allPlots[allPlots.length-1].size, (Number(objIndex)*boxY)+(Number(objIndex)*boxH)+15);
+            else{
+                console.log(updateingPlots[i].plotID, "is undefined");
+                
+            }
         }
+        console.log(siteMapePlots);
+        console.log(updateingPlots);
 
-    }, [siteData, allPlots]);
+    }
+
+    const cancelPositionUpdate = () => {
+        setUpdateingPlots([]);
+        setSelectedPlot({
+            plotID:undefined,
+            plotNo:0,
+            size:0,
+            rate:0,
+            length:0,
+            breath:0,
+            duration:0,
+            x:0,
+            y:0,
+            isDragging:false
+        });
+        setSiteMapPlots([]);
+        setIsCreateMapMode(true);
+        setIsUpdateMapMode(true);
+        selectedPlotIndex.current = null;
+    }
+    
 
     useEffect(() => {
         if (!siteID) {
@@ -171,11 +370,6 @@ const SingleSite = () => {
         findSingleSite(siteID)
         .then((data) => {
             setSiteData(data.jsonData);
-            //setVacantArea(data.jsonData.totalSize - data.jsonData.soldArea)
-            setTrackedArea(
-                data.jsonData.plotsInSingleRow.reduce((acc, iter) => {
-                return (acc += (iter.baseSize * iter.noOfPlots))||0;
-            }, 0))
         })
         .catch((err) => {
             console.log(err);
@@ -250,7 +444,7 @@ const SingleSite = () => {
         //setVacantArea(siteData.totalSize - siteData?.soldArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots)))
         //setVacantArea((prev) => prev - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots)))
 
-    }, [siteData, updateRowFormData, siteID]);
+    }, [siteData, siteID]);
 
     return(
         <>
@@ -268,12 +462,6 @@ const SingleSite = () => {
                 onClickHandler={() => setIsUpdateSiteFormActive(true)}
                 display="inline-flex"
             />
-            <ButtonPrimary
-                text="Create Plots"
-                Icon={BiAddToQueue}
-                onClickHandler={navigateToAddPlotPageHandler}
-                display="inline-flex"
-            />
             <KeyValuePairs keyValuePairArray={[
                 {"Total Area":siteData?.totalSize},
                 {"Sold Area":totalSiteCalculations.totalSoldArea},
@@ -285,61 +473,173 @@ const SingleSite = () => {
                 {"Paid":totalSiteCalculations.totalPaid},
                 {"Total Pendings":totalSiteCalculations.totalPending},
             ]} margin="10px auto" backgroundColor={PRIMARY_LIGHT} />
-            <KeyValuePairs keyValuePairArray={[
-                {"Tracked Area":`${trackedArea??0} + ${(Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}`},
-                {"Untracked Area":(siteData?.totalSize??0) - trackedArea - (Number(updateRowFormData.baseSize)*Number(updateRowFormData.noOfPlots))}
-            ]} margin="10px auto" />
-            <button onClick={() => updateResetSiteRowHandler("reset")}>Reset site belt</button>
-            <button onClick={() => setIsSiteRowsUpdateFormActive(true)}>Update site belt in map</button>
+
+
+
+
             {
-                isSiteRowsUpdateFormActive &&
-                    <div className="site_update_form">
-                        <input type="text" ref={noOfPlots} name="noOfPlots" placeholder="No. of plots" onChange={onChangeHandler} />
-                        <input type="text" ref={lastPlotNo} name="lastPlotNo" placeholder="Last plot no." onChange={onChangeHandler} />
-                        <input type="text" ref={baseSize} name="baseSize" placeholder="Base size" onChange={onChangeHandler} />
-                        <button onClick={
-                            (siteData?.totalSize as number) - (trackedArea) > 0 ?
-                                    () => updateResetSiteRowHandler("update")
-                                    :
-                                    () => {alert("Can't sell plot more than vacant area!")}
-                        }>Update</button>
+                isCreateMapMode &&
+                    <div style={{
+                        textAlign:"center"
+                    }}>
+                        <input className="primary_input" ref={firstPlotNoRef} type="text" name="firstPlotNo" placeholder="Starting Plot No." onChange={changeSiteMapFormHandler} />
+                        <input className="primary_input" ref={sizeRef} type="text" name="size" placeholder="Base Size" onChange={changeSiteMapFormHandler} />
+                        <input className="primary_input" ref={rateRef} type="text" name="rate" placeholder="Rate" onChange={changeSiteMapFormHandler} />
+                        <input className="primary_input" ref={lengthRef} type="text" name="length" placeholder="Length" onChange={changeSiteMapFormHandler} />
+                        <input className="primary_input" ref={breathRef} type="text" name="breath" placeholder="Breath" onChange={changeSiteMapFormHandler} />
+                        <input className="primary_input" ref={durationRef} type="text" name="duration" placeholder="Duration" onChange={changeSiteMapFormHandler} />
+                        <input className="primary_input" ref={quantityRef} type="text" name="quantity" placeholder="Quantity" onChange={changeSiteMapFormHandler} />
+                        <ButtonPrimary
+                            text="Add To Map"
+                            Icon={LuMapPinCheck}
+                            onClickHandler={addPlotBoxesToMap}
+                            display="inline-flex"
+                        />
                     </div>
             }
 
-            {
-                allPlots.length !== 0 ?
-                    <ScrollableContainer>
-                        <canvas width={1200} ref={canvasRef}
-                            style={{
-                                backgroundColor:PRIMARY_LIGHTER,
-                                height:"300px"
-                            }}
-                        >
-                        </canvas>
-                    </ScrollableContainer>
-                    :
-                    <h3>Your Site Chart will show here</h3>
-
+            {isCreateMapMode&&siteMapePlots.length !== 0 && 
+                <ButtonPrimary
+                    text="Create Plots"
+                    Icon={BiAddToQueue}
+                    onClickHandler={createPlotsHanlder}
+                    display="inline-flex"
+                />
             }
 
-            <div className="belts_cont">
-                <div className="belt" style={{backgroundColor:PRIMARY_LIGHT}}>
-                    <div className="plot_quantity">Belt Number</div>
-                    <div className="plot_quantity">Number Of Plots</div>
-                    <div className="last_plot">Last Plot Number</div>
-                    <div className="base_size">Base Size</div>
-                </div>
-                {
-                    siteData?.plotsInSingleRow?.map((belt, index) => (
-                        <div className="belt" key={index}>
-                            <div className="plot_quantity">{`(${index+1})`}</div>
-                            <div className="plot_quantity">{belt.noOfPlots}</div>
-                            <div className="last_plot">{belt.lastPlotNo}</div>
-                            <div className="base_size">{belt.baseSize}</div>
+            {
+                isUpdateMapMode &&
+                //!isCreateMapMode &&
+                <>
+                    <ButtonPrimary
+                        text="Update Plot Position"
+                        Icon={updateingPlots.length === 0 ? LuGrab : RxCross1}
+                        onClickHandler={updateingPlots.length === 0 ? aaaaa : cancelPositionUpdate}
+                        display="inline-flex"
+                    />
+                    {
+                        updateingPlots.length !== 0 &&
+                            <ButtonPrimary
+                                text="Save New Position"
+                                Icon={VscGitPullRequestCreate}
+                                onClickHandler={bbbbb}
+                                display="inline-flex"
+                            />
+                    }
+                </>
+            }
+            <ScrollableContainer>
+                <div className="parent_cont" ref={parentContRef}
+                    onDragOver={(e) => {
+                        e.preventDefault();
+                        dragHandler(e);
+                    }}
+                    onDrop={dropHandler}
+                    style={{
+                        height:"400px",
+                        width:"1220px",
+                        position:"relative"
+                    }}
+                    onClick={(e) => handleClick(e)}
+                >
+
+                    {
+                        siteMapePlots.map((plt, index) => (
+                            <div className="plot"
+                                key={plt.plotNo}
+                                draggable
+                                onDragStart={(e) => dragStartHandler(e, index)}
+                                onDragEnd={dropHandler}
+                                style={{
+                                    position:"absolute",
+                                    top:plt.y,
+                                    left:plt.x,
+                                    backgroundColor:"blue",
+                                    padding:`${plt.length}px ${plt.breath}px`,
+                                    fontSize:"0.7rem",
+                                    height:`${plt.length}px`,
+                                    width:`${plt.breath}px`,
+                                    cursor: "grab",
+                                    userSelect: "none",
+                                    zIndex:2
+                                }}
+                            >
+                                {plt.plotNo}
+                            </div>
+                        ))
+                    }
+
+                    {
+                        //siteMapePlots.length === 0 &&
+                        allPlots.map((plt) => (
+                            <div className="plot"
+                                id={plt._id}
+                                data-type="item"
+                                key={plt._id}
+                                style={{
+                                    position:"absolute",
+                                    top:plt.coordinates.y,
+                                    left:plt.coordinates.x,
+                                    backgroundColor:plt.hasSold?"green":"red",
+                                    padding:`${plt.length}px ${plt.breath}px`,
+                                    height:`${plt.length}px`,
+                                    width:`${plt.breath}px`,
+                                    fontSize:"0.7rem",
+                                    textAlign:"center",
+                                    alignContent:"center",
+                                    opacity:selectedPlot.plotNo === plt.plotNo?"0.5":"1"
+                                }}
+                            >
+                                {plt.plotNo}
+                            </div>
+                        ))
+                    }
+
+                    {selectedPlot.isDragging && (
+                        <div
+                        className="tooltip"
+                        style={{
+                            position:"absolute",
+                            top: selectedPlot.y,
+                            left: selectedPlot.x+40
+                        }}
+                        >
+                        {selectedPlot.plotNo} – ({Math.round(selectedPlot.x)},{Math.round(selectedPlot.y)})
                         </div>
-                    ))
-                }
-            </div>
+                    )}
+                    {isPlotTooltipVisible && (
+                        <div
+                        className="plot_options_dropdown"
+                        style={{
+                            position:"absolute",
+                            top: selectedPlot.y,
+                            left: selectedPlot.x+40
+                        }}
+                        >
+                        <KeyValuePairs
+                            keyValuePairArray={[
+                                {"PlotNo":selectedPlot.plotNo},
+                                {"Size":selectedPlot.size},
+                                {"BaseRate":selectedPlot.rate},
+                                {"Sell":<ButtonPrimary
+                                            text="Sell"
+                                            Icon={MdSell}
+                                            onClickHandler={() => navigate(`/create?plotID=${selectedPlot.plotID}&plotStatus=vacant&formPanelFor=slips`)}
+                                        />
+                                }
+                            ]}
+                            width="100px"
+                        />
+                        </div>
+                    )}
+                </div>
+            </ScrollableContainer>
+
+
+
+
+
+
 
             <ScrollableContainer tableStickyColumn={allPlots.map((plt) => ("Plot No. " + plt.plotNo.toString()))}>
                 <ListHeading
@@ -371,8 +671,8 @@ const SingleSite = () => {
                     }
                     DataNotExistComponent={
                         <HeadingParaCont
-                            heading="No Sites"
-                            para="Your sites will be shown here"
+                            heading="No Plots"
+                            para="Plots will be shown here"
                         />
                     }
                     DataExistComponent={

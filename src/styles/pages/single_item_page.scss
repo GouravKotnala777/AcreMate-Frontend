@@ -91,29 +91,45 @@
         }
     }
 }
-.belts_cont{
-    //border: 2px solid red;
-    .belt{
+.parent_cont{
+    //border: 1px solid $primaryDark;
+    border-radius: 8px;
+    box-shadow: 0.2px 0.2px 2px 0.2px rgba(0,0,0,0.2) inset;
+    background-color: white;
+    .plot{
         //border: 2px solid violet;
-        @include flex(space-around, unset, unset, unset);
-        font-size: $s;
-        max-width: 500px;
-        margin: 5px auto;
-        padding: 5px;
-        border-radius: 8px;
-        box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
-        background-color: white;
-        .plot_quantity{
-            //border: 2px solid indigo;
-            
-        }
-        .last_plot{
-            //border: 2px solid indigo;
-            
-        }
-        .base_size{
-            //border: 2px solid indigo;
-
-        }
+        cursor: pointer;
     }
+    .plot_options_dropdown{
+        //border: 2px solid indigo;
+        position: absolute;
+        transition: 0.3s;
+    }
+
 }
+//.belts_cont{
+//    //border: 2px solid red;
+//    .belt{
+//        //border: 2px solid violet;
+//        @include flex(space-around, unset, unset, unset);
+//        font-size: $s;
+//        max-width: 500px;
+//        margin: 5px auto;
+//        padding: 5px;
+//        border-radius: 8px;
+//        box-shadow:0.1px 0.1px 2px 0.2px rgba(0,0,0,0.2);
+//        background-color: white;
+//        .plot_quantity{
+//            //border: 2px solid indigo;
+            
+//        }
+//        .last_plot{
+//            //border: 2px solid indigo;
+            
+//        }
+//        .base_size{
+//            //border: 2px solid indigo;
+
+//        }
+//    }
+//}

@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { FormSharedComponent } from "../shared/SharedComponents";
+import { FormSharedComponent, InputTertiary } from "../shared/SharedComponents";
 import { assignPlotToClient, createClient, createPlots, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
 import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, SlipTypes, UserTypes } from "../utils/types";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -30,10 +30,10 @@ const CreateFormPanel = () => {
         }
         else if (formPanelFor === "plots") {
             //console.log(createFormData);
-            createPlots(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes);
+            createPlots(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number;});
         }
         else if (formPanelFor === "slips") {
-            //console.log(createFormData);
+            console.log(createFormData);
             plotStatus === "vacant"?
                 assignPlotToClient(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`)
                 :
@@ -135,8 +135,7 @@ const CreateFormPanel = () => {
                             )
                         },
                         {type:"text", label:"Amount", name:"amount"},
-                        {type:"select", label:"Agent Name", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)},// isko alag se fetch karna hai
-                        {type:"number", label:"Plot size you want to sell", name:"size"},
+                        {type:"select", label:"Agent Name", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)},
                         {type:"number", label:"Plot no through which you want to adjust area", name:"plotNo"}
                     ]
                     :
@@ -160,6 +159,35 @@ const CreateFormPanel = () => {
                 btnText={plotStatus === "vacant"?"Assign Plot":"Create Slip"}
                 onChangeFeildsHandler={onChangeFeildsHandler}
                 onSubmitFormHandler={onSubmitFormHandler}
+                wildCardElement={
+                    <div style={{
+                        display:"flex",
+                        justifyContent:"space-around",
+                        margin:"10px 0"
+                    }}>
+                        <InputTertiary
+                            label="Size"
+                            name="size"
+                            defaultValue="50"
+                            width="60px"
+                            onChangeHandler={onChangeFeildsHandler}
+                        />
+                        <InputTertiary
+                            label="Length"
+                            name="length"
+                            defaultValue="30"
+                            width="60px"
+                            onChangeHandler={onChangeFeildsHandler}
+                        />
+                        <InputTertiary
+                            label="Breath"
+                            name="breath"
+                            defaultValue="15"
+                            width="60px"
+                            onChangeHandler={onChangeFeildsHandler}
+                        />
+                    </div>
+                }
             />
             )
     }
