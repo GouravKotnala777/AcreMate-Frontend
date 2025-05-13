@@ -56,6 +56,46 @@
         color: #555555;
     }
 }
+.primary_input{
+    border: 2px solid $primaryLight;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: transparent;
+}
+.tertiary_input_cont{
+    //border: 1px solid red;
+    //width: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    //width: max-content;
+    border-radius: 8px;
+    background-color: white;
+    .tertiary_input_label{
+        //border: 1px solid violet;
+        font-size: 0.8rem;
+        color: $fontPrimary;
+        margin: 0 10px 0 0;
+    }
+    .tertiary_input{
+        //border: 1px solid indigo;
+    }
+    .edit_toggler{
+        //border: 1px solid blue;
+        background-color: $primaryLight;
+        border-radius: 4px;
+        border: none;
+        font-size: 0.9rem;
+        color: $fontPrimary;
+        cursor: pointer;
+        //width: 25px;
+        //height: 25px;
+        .tertiary_input_icon{
+            //border: 1px solid green;
+        }
+    }
+}
 
 select{
     //border: 2px solid red;

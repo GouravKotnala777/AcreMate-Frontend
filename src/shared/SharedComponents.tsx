@@ -7,6 +7,8 @@ import { BG_COLOR, FONT_PRIMARY, PRIMARY_DARK } from "../utils/constants";
 import { updateSlip } from "../api";
 import Spinner from "../components/Spinner";
 import { GoStop } from "react-icons/go";
+import { BiEdit } from "react-icons/bi";
+import { GiCancel } from "react-icons/gi";
 
 interface NavigateItemPropTypes {
     Icon:IconType;
@@ -27,6 +29,13 @@ interface InputPropTypes {
     labelBG?:string;
     inputBG?:string;
     display?:"block"|"none";
+    onChangeHandler:(e:ChangeEvent<HTMLInputElement>) => void;
+}
+interface InputTertiaryPropTypes {
+    defaultValue:string;
+    label:string;
+    name:string;
+    width?:string;
     onChangeHandler:(e:ChangeEvent<HTMLInputElement>) => void;
 }
 interface SelectPropTypes {
@@ -67,6 +76,7 @@ interface FormSharedComponentPropTypes{
     btnText:string;
     onChangeFeildsHandler:(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void;
     onSubmitFormHandler:() => Promise<void>;
+    wildCardElement?:ReactNode;
 }
 interface TimerPropTypes{
     bgColor?:string;
@@ -79,7 +89,7 @@ interface SkeletonPropType{
     margin?:string;
 }
 interface KeyValuePairsPropTypes{
-    keyValuePairArray:Record<string, string|number|undefined>[];
+    keyValuePairArray:Record<string, string|number|ReactNode|undefined>[];
     color?:string;
     backgroundColor?:string;
     isLoading?:boolean;
@@ -175,6 +185,37 @@ export const Input = ({label, name, inputBG, labelBG, display, onChangeHandler}:
     )
 };
 
+
+export const InputTertiary = ({defaultValue, label, name, width, onChangeHandler}:InputTertiaryPropTypes) => {
+    const [a, setA] = useState<boolean>(false);
+
+    //const checkState = (id:string) => {
+
+    //};
+
+    return(
+        <div className="tertiary_input_cont">
+            {
+                a ?
+                <input className="tertiary_input"
+                    type="text"
+                    name={name}
+                    onChange={onChangeHandler}
+                    style={{
+                        width:width?width:"unset"
+                    }}
+                />
+                :
+                <label className="tertiary_input_label">{label} : {defaultValue}</label>
+            }
+            <button className="edit_toggler" onClick={() => setA(!a)}>
+                {a?<GiCancel className="tertiary_input_icon"/>:<BiEdit className="tertiary_input_icon" />}
+            </button>
+        </div>
+    )
+};
+
+
 export const Select = ({label, name, options, color, bgColor, border, display, onChangeHandler}:SelectPropTypes) => {
 
     return(
@@ -227,7 +268,7 @@ export const ButtonPrimary = ({text, Icon, color, bgColor, width, margin, paddin
         </button>
     )
 };
-export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler, onSubmitFormHandler}:FormSharedComponentPropTypes) => {
+export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler, onSubmitFormHandler, wildCardElement}:FormSharedComponentPropTypes) => {
 
     return(
         <div className="form_shared_component">
@@ -249,6 +290,11 @@ export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler,
                             :
                             <h3 key={index}>input type = "{inp.type}"</h3>
                 ))
+            }
+            {
+                wildCardElement && (
+                    wildCardElement
+                )
             }
             <ButtonSecondary text={btnText} width="100%" margin="10px 0 15px 0" onClickHandler={onSubmitFormHandler} />
             {/*<button onClick={onSubmitFormHandler}></button>*/}
