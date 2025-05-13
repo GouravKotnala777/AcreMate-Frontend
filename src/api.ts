@@ -333,6 +333,17 @@ export const detachClientFromPlot = async(formData:{plotID:string}) => {
 
     return data;
 };
+export const updatePlotCoordinates = async(formData:{plotID:string; x:number; y:number;}) => {
+    const data = await fetchAPIHandler<PlotTypes>({
+        apiName:"updatePlotCoordinates",
+        endpoint:"/plot/update-coordinates",
+        credentials:true,
+        method:"PUT",
+        body:JSON.stringify(formData)
+    });
+
+    return data;
+};
 export const updatePlot = async(formData:UpdatePlotBodyTypes) => {
     const data = await fetchAPIHandler<PlotTypes>({
         apiName:"updatePlot",
