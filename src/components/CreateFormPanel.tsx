@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { FormSharedComponent, InputTertiary } from "../shared/SharedComponents";
 import { assignPlotToClient, createClient, createPlots, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
-import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, SlipTypes, UserTypes } from "../utils/types";
+import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, PlotTypes, SlipTypes, UserTypes } from "../utils/types";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CreateFormPanel = () => {
@@ -12,6 +12,9 @@ const CreateFormPanel = () => {
     const navigate = useNavigate();
 
     const plotID = searchParams.get("plotID");
+    const size = searchParams.get("size");
+    const length = searchParams.get("length");
+    const breath = searchParams.get("breath");
     const plotStatus = searchParams.get("plotStatus");
     const formPanelFor = searchParams.get("formPanelFor");
     
@@ -33,9 +36,14 @@ const CreateFormPanel = () => {
             createPlots(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number;});
         }
         else if (formPanelFor === "slips") {
-            console.log(createFormData);
+            console.log({createFormData});
             plotStatus === "vacant"?
-                assignPlotToClient(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`)
+                assignPlotToClient(({
+                    ...createFormData,
+                    size:Number((createFormData as PlotTypes).size||size),
+                    length:Number((createFormData as PlotTypes).length||length),
+                    breath:Number((createFormData as PlotTypes).breath||breath)
+                }) as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`)
                 :
                 createSlip(createFormData as CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`);
         }
@@ -45,7 +53,7 @@ const CreateFormPanel = () => {
             if (createdSite.success) {
                 //navigate(`/single-site?siteID=${createdSite.jsonData._id}`);
                 //navigate("/create?formPanelFor=plots");
-                window.location.href = "/create?formPanelFor=plots";
+                window.location.href = "/sites";
             }
         }
         else{
@@ -168,21 +176,21 @@ const CreateFormPanel = () => {
                         <InputTertiary
                             label="Size"
                             name="size"
-                            defaultValue="50"
+                            defaultValue={size||"0"}
                             width="60px"
                             onChangeHandler={onChangeFeildsHandler}
                         />
                         <InputTertiary
                             label="Length"
                             name="length"
-                            defaultValue="30"
+                            defaultValue={length??"0"}
                             width="60px"
                             onChangeHandler={onChangeFeildsHandler}
                         />
                         <InputTertiary
                             label="Breath"
                             name="breath"
-                            defaultValue="15"
+                            defaultValue={breath??"0"}
                             width="60px"
                             onChangeHandler={onChangeFeildsHandler}
                         />

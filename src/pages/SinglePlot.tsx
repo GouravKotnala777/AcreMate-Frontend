@@ -51,7 +51,7 @@ const SinglePlot = () => {
     const payEMIHandler = () => {
 
         if (singlePlotData?.plotStatus === "vacant") {
-            navigate(`/create?plotID=${singlePlotData._id}&plotStatus=${singlePlotData?.plotStatus}&formPanelFor=slips`);
+            navigate(`/create?plotID=${singlePlotData._id}&plotStatus=${singlePlotData?.plotStatus}&size=${singlePlotData?.size}&length=${singlePlotData?.length}&breath=${singlePlotData?.breath}&formPanelFor=slips`);
         }
         else{
             navigate(`/create?plotID=${singlePlotData?._id}&plotStatus=${singlePlotData?.plotStatus}&formPanelFor=slips`);

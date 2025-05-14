@@ -511,12 +511,14 @@ const SingleSite = () => {
                 isUpdateMapMode &&
                 //!isCreateMapMode &&
                 <>
-                    <ButtonPrimary
-                        text="Update Plot Position"
-                        Icon={updateingPlots.length === 0 ? LuGrab : RxCross1}
-                        onClickHandler={updateingPlots.length === 0 ? aaaaa : cancelPositionUpdate}
-                        display="inline-flex"
-                    />
+                    {   allPlots.length !== 0 &&
+                        <ButtonPrimary
+                            text="Update Plot Position"
+                            Icon={updateingPlots.length === 0 ? LuGrab : RxCross1}
+                            onClickHandler={updateingPlots.length === 0 ? aaaaa : cancelPositionUpdate}
+                            display="inline-flex"
+                        />
+                    }
                     {
                         updateingPlots.length !== 0 &&
                             <ButtonPrimary
@@ -624,7 +626,7 @@ const SingleSite = () => {
                                 {"Sell":<ButtonPrimary
                                             text="Sell"
                                             Icon={MdSell}
-                                            onClickHandler={() => navigate(`/create?plotID=${selectedPlot.plotID}&plotStatus=vacant&formPanelFor=slips`)}
+                                            onClickHandler={() => navigate(`/create?plotID=${selectedPlot.plotID}&plotStatus=vacant&size=${selectedPlot.size}&length=${selectedPlot.length}&breath=${selectedPlot.breath}&formPanelFor=slips`)}
                                         />
                                 }
                             ]}
