@@ -168,6 +168,7 @@ const CreateFormPanel = () => {
                 onChangeFeildsHandler={onChangeFeildsHandler}
                 onSubmitFormHandler={onSubmitFormHandler}
                 wildCardElement={
+                    plotStatus === "vacant" &&
                     <div style={{
                         display:"flex",
                         justifyContent:"space-around",
