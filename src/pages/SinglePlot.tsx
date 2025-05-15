@@ -342,9 +342,9 @@ const SinglePlot = () => {
                         <KeyValuePairs
                             keyValuePairArray={[
                                 {"Date":getDateByString(hoveringDotDate as string)},
-                                {"Amount":hoveringDotAmount}
+                                {"Amount":`₹${hoveringDotAmount}/-`}
                             ]}
-                            width="100px"
+                            width="115px"
                         />
                     </div>
             }
@@ -366,11 +366,26 @@ const SinglePlot = () => {
                             {"Client":singlePlotData?.clientID.name}
                         ]} isLoading={!singlePlotData} />
                 }
+                {
+                    (singlePlotData?.shouldPay&&singlePlotData?.paid) ?
+                        <KeyValuePairs
+                            keyValuePairArray={[
+                                {[-(singlePlotData.shouldPay - singlePlotData.paid)<=0?"Pending":"Extra"]:`${-(singlePlotData.shouldPay - singlePlotData.paid)}/-`}
+                            ]}
+                            color={singlePlotData.shouldPay - singlePlotData.paid>0?"red":"#00cc00"}
+                            fontWeight="500"
+                            fontSize="0.75rem"
+                        />
+                        :
+                        <></>
+                }
                 <KeyValuePairs keyValuePairArray={[
                     {"Duration":`${singlePlotData?.duration}months`},
                     {"Time Convered":getMonthsCovered(allSlipsData[0]?.createdAt)},
+                    {"Plot Price":`₹${((singlePlotData?.size||0)*(singlePlotData?.rate||0))}/-`},
                     {"Should Pay":`₹${singlePlotData?.shouldPay}/-`},
                     {"Paid":`₹${singlePlotData?.paid}/-`},
+                    {"Total Balance":`₹ ${((singlePlotData?.size||0)*(singlePlotData?.rate||0))-(singlePlotData?.paid||0)}/-`},
                     {"Status":singlePlotData?.plotStatus}
                 ]} isLoading={!singlePlotData} />
 
@@ -382,19 +397,6 @@ const SinglePlot = () => {
                             {"Last Payment Date":getDateByString(allSlipsData[allSlipsData.length-1]?.createdAt)},
                             {"Last Payment Amount":`₹${allSlipsData[allSlipsData.length-1]?.amount}/-`}
                         ]} isLoading={!allSlipsData[0]} />
-                }
-                
-
-                {
-                    (singlePlotData?.shouldPay&&singlePlotData?.paid) ?
-                        <KeyValuePairs
-                            keyValuePairArray={[
-                                {[-(singlePlotData.shouldPay - singlePlotData.paid)<=0?"Pending":"Extra"]:`${-(singlePlotData.shouldPay - singlePlotData.paid)}/-`}
-                            ]}
-                            color={singlePlotData.shouldPay - singlePlotData.paid>0?"red":"#00cc00"}
-                        />
-                        :
-                        <></>
                 }
 
                 {
