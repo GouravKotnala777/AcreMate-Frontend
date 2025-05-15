@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
 import "../styles/pages/agents.scss";
-import { agentsAndSoldArea } from "../api";
+import { agentsAndSoldArea, findAllSitesName } from "../api";
 import { KeyValuePairs } from "../shared/SharedComponents";
 import { PRIMARY_LIGHTER } from "../utils/constants";
 //import { PlotTypes } from "../utils/types";
 
-const siteArray = ["jajru (ist)", "jajru (iind)", "sec-58"];
 
 const Agents = () => {
-    //const [allAgentsData, setAllAgentsData] = useState<({paid:number; shouldPay:number; agentName:string; soldArea:number; pending:number;})[]>([]);
+    const [siteNameArray, setSiteNameArray] = useState<string[]>([]);
     const [allAgentsDataTransformed, setAllAgentsDataTransformed] = useState<
         {
             [key:string]:({paid:number; shouldPay:number; agentName:string; soldArea:number; pending:number;})[]
         }
     >({});
 
+    useEffect(() => {
+        findAllSitesName()
+        .then((res) => {
+            setSiteNameArray(res.jsonData);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
     useEffect(() => {
         agentsAndSoldArea()
         .then((data) => {
@@ -63,7 +71,7 @@ const Agents = () => {
         <div className="agents_bg">
                 <div className="site_cont">
                     {
-                        siteArray.map((siteName, ind) => (
+                        siteNameArray.map((siteName, ind) => (
                             <span key={ind}>
                                 
                                 <KeyValuePairs
