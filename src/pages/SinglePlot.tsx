@@ -113,7 +113,8 @@ const SinglePlot = () => {
     const convertMoneyToPx = (amount:number|undefined, xAxisMarginTop:number) => {
         if (!amount) return NaN;
         const valueInPx = ((amount-nodeValue.lowest)/1)/((nodeValue.highest-nodeValue.lowest)/xAxisMarginTop);
-
+        console.log(valueInPx, "pp");
+        
         if (!isFinite(valueInPx)) return NaN;
         return Math.ceil(valueInPx);
     };
@@ -176,14 +177,26 @@ const SinglePlot = () => {
         ctx.stroke();
 
         // EMI line
-        ctx.beginPath();
-        ctx.moveTo(yAxisMarginLeft, 280-convertMoneyToPx(singlePlotData?.shouldPay, 280)+10);
-        ctx.lineTo(canvasWidth, 280-convertMoneyToPx(singlePlotData?.shouldPay, 280)+10);
-        ctx.setLineDash([2, 2]);
-        ctx.strokeStyle = "#919191";
-        ctx.stroke();
-
-        ctx.setLineDash([]);
+        if (nodeValue.lowest !== nodeValue.highest) {
+            ctx.beginPath();
+            if (nodeValue.lowest === nodeValue.highest) {
+                ctx.moveTo(yAxisMarginLeft, 280-((1100)/1)/((13000)/280)+10);
+                ctx.lineTo(canvasWidth, 280-((1100)/1)/((13000)/280)+10);
+            }
+            else{
+                ctx.moveTo(yAxisMarginLeft, 280-convertMoneyToPx(singlePlotData?.shouldPay, 280)+10);
+                ctx.lineTo(canvasWidth, 280-convertMoneyToPx(singlePlotData?.shouldPay, 280)+10);
+            }
+            ctx.setLineDash([2, 2]);
+            ctx.strokeStyle = "#919191";
+            ctx.stroke();
+    
+            ctx.setLineDash([]);
+            console.log(nodeValue.lowest);
+            console.log(nodeValue.highest);
+            console.log(singlePlotData?.shouldPay);
+            console.log(280-convertMoneyToPx(singlePlotData?.shouldPay, 280)+10);
+        }
 
         // Y-axis dash
         for(let i=0; i<=allSlipsData.length*2; i++){
@@ -210,10 +223,20 @@ const SinglePlot = () => {
                 ctx.fillStyle = "#ff9393";
             }
             if (tooltip.x > (i*(canvasWidth/allSlipsData.length-5))+50+50-3 && tooltip.x <= (i*(canvasWidth/allSlipsData.length-5))+50+50+3) {
-                ctx.arc((i*(canvasWidth/allSlipsData.length-5))+50+50, 280-convertMoneyToPx(allSlipsData[i].amount, 280)+10, 5, 0, 2.5*Math.PI);
+                if (nodeValue.lowest === nodeValue.highest) {
+                    ctx.arc(yAxisMarginLeft+50, (280-((1100)/1)/((13000)/280)+10), 5, 0, 2.5*Math.PI);
+                }
+                else{
+                    ctx.arc((i*(canvasWidth/allSlipsData.length-5))+50+50, 280-convertMoneyToPx(allSlipsData[i].amount, 280)+10, 5, 0, 2.5*Math.PI);
+                }
             }
             else{
-                ctx.arc((i*(canvasWidth/allSlipsData.length-5))+50+50, 280-convertMoneyToPx(allSlipsData[i].amount, 280)+10, 2.5, 0, 2.5*Math.PI);
+                if (nodeValue.lowest === nodeValue.highest) {
+                    ctx.arc(yAxisMarginLeft+50, (280-((1100)/1)/((13000)/280)+10), 2.5, 0, 2.5*Math.PI);
+                }
+                else{
+                    ctx.arc((i*(canvasWidth/allSlipsData.length-5))+50+50, 280-convertMoneyToPx(allSlipsData[i].amount, 280)+10, 2.5, 0, 2.5*Math.PI);
+                }
             }
             ctx.fill();
             ctx.stroke();
@@ -225,6 +248,9 @@ const SinglePlot = () => {
             }
             else if (!isNaN(convertMoneyToPx(allSlipsData[i].amount, 280))) {
                 setTooltipCollection((prev) => [...prev, {x:(i*(canvasWidth/allSlipsData.length-5))+50+50, y:(280-convertMoneyToPx(allSlipsData[i].amount, 280))+10, amount:allSlipsData[i].amount, date:allSlipsData[i].createdAt}]);
+            }
+            else if (nodeValue.lowest === nodeValue.highest) {
+                setTooltipCollection((prev) => [...prev, {x:100, y:(280-((1100)/1)/((13000)/280)+10), amount:allSlipsData[i].amount, date:allSlipsData[i].createdAt}]);
             }
             else{
                 console.log("NNNNNNNNNNNNNNNNNNNNN");
@@ -252,7 +278,7 @@ const SinglePlot = () => {
         ctx.moveTo(tooltip.x, 0);
         ctx.lineTo(tooltip.x, 300);
         ctx.stroke();
-    }, [allSlipsData, tooltip]);
+    }, [singlePlotData, allSlipsData, tooltip, nodeValue]);
 
     useEffect(() => {
         getHighestAmount();
@@ -311,6 +337,7 @@ const SinglePlot = () => {
 
     return(
         <>
+        {/*<pre>{JSON.stringify(tooltipCollection, null, `\t`)}</pre>*/}
         <DialogBox isOpen={isEditDialogOpen} setIsOpen={setIsEditDialogOpen} updateItemID={selectedSlipID} setAllSlipsData={setAllSlipsData} />
         <div className="single_plot_bg">
             <ButtonPrimary
