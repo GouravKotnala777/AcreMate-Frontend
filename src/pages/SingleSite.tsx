@@ -465,7 +465,7 @@ const SingleSite = () => {
             <KeyValuePairs keyValuePairArray={[
                 {"Total Area":siteData?.totalSize},
                 {"Sold Area":totalSiteCalculations.totalSoldArea},
-                {"Remaining Area":totalSiteCalculations.totalRemainingArea},
+                {"Remaining Area":totalSiteCalculations.totalRemainingArea.toPrecision(5)},
             ]} margin="10px auto"
             />
             <KeyValuePairs keyValuePairArray={[
@@ -558,7 +558,7 @@ const SingleSite = () => {
                                     left:plt.x,
                                     backgroundColor:"blue",
                                     padding:`${plt.length}px ${plt.breath}px`,
-                                    fontSize:"0.7rem",
+                                    fontSize:"0.6rem",
                                     height:`${plt.length}px`,
                                     width:`${plt.breath}px`,
                                     cursor: "grab",
@@ -586,13 +586,16 @@ const SingleSite = () => {
                                     padding:`${plt.length}px ${plt.breath}px`,
                                     height:`${plt.length}px`,
                                     width:`${plt.breath}px`,
-                                    fontSize:"0.7rem",
+                                    fontSize:"0.6rem",
                                     textAlign:"center",
                                     alignContent:"center",
+                                    display:"flex",
+                                    flexDirection:"column",
                                     opacity:selectedPlot.plotNo === plt.plotNo?"0.5":"1"
                                 }}
                             >
-                                {plt.plotNo}
+                                {plt.plotNo} <br/>
+                                {plt.size}
                             </div>
                         ))
                     }
