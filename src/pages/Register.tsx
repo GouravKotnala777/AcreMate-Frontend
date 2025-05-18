@@ -3,7 +3,7 @@ import { ButtonSecondary, Heading, Input, Select } from "../shared/SharedCompone
 import { BG_COLOR } from "../utils/constants";
 import { ChangeEvent, useState } from "react";
 import { register } from "../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export interface RegisterFormData{
     firstName:string;
@@ -16,6 +16,8 @@ export interface RegisterFormData{
 
 const Register = () => {
     const [formData, setFormData] = useState<RegisterFormData>({firstName:"", lastName:"", email:"", gender:"", mobile:"", password:""});
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
         if (e.target.type === "text" || e.target.type === "number") {
@@ -27,8 +29,18 @@ const Register = () => {
     };
 
     const onClickHandler = async() => {
-        console.log(formData);
-        await register(formData);
+        setIsLoading(true);
+        const res = await register(formData);
+        if (res.success) {
+            setTimeout(() => {
+                setIsLoading(false);
+                navigate("/home");
+            }, 2500);
+        }
+        else{
+            setIsLoading(false);
+        }
+            
     };
 
     return(
@@ -41,7 +53,7 @@ const Register = () => {
                 <Select label="Gender" name="gender" options={["male", "female", "other"]} border="1px solid rgb(78, 255, 175)" onChangeHandler={onChangeHandler} />
                 <Input label="Mobile" name="mobile" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Input label="Password" name="password" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
-                <ButtonSecondary text="Register" onClickHandler={onClickHandler}  />
+                <ButtonSecondary text="Register" onClickHandler={onClickHandler} isLoading={isLoading} isDisable={isLoading} />
 
             </div>
             <div className="login_lower_part">

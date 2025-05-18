@@ -17,18 +17,24 @@ const Login = () => {
     const {setLoginUser} = useLoginUser();
     const [formData, setFormData] = useState<Pick<RegisterFormData, "email"|"password">>({email:"", password:""});
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]:e.target.value});
     };
 
     const onClickHandler = async() => {
+        setIsLoading(true);
         const loginRes = await login(formData);
         if(loginRes.success){            
             setLoginUser(loginRes.jsonData);
             setTimeout(() => {
+                setIsLoading(false);
                 navigate("/home");
             }, 2500);
+        }
+        else{
+            setIsLoading(false);
         }
     };
 
@@ -38,7 +44,7 @@ const Login = () => {
             <div className="form">
                 <Input label="Email" name="email" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
                 <Input label="Password" name="password" labelBG={BG_COLOR} onChangeHandler={onChangeHandler} />
-                <ButtonSecondary text="Login" onClickHandler={onClickHandler}  />
+                <ButtonSecondary text="Login" onClickHandler={onClickHandler} isLoading={isLoading} isDisable={isLoading} />
             </div>
             <div className="login_lower_part">
                 <div className="forget_pass">

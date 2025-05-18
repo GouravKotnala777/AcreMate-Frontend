@@ -247,9 +247,11 @@ export const ButtonSecondary = ({text, color, bgColor, width, margin, isLoading,
             width:width?width:"unset",
             margin:margin?margin:"0",
             opacity:isDisable?0.4:1
-        }}>{isLoading?"loading...":text}
-        {(isLoading && !isDisable) && <Spinner />}
-        {(!isLoading && isDisable) && <GoStop />}
+        }} disabled={isLoading}>
+            {(!isLoading && !isDisable) && text}
+            {(isLoading && isDisable) && <Spinner width="18px" />}
+            {(isLoading && !isDisable) && <Spinner width="18px" />}
+            {(!isLoading && isDisable) && <GoStop />}
         </button>
     )
 };
