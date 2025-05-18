@@ -144,7 +144,7 @@ const CreateFormPanel = () => {
                         },
                         {type:"text", label:"Amount", name:"amount"},
                         {type:"select", label:"Agent Name", name:"agentID", selectionOptionArray:allAgentsIDs.map((agnt) => agnt.name)},
-                        {type:"number", label:"Plot no through which you want to adjust area", name:"plotNo"}
+                        {type:"number", label:"Plot no through which you want to adjust area", name:"plotNo", display:((createFormData as PlotTypes).size||(createFormData as PlotTypes).length||(createFormData as PlotTypes).breath)?"block":"none"}
                     ]
                     :
                     [
