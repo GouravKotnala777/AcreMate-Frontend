@@ -17,6 +17,7 @@ const CreateFormPanel = () => {
     const breath = searchParams.get("breath");
     const plotStatus = searchParams.get("plotStatus");
     const formPanelFor = searchParams.get("formPanelFor");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     
     const onChangeFeildsHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
         if (e.target.name === "agentID") {
@@ -28,12 +29,15 @@ const CreateFormPanel = () => {
     };
 
     const onSubmitFormHandler = async() => {
+        setIsLoading(true);
         if (formPanelFor === "clients") {
             createClient(createFormData as CreateClientBodyTypes, navigate, `single-plot?plotID=${plotID}`);
+            setIsLoading(false);
         }
         else if (formPanelFor === "plots") {
             //console.log(createFormData);
             createPlots(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number;});
+            setIsLoading(false);
         }
         else if (formPanelFor === "slips") {
             console.log({createFormData});
@@ -46,6 +50,7 @@ const CreateFormPanel = () => {
                 }) as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`)
                 :
                 createSlip(createFormData as CreateSlipBodyTypes, navigate, `/single-plot?plotID=${plotID}`);
+            setIsLoading(false);
         }
         else if (formPanelFor === "sites") {
             const createdSite = await createSite(createFormData as CreateSiteBodyTypes);
@@ -53,8 +58,10 @@ const CreateFormPanel = () => {
             if (createdSite.success) {
                 //navigate(`/single-site?siteID=${createdSite.jsonData._id}`);
                 //navigate("/create?formPanelFor=plots");
-                window.location.href = "/sites";
+                navigate("/sites");
+                //window.location.href = "/sites";
             }
+            setIsLoading(false);
         }
         else{
             console.log("formPanelFor NAHI MIL RAHA HAI line-no.32");
@@ -210,6 +217,7 @@ const CreateFormPanel = () => {
                 btnText="Create Site"
                 onChangeFeildsHandler={onChangeFeildsHandler}
                 onSubmitFormHandler={onSubmitFormHandler}
+                isLoading={isLoading}
             />
         )
     }

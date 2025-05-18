@@ -77,6 +77,8 @@ interface FormSharedComponentPropTypes{
     onChangeFeildsHandler:(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void;
     onSubmitFormHandler:() => Promise<void>;
     wildCardElement?:ReactNode;
+    isLoading?:boolean;
+    isDisable?:boolean;
 }
 interface TimerPropTypes{
     bgColor?:string;
@@ -272,7 +274,7 @@ export const ButtonPrimary = ({text, Icon, color, bgColor, width, margin, paddin
         </button>
     )
 };
-export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler, onSubmitFormHandler, wildCardElement}:FormSharedComponentPropTypes) => {
+export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler, onSubmitFormHandler, wildCardElement, isLoading, isDisable}:FormSharedComponentPropTypes) => {
 
     return(
         <div className="form_shared_component">
@@ -300,7 +302,7 @@ export const FormSharedComponent = ({inputArray, btnText, onChangeFeildsHandler,
                     wildCardElement
                 )
             }
-            <ButtonSecondary text={btnText} width="100%" margin="10px 0 15px 0" onClickHandler={onSubmitFormHandler} />
+            <ButtonSecondary text={btnText} width="100%" margin="10px 0 15px 0" onClickHandler={onSubmitFormHandler} isLoading={isLoading} isDisable={isDisable} />
             {/*<button onClick={onSubmitFormHandler}></button>*/}
         </div>
     )
