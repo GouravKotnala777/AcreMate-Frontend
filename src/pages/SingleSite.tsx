@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { MdSell } from "react-icons/md";
 import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { RxCross1 } from "react-icons/rx";
+import { ImInfo } from "react-icons/im";
 
 
 const SingleSite = () => {
@@ -37,7 +38,7 @@ const SingleSite = () => {
     const [siteMapePlots, setSiteMapPlots] = useState<{plotID?:string; size:number; plotNo:number; rate:number; length:number; breath:number; duration:number; x:number; y:number;}[]>([]);
     const parentContRef = useRef<HTMLDivElement|null>(null);
     const selectedPlotIndex = useRef<number|null>(null);
-    const [selectedPlot, setSelectedPlot] = useState<{plotID?:string; size:number; plotNo:number; rate:number; length:number; breath:number; duration:number; x:number; y:number; isDragging:boolean;}>({plotID:undefined, plotNo:0, size:0, rate:0, length:0, breath:0, duration:0, x:0, y:0, isDragging:false});
+    const [selectedPlot, setSelectedPlot] = useState<{plotID?:string; size:number; plotNo:number; rate:number; length:number; breath:number; duration:number; x:number; y:number; isDragging:boolean; hasSold:boolean;}>({plotID:undefined, plotNo:0, size:0, rate:0, length:0, breath:0, duration:0, x:0, y:0, isDragging:false, hasSold:false});
     const [offset, setOffset] = useState<{x:number; y:number;}>({x:0, y:0});
     
     const firstPlotNoRef = useRef<HTMLInputElement|null>(null);
@@ -195,7 +196,8 @@ const SingleSite = () => {
             duration:targetPlot.duration,
             x:targetPlot.x,
             y:targetPlot.y,
-            isDragging:true
+            isDragging:true,
+            hasSold:false
         });
     }
     const dragHandler = (e:DragEvent<HTMLDivElement>) => {
@@ -235,7 +237,8 @@ const SingleSite = () => {
             duration:0,
             x:0,
             y:0,
-            isDragging:false
+            isDragging:false,
+            hasSold:false
         });
     }
 
@@ -258,7 +261,8 @@ const SingleSite = () => {
             duration:selectedPlt?.duration,
             x:selectedPlt?.coordinates.x,
             y:selectedPlt?.coordinates.y,
-            isDragging:false
+            isDragging:false,
+            hasSold:selectedPlt.hasSold
           });
         }
         else{
@@ -273,7 +277,8 @@ const SingleSite = () => {
                 duration:0,
                 x:0,
                 y:0,
-                isDragging:false
+                isDragging:false,
+                hasSold:false
             });
         }
     };
@@ -289,7 +294,8 @@ const SingleSite = () => {
             duration:plt.duration,
             x:plt.coordinates.x,
             y:plt.coordinates.y,
-            isDragging:false
+            isDragging:false,
+            hasSold:plt.hasSold            
         }));
         setSiteMapPlots(as);
         setIsCreateMapMode(false);
@@ -354,7 +360,8 @@ const SingleSite = () => {
             duration:0,
             x:0,
             y:0,
-            isDragging:false
+            isDragging:false,
+            hasSold:false
         });
         setSiteMapPlots([]);
         setIsCreateMapMode(true);
@@ -626,12 +633,23 @@ const SingleSite = () => {
                                 {"PlotNo":selectedPlot.plotNo},
                                 {"Size":selectedPlot.size},
                                 {"BaseRate":selectedPlot.rate},
-                                {"Sell":<ButtonPrimary
-                                            text="Sell"
-                                            Icon={MdSell}
-                                            onClickHandler={() => navigate(`/create?plotID=${selectedPlot.plotID}&plotStatus=vacant&size=${selectedPlot.size}&length=${selectedPlot.length}&breath=${selectedPlot.breath}&formPanelFor=slips`)}
-                                        />
-                                }
+                                {...(selectedPlot.hasSold ?
+                                        ({
+                                            "Info":<ButtonPrimary
+                                                    text="Info"
+                                                    Icon={ImInfo}
+                                                    onClickHandler={() => navigateToSinglePageHandler(selectedPlot?.plotID as string)}
+                                                />
+                                        })
+                                        :
+                                        ({
+                                            "Sell":<ButtonPrimary
+                                                    text="Sell"
+                                                    Icon={MdSell}
+                                                    onClickHandler={() => navigate(`/create?plotID=${selectedPlot.plotID}&plotStatus=vacant&size=${selectedPlot.size}&length=${selectedPlot.length}&breath=${selectedPlot.breath}&formPanelFor=slips`)}
+                                                />
+                                        })
+                                )}
                             ]}
                             width="100px"
                         />
