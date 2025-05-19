@@ -5,7 +5,7 @@ import { LoginFormData } from "./pages/Login";
 import { NavigateFunction } from "react-router-dom";
 
 export const fetchAPIHandler = async<T>({
-    apiName, endpoint, isFormDataType, method, credentials, body
+    apiName, endpoint, isFormDataType, method, credentials, body, signal
 }:FetchAPIHandlerArgTypes) => {
     try {
         const res = await fetch(`${import.meta.env.VITE_SERVER_URL}${endpoint}`, {
@@ -25,7 +25,8 @@ export const fetchAPIHandler = async<T>({
             ),
             method,
             ...(credentials&&{credentials:"include"}),
-            body
+            body,
+            ...(signal&&{signal})
         });
 
         const data = await res.json();
@@ -100,12 +101,13 @@ export const findAllAgents = async() => {
 
     return data;
 };
-export const agentsAndSoldArea = async() => {
+export const agentsAndSoldArea = async(signal:AbortSignal) => {
     const data = await fetchAPIHandler<(PlotTypes&{agentName:string; soldArea:number; pending:number;})[]>({
         apiName:"agentsAndSoldArea",
         endpoint:"/user/sold-area",
         credentials:true,
-        method:"GET"
+        method:"GET",
+        ...(signal&&{signal})
     });
 
     return data;
@@ -376,12 +378,13 @@ export const updatePlot = async(formData:UpdatePlotBodyTypes) => {
 
 //    return data;
 //};
-export const findSlipsWithSlipNoRange = async({fromSlipNo, toSlipNo}:{fromSlipNo:number; toSlipNo:number;}) => {
+export const findSlipsWithSlipNoRange = async({fromSlipNo, toSlipNo}:{fromSlipNo:number; toSlipNo:number;}, signal:AbortSignal) => {
     const data = await fetchAPIHandler<(SlipTypes&{clientID:{name:string; guardian:string; mobile:string;};}&{plotID:{plotNo:number; site:string;};}&{agentID:{name:string;};})[]>({
         apiName:"findSlipsWithSlipNoRange",
         endpoint:`/slip/all-slipss?fromSlipNo=${fromSlipNo}&toSlipNo=${toSlipNo}`,
         credentials:true,
-        method:"GET"
+        method:"GET",
+        ...(signal&&{signal})
     });
 
     return data;
@@ -428,12 +431,13 @@ export const updateSlip = async(formData:UpdateSlipBodyTypes) => {
 
 
 // Site related apis
-export const findAllSites = async() => {
+export const findAllSites = async(signal:AbortSignal) => {
     const data = await fetchAPIHandler<SiteTypes[]>({
         apiName:"findAllSites",
         endpoint:"/site/all-sites",
         credentials:true,
-        method:"GET"
+        method:"GET",
+        signal
     });
 
     return data;
@@ -448,12 +452,13 @@ export const findSingleSite = async(siteID:string) => {
 
     return data;
 };
-export const findAllSitesName = async() => {
+export const findAllSitesName = async(signal:AbortSignal) => {
     const data = await fetchAPIHandler<string[]>({
         apiName:"findAllSitesName",
         endpoint:`/site/sites-name`,
         method:"GET",
-        credentials:true
+        credentials:true,
+        ...(signal&&{signal})
     });
 
     return data;

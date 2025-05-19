@@ -72,7 +72,9 @@ const Slips = () => {
     }, []);
 
     useEffect(() => {
-        findSlipsWithSlipNoRange(slipNoRange)
+        const controller = new AbortController();
+        const signal = controller.signal;
+        findSlipsWithSlipNoRange(slipNoRange, signal)
         .then((data) => {
             console.log(data);
             if (data.success) {

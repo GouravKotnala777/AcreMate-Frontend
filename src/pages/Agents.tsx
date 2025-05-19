@@ -15,16 +15,25 @@ const Agents = () => {
     >({});
 
     useEffect(() => {
-        findAllSitesName()
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        findAllSitesName(signal)
         .then((res) => {
             setSiteNameArray(res.jsonData);
         })
         .catch((err) => {
             console.log(err);
         });
+
+        return() => {
+            controller.abort();
+        }
     }, []);
     useEffect(() => {
-        agentsAndSoldArea()
+        const controller = new AbortController();
+        const signal = controller.signal;
+        agentsAndSoldArea(signal)
         .then((data) => {
             //setAllAgentsData(data.jsonData);
             const as = data.jsonData.reduce((obj, plt) => {
@@ -61,6 +70,10 @@ const Agents = () => {
         .catch((err) => {
             console.log(err);
         })
+
+        return() => {
+            controller.abort();
+        }
     }, []);
 
 
@@ -71,7 +84,7 @@ const Agents = () => {
         <div className="agents_bg">
                 <div className="site_cont">
                     {
-                        siteNameArray.map((siteName, ind) => (
+                        siteNameArray?.map((siteName, ind) => (
                             <span key={ind}>
                                 
                                 <KeyValuePairs

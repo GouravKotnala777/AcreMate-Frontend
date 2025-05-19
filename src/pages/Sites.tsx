@@ -23,7 +23,9 @@ const Sites = () => {
     }
 
     useEffect(() => {
-        findAllSites()
+        const controller = new AbortController();
+        const signal = controller.signal;
+        findAllSites(signal)
         .then((data) => {
             if (data.success) {
                 setAllSites(data.jsonData);
@@ -37,11 +39,22 @@ const Sites = () => {
             }
         })
         .catch((err) => {
-            console.log(err);
-            setError(err);
+            if (err.name === "AbortError") {
+                console.log(err, 1);
+                //setIsError(false);
+            }
+            else{
+                console.log(err, 2);
+                setError(err);
+                setIsError(true);
+            }
+            console.log(err, 3);
             setIsLoading(false);
-            setIsError(true);
         });
+
+        return () => {
+            controller.abort();
+        }
     }, []);
 
     return(

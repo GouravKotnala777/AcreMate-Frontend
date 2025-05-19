@@ -104,6 +104,7 @@ export interface FetchAPIHandlerArgTypes {
     method:"GET"|"POST"|"PUT"|"DELETE";
     credentials?:boolean;
     body?:BodyInit|null|undefined;
+    signal?:AbortSignal;
 }
 export type ApiResponseTypes<T> = {success:boolean; message:string; jsonData:T};
 
