@@ -70,6 +70,8 @@ const CreateFormPanel = () => {
     }
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
         if (plotID) {
             setCreateFormData({...createFormData, plotID});
         }
@@ -80,7 +82,7 @@ const CreateFormPanel = () => {
         .catch((err) => {
             console.log(err);
         });
-        findAllSitesName()
+        findAllSitesName(signal)
         .then((data) => {
             setAllSitesName(data.jsonData);
         })
