@@ -4,6 +4,7 @@ import { BG_COLOR } from "../utils/constants";
 import { ChangeEvent, useState } from "react";
 import { register } from "../api";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export interface RegisterFormData{
     firstName:string;
@@ -29,6 +30,16 @@ const Register = () => {
     };
 
     const onClickHandler = async() => {
+        const {firstName, lastName, email, gender, mobile, password} = formData;
+        if (!firstName || !lastName || !email || !gender || !mobile || !password) {
+            toast.error("All fields are required", {
+                duration:2500,
+                position:"top-center"
+            });
+            return;
+        }
+
+
         setIsLoading(true);
         const res = await register(formData);
         if (res.success) {

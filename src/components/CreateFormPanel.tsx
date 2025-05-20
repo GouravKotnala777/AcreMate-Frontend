@@ -3,6 +3,7 @@ import { FormSharedComponent, InputTertiary } from "../shared/SharedComponents";
 import { assignPlotToClient, createClient, createPlots, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
 import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, PlotTypes, SlipTypes, UserTypes } from "../utils/types";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const CreateFormPanel = () => {
     const [createFormData, setCreateFormData] = useState<CreateClientBodyTypes|CreatePlotBodyTypes|CreateSlipBodyTypes|CreateSiteBodyTypes|object>({});
@@ -31,17 +32,63 @@ const CreateFormPanel = () => {
     const onSubmitFormHandler = async() => {
         setIsLoading(true);
         if (formPanelFor === "clients") {
+            const {serialNumber, name, guardian, email, gender, mobile} = createFormData as CreateClientBodyTypes;
+            if (!serialNumber || !name || !guardian || !email || !gender || !mobile) {
+                toast.error("All fields are required", {
+                    duration:2500,
+                    position:"top-center"
+                });
+                setIsLoading(false);
+                return;
+            }
             createClient(createFormData as CreateClientBodyTypes, navigate, `single-plot?plotID=${plotID}`);
             setIsLoading(false);
         }
         else if (formPanelFor === "plots") {
+            const {plotNo, rate, length, breath, site, duration, quantity} = createFormData as (CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number; quantity:number;});
+            if (!plotNo || !rate || !length || !breath || !site || !duration || !quantity) {
+                toast.error("All fields are required", {
+                    duration:2500,
+                    position:"top-center"
+                });
+                setIsLoading(false);
+                return;
+            }
             //console.log(createFormData);
             createPlots(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number;});
             setIsLoading(false);
         }
         else if (formPanelFor === "slips") {
             console.log({createFormData});
+            const {plotID, agentID,
+            serialNumber, name, guardian, email, gender, mobile,
+            slipType, slipNo, modeOfPayment, paymentID, amount,
+            size, plotNo, length, breath} = createFormData as (CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number; quantity:number;});
+            if ((plotStatus === "vacant") && (!plotID || !agentID ||
+!            serialNumber || !name || !guardian || !email || !gender || !mobile ||
+!            slipType || !slipNo || !modeOfPayment || !paymentID || !amount ||
+!            size || !plotNo || !length || !breath)) {
+                toast.error("All fields are required", {
+                    duration:2500,
+                    position:"top-center"
+                });
+                setIsLoading(false);
+                return;
+            }
+            if ((plotStatus === "pending") && (!slipType || !slipNo || !modeOfPayment || !paymentID || !amount || !plotID)) {
+                toast.error("All fields are required", {
+                    duration:2500,
+                    position:"top-center"
+                });
+                setIsLoading(false);
+                return;
+            }
+
             plotStatus === "vacant"?
+
+
+
+
                 assignPlotToClient(({
                     ...createFormData,
                     size:Number((createFormData as PlotTypes).size||size),
@@ -53,6 +100,15 @@ const CreateFormPanel = () => {
             setIsLoading(false);
         }
         else if (formPanelFor === "sites") {
+            const {siteName, totalSize} = createFormData as CreateSiteBodyTypes;
+            if (!siteName || !totalSize) {
+                toast.error("All fields are required", {
+                    duration:2500,
+                    position:"top-center"
+                });
+                setIsLoading(false);
+                return;
+            }
             const createdSite = await createSite(createFormData as CreateSiteBodyTypes);
 
             if (createdSite.success) {

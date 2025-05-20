@@ -10,6 +10,7 @@ import { ButtonPrimary, HeadingParaCont, ScrollableContainer, Skeleton } from ".
 import DataFlowHandler from "../components/DataFlow";
 import { TbArrowDownDashed } from "react-icons/tb";
 import { BiMessageDetail } from "react-icons/bi";
+import toast from "react-hot-toast";
 
 
 const Home = () => {
@@ -61,6 +62,13 @@ const Home = () => {
     };
 
     const sendMessageToClientHandler = (to:string, message:string) => {
+        if (!to || !message) {
+            toast.error("All fields are required", {
+                duration:2500,
+                position:"top-center"
+            });
+            return;
+        }
         sendMessageToClient({to, message});
     }
 

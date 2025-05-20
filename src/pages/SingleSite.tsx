@@ -93,6 +93,15 @@ const SingleSite = () => {
     }
     const addPlotBoxesToMap = () => {
         console.log({siteMapForm});
+        const {firstPlotNo, size, rate, length, breath, duration, quantity} = siteMapForm;
+        if (!firstPlotNo || !size || !rate || !length || !breath || !duration || !quantity) {
+            toast.error("All fields are required", {
+                duration:2500,
+                position:"top-center"
+            });
+            return;
+        }
+
         for (let x=0; x<siteMapForm.quantity; x++){
             if (siteMapePlots.find((plt) => plt.plotNo === Number(siteMapForm.firstPlotNo)+x)) {
                 toast.error(`Plot no ${Number(siteMapForm.firstPlotNo)+x} has already added`)

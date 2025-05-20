@@ -5,6 +5,7 @@ import { RegisterFormData } from "./Register";
 import { login } from "../api";
 import { useLoginUser } from "../Context";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
 export interface LoginFormData{
@@ -24,6 +25,16 @@ const Login = () => {
     };
 
     const onClickHandler = async() => {
+        const {email, password} = formData;
+        if (!email || !password) {
+            toast.error("All fields are required", {
+                duration:2500,
+                position:"top-center"
+            });
+            return;
+        }
+
+
         setIsLoading(true);
         const loginRes = await login(formData);
         if(loginRes.success){            
