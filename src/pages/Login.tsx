@@ -33,11 +33,14 @@ const Login = () => {
             });
             return;
         }
-
-
+                
         setIsLoading(true);
         const loginRes = await login(formData);
         if(loginRes.success){            
+            toast.success(loginRes.message, {
+                duration:2000,
+                position:"top-center"
+            });
             setLoginUser(loginRes.jsonData);
             setTimeout(() => {
                 setIsLoading(false);
@@ -46,6 +49,10 @@ const Login = () => {
         }
         else{
             setIsLoading(false);
+            toast.error(loginRes.message, {
+                duration:2000,
+                position:"top-center"
+            });
         }
     };
 

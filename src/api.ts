@@ -36,18 +36,18 @@ export const fetchAPIHandler = async<T>({
         console.log(`------------- ${apiName} (1)`);
 
 
-        if (data.success) {
-            toast.success(data.message, {
-                duration:2000,
-                position:"top-center"
-            });
-        }
-        else{
-            toast.error(data.message, {
-                duration:2000,
-                position:"top-center"
-            });
-        }
+        //if (data.success) {
+        //    toast.success(data.message, {
+        //        duration:2000,
+        //        position:"top-center"
+        //    });
+        //}
+        //else{
+        //    toast.error(data.message, {
+        //        duration:2000,
+        //        position:"top-center"
+        //    });
+        //}
 
         return data as ApiResponseTypes<T>;
     } catch (error) {
@@ -208,21 +208,21 @@ export const logout = async() => {
 
 //    return data;
 //};
-export const createClient = async(formData:CreateClientBodyTypes, navigate:NavigateFunction, url:string) => {
-    const data = await fetchAPIHandler<ClientTypes>({
-        apiName:"createClient",
-        endpoint:"/client/create",
-        credentials:true,
-        method:"POST",
-        body:JSON.stringify(formData)
-    });
+//export const createClient = async(formData:CreateClientBodyTypes, navigate:NavigateFunction, url:string) => {
+//    const data = await fetchAPIHandler<ClientTypes>({
+//        apiName:"createClient",
+//        endpoint:"/client/create",
+//        credentials:true,
+//        method:"POST",
+//        body:JSON.stringify(formData)
+//    });
 
-    if (data.success) {
-        navigate(url);
-    }
+//    if (data.success) {
+//        navigate(url);
+//    }
 
-    return data;
-};
+//    return data;
+//};
 export const sendMessageToClient = async(formData:{to:string, message:string}) => {
     const data = await fetchAPIHandler<null>({
         apiName:"sendMessageToClient",

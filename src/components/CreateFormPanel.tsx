@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { FormSharedComponent, InputTertiary } from "../shared/SharedComponents";
-import { assignPlotToClient, createClient, createPlots, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
+import { assignPlotToClient, createSite, createSlip, findAllAgents, findAllSitesName } from "../api";
 import { CreateClientBodyTypes, CreatePlotBodyTypes, CreateSiteBodyTypes, CreateSlipBodyTypes, PlotTypes, SlipTypes, UserTypes } from "../utils/types";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -31,34 +31,47 @@ const CreateFormPanel = () => {
 
     const onSubmitFormHandler = async() => {
         setIsLoading(true);
-        if (formPanelFor === "clients") {
-            const {serialNumber, name, guardian, email, gender, mobile} = createFormData as CreateClientBodyTypes;
-            if (!serialNumber || !name || !guardian || !email || !gender || !mobile) {
-                toast.error("All fields are required", {
-                    duration:2500,
-                    position:"top-center"
-                });
-                setIsLoading(false);
-                return;
-            }
-            createClient(createFormData as CreateClientBodyTypes, navigate, `single-plot?plotID=${plotID}`);
-            setIsLoading(false);
-        }
-        else if (formPanelFor === "plots") {
-            const {plotNo, rate, length, breath, site, duration, quantity} = createFormData as (CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number; quantity:number;});
-            if (!plotNo || !rate || !length || !breath || !site || !duration || !quantity) {
-                toast.error("All fields are required", {
-                    duration:2500,
-                    position:"top-center"
-                });
-                setIsLoading(false);
-                return;
-            }
-            //console.log(createFormData);
-            createPlots(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number;});
-            setIsLoading(false);
-        }
-        else if (formPanelFor === "slips") {
+        //if (formPanelFor === "clients") {
+        //    const {serialNumber, name, guardian, email, gender, mobile} = createFormData as CreateClientBodyTypes;
+        //    if (!serialNumber || !name || !guardian || !email || !gender || !mobile) {
+        //        toast.error("All fields are required", {
+        //            duration:2500,
+        //            position:"top-center"
+        //        });
+        //        setIsLoading(false);
+        //        return;
+        //    }
+        //    createClient(createFormData as CreateClientBodyTypes, navigate, `single-plot?plotID=${plotID}`);
+        //    setIsLoading(false);
+        //}
+        //if (formPanelFor === "plots") {
+        //    const {plotNo, rate, length, breath, site, duration, quantity} = createFormData as (CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number; quantity:number;});
+        //    if (!plotNo || !rate || !length || !breath || !site || !duration || !quantity) {
+        //        toast.error("All fields are required", {
+        //            duration:2500,
+        //            position:"top-center"
+        //        });
+        //        setIsLoading(false);
+        //        return;
+        //    }
+        //    //console.log(createFormData);
+        //    const res = await createPlots(createFormData as CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number;});
+
+        //    if (res.success) {
+        //        toast.success(res.message, {
+        //            duration:2000,
+        //            position:"top-center"
+        //        });
+        //    }
+        //    else{
+        //        toast.error(res.message, {
+        //            duration:2000,
+        //            position:"top-center"
+        //        });
+        //    }
+        //    setIsLoading(false);
+        //}
+        if (formPanelFor === "slips") {
             console.log({createFormData});
             const {plotID, agentID,
             serialNumber, name, guardian, email, gender, mobile,

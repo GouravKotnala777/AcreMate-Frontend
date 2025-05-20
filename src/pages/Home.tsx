@@ -61,7 +61,7 @@ const Home = () => {
         navigate(`/single-plot?plotID=${plotID}`);
     };
 
-    const sendMessageToClientHandler = (to:string, message:string) => {
+    const sendMessageToClientHandler = async(to:string, message:string) => {
         if (!to || !message) {
             toast.error("All fields are required", {
                 duration:2500,
@@ -69,7 +69,20 @@ const Home = () => {
             });
             return;
         }
-        sendMessageToClient({to, message});
+        const data = await sendMessageToClient({to, message});
+
+        if (data.success) {
+            toast.success(data.message, {
+                duration:2000,
+                position:"top-center"
+            });
+        }
+        else{
+            toast.error(data.message, {
+                duration:2000,
+                position:"top-center"
+            });
+        }
     }
 
     useEffect(() => {

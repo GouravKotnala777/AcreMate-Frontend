@@ -9,6 +9,7 @@ import { getDateByString, getMonthsCovered } from "../utils/utilFunctions";
 import { BsThreeDots } from "react-icons/bs";
 import { BiDownArrow } from "react-icons/bi";
 import { MdCurrencyRupee, MdDeleteOutline, MdSell } from "react-icons/md";
+import toast from "react-hot-toast";
 
 const SinglePlot = () => {
     const [singlePlotData, setSinglePlotData] = useState<({clientID:{name:string;}; agentID:{name:string;};}&PlotTypes)|null>(null);
@@ -61,7 +62,23 @@ const SinglePlot = () => {
         if (!plotID) {
             throw new Error("PlotID not found");
         }
-        await detachClientFromPlot({plotID});
+        const res = await detachClientFromPlot({plotID});
+
+        if(res.success){            
+            toast.success(res.message, {
+                duration:2000,
+                position:"top-center"
+            });
+            setTimeout(() => {
+                navigate("/home");
+            }, 2500);
+        }
+        else{
+            toast.error(res.message, {
+                duration:2000,
+                position:"top-center"
+            });
+        }
     }
     const func = (expendedSlipI:string) => {
         if (expendedSlipIDs.includes(expendedSlipI)) {

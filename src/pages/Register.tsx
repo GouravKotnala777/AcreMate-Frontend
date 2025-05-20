@@ -43,12 +43,20 @@ const Register = () => {
         setIsLoading(true);
         const res = await register(formData);
         if (res.success) {
+            toast.success(res.message, {
+                duration:2000,
+                position:"top-center"
+            });
             setTimeout(() => {
                 setIsLoading(false);
                 navigate("/home");
             }, 2500);
         }
         else{
+            toast.error(res.message, {
+                duration:2000,
+                position:"top-center"
+            });
             setIsLoading(false);
         }
             

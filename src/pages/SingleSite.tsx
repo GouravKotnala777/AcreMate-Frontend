@@ -138,6 +138,7 @@ const SingleSite = () => {
         console.log(siteMapePlots);
     }
     const createPlotsHanlder = async() => {
+        let currentCreatedPlots = 0;
         for(const plt of siteMapePlots){
             const res = await createPlots({
                 plotNo:plt.plotNo,
@@ -162,6 +163,7 @@ const SingleSite = () => {
                     breath:0,
                     duration:0
                 });
+                currentCreatedPlots+=1;
                 if (!firstPlotNoRef.current ||
                     !sizeRef.current ||
                     !rateRef.current ||
@@ -178,6 +180,19 @@ const SingleSite = () => {
                 durationRef.current.value = "";
                 quantityRef.current.value = "";
             }
+        }
+
+        if (siteMapePlots.length === currentCreatedPlots) {
+            toast.success(`${currentCreatedPlots} plots created`, {
+                duration:2000,
+                position:"top-center"
+            });
+        }
+        else{
+            toast.error(`${currentCreatedPlots} out of ${siteMapePlots.length} plots created`, {
+                duration:2000,
+                position:"top-center"
+            });
         }
         console.log(siteMapePlots);
     }
