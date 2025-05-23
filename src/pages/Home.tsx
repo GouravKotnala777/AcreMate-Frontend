@@ -1,5 +1,5 @@
 import "../styles/pages/home.scss";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { PlotTypes } from "../utils/types";
 import { findPendingClients, sendMessageToClient } from "../api";
 import { useNavigate } from "react-router-dom";
@@ -26,18 +26,19 @@ const Home = () => {
     const [isDisable, setIsDisable] = useState<boolean>(false);
     const [error, setError] = useState<{success:boolean; message:string; jsonData:object}>({success:false, message:"", jsonData:{}});
     const [isError, setIsError] = useState<boolean>(false);
-    const scrollBottomRef = useRef<HTMLDivElement|null>(null);
     const navigate = useNavigate();
 
 
     const findPendingClientsHandler = async() => {
+        if (isDisable) return;
+
         if ((typeof skip !== "number") || (skip < 0 )) return;
         setIsButtonLoading(true);
         const res = await findPendingClients(skip);
         if (res.success){
             if (res.jsonData.length !== 0){
                 setAllPendingPlots((prev) => [...prev, ...res.jsonData]);
-                setSkip((prev) => prev+1);
+                setSkip((prev) => prev+5);
                 setIsError(false);
                 setIsDisable(false);
                 //setIsScreenLoading(false);
@@ -86,19 +87,7 @@ const Home = () => {
     }
 
     useEffect(() => {
-        const observer = new IntersectionObserver((enteries) => {
-            if (enteries[0].isIntersecting) {
-                findPendingClientsHandler();
-            }
-        }, {threshold:1});
-        
-        const scrollBottom = scrollBottomRef.current;
-        if (!scrollBottom) return;
-        observer.observe(scrollBottom);
-
-        return() => {
-            if (scrollBottom) observer.unobserve(scrollBottom);
-        }
+        findPendingClientsHandler();
     }, []);
 
 
@@ -200,7 +189,6 @@ const Home = () => {
                 isLoading={isButtonLoading}
                 isDisable={isDisable}
             />
-            <div className="scroll_bottom" ref={scrollBottomRef}>load more...</div>
         </div>
     )
 };

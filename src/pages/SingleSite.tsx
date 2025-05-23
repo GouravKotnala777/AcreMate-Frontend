@@ -1,8 +1,8 @@
 import { ChangeEvent, DragEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlotTypes, SiteTypes, UpdateSiteBodyTypes } from "../utils/types";
-import { createPlots, findAllPlots, findSingleSite, updatePlotCoordinates, updateSite } from "../api";
-import { ButtonPrimary, HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
+import { createPlots, deletePlot, findAllPlots, findSingleSite, updatePlotCoordinates, updateSite } from "../api";
+import { ButtonPrimary, FormSharedComponent, HeadingParaCont, KeyValuePairs, ScrollableContainer, Skeleton } from "../shared/SharedComponents";
 import { PRIMARY_LIGHT } from "../utils/constants";
 import "../styles/pages/single_item_page.scss";
 import ListHeading from "../components/ListHeading";
@@ -14,7 +14,7 @@ import { GrUpdate } from "react-icons/gr";
 import Modal from "../components/Modal";
 import { LuGrab, LuMapPinCheck } from "react-icons/lu";
 import toast from "react-hot-toast";
-import { MdSell } from "react-icons/md";
+import { MdDeleteOutline, MdSell } from "react-icons/md";
 import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { RxCross1 } from "react-icons/rx";
 import { ImInfo } from "react-icons/im";
@@ -33,6 +33,7 @@ const SingleSite = () => {
     const [isPlotTooltipVisible, setIsPlotTooltipVisible] = useState<boolean>(false);
     const [totalSiteCalculations, setTotalSiteCalculations] = useState<{totalSoldArea:number; totalRemainingArea:number; totalShouldPay:number; totalPaid:number; totalPending:number;}>({totalSoldArea:0, totalRemainingArea:0, totalShouldPay:0, totalPaid:0, totalPending:0});
     const [updateSiteForm, setUpdateSiteForm] = useState<UpdateSiteBodyTypes>({siteID:"", soldArea:0, totalSize:0});
+    const [deletePlotConfirmation, setDeletePlotConfirmation] = useState<string>("");
     //const [aa, setAa] = useState<{}>({});
     const [siteMapForm, setSiteMapForm] = useState<{size:number; rate:number; length:number; breath:number; duration:number; firstPlotNo:number; quantity:number;}>({size:0, rate:0, length:0, breath:0, duration:0, firstPlotNo:0, quantity:0});
     const [siteMapePlots, setSiteMapPlots] = useState<{plotID?:string; size:number; plotNo:number; rate:number; length:number; breath:number; duration:number; x:number; y:number;}[]>([]);
@@ -51,6 +52,7 @@ const SingleSite = () => {
     const [updateingPlots, setUpdateingPlots] = useState<{plotID?:string; plotNo:number; length:number; breath:number; x:number; y:number;}[]>([]);
     const [isUpdateMapMode, setIsUpdateMapMode] = useState<boolean>(true);
     const [isCreateMapMode, setIsCreateMapMode] = useState<boolean>(true);
+    const [isDeletePlotModal, setIsDeletePlotModal] = useState<boolean>(false);
 
 
 
@@ -80,12 +82,20 @@ const SingleSite = () => {
     const changeUpdateSiteHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
         setUpdateSiteForm({...updateSiteForm, [e.target.name]:e.target.value});
     }
+    const deletePlotModalChangeHandler = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+        setDeletePlotConfirmation(e.target.value);
+        console.log(deletePlotConfirmation);        
+    }
     const updateSiteHandler = async() => {
         updateSite({...updateSiteForm, siteID:siteData._id});
         console.log({...updateSiteForm, siteID:siteData._id});
     }
     const cancelUpdateSiteHandler = () => {
         console.log("cancelled");
+    }
+    const cancelDeletePlotHandler = () => {
+        setIsDeletePlotModal(false);
+        setDeletePlotConfirmation("");
     }
         
     const changeSiteMapFormHandler = (e:ChangeEvent<HTMLInputElement>) => {
@@ -197,6 +207,49 @@ const SingleSite = () => {
         console.log(siteMapePlots);
     }
 
+    const deletePlotHandler = async() => {
+        console.log(selectedPlot?.plotID, "ye hai plotID jise delete karna hai");
+        if (deletePlotConfirmation !== `delete plotNo. ${selectedPlot.plotNo}`) {
+            toast.error("Wrong typed value", {
+                position:"top-center",
+                duration:2500
+            });
+            return;
+        }
+        const res = await deletePlot({plotID:selectedPlot?.plotID as string});
+
+        if (res.success) {
+            toast.success(res.message, {
+                position:"top-center",
+                duration:2500
+            });
+
+            setIsDeletePlotModal(false);
+            setDeletePlotConfirmation("");
+            setSelectedPlot({
+                plotID:undefined,
+                plotNo:0,
+                size:0,
+                rate:0,
+                length:0,
+                breath:0,
+                duration:0,
+                x:0,
+                y:0,
+                isDragging:false,
+                hasSold:false
+            });
+            setIsPlotTooltipVisible(false);
+            setAllPlots((prev) => prev.filter((plt) => plt._id !== res.jsonData._id));
+        }
+        else{
+            toast.error(res.message, {
+                position:"top-center",
+                duration:2500
+            });
+        }
+    }
+
     const dragStartHandler = (e:DragEvent<HTMLDivElement>, index:number) => {
         const parentCont = parentContRef.current?.getBoundingClientRect();
         if (!parentCont) return;
@@ -273,6 +326,9 @@ const SingleSite = () => {
           console.log(target.id);
           const selectedPlt = allPlots.find((plt) => plt._id === target.id);
           if (!selectedPlt) return;
+          console.log(selectedPlt._id);
+          console.log(selectedPlot.plotID);
+
 
           setIsPlotTooltipVisible(true);
           setSelectedPlot({
@@ -483,9 +539,35 @@ const SingleSite = () => {
                 heading="Update Site"
                 isOpen={isUpdateSiteFormActive}
                 setIsOpen={setIsUpdateSiteFormActive}
-                onChangeHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => changeUpdateSiteHandler(e)}
-                onSubmitHandler={updateSiteHandler}
+                form={
+                    <FormSharedComponent
+                        inputArray={[
+                            {name:"siteName", label:"Site Name", type:"text"},
+                            {name:"totalSize", label:"Total Size", type:"number"},
+                            {name:"soldArea", label:"Sold Area", type:"number"},
+                        ]}
+                        onChangeFeildsHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => changeUpdateSiteHandler(e)}
+                        onSubmitFormHandler={updateSiteHandler}
+                        btnText="Submit"
+                    />
+                }
                 onCancelHandler={cancelUpdateSiteHandler}
+            />
+            <Modal
+                heading={`To delete plot enter 'delete plotNo. ${selectedPlot.plotNo}'`}
+                isOpen={isDeletePlotModal}
+                setIsOpen={setIsDeletePlotModal}
+                form={
+                    <FormSharedComponent
+                        inputArray={[
+                            {name:"confirmation", label:"Confirmation For Deleting Plot", type:"text"},
+                        ]}
+                        onChangeFeildsHandler={(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => deletePlotModalChangeHandler(e)}
+                        onSubmitFormHandler={deletePlotHandler}
+                        btnText="Submit"
+                    />
+                }
+                onCancelHandler={cancelDeletePlotHandler}
             />
             <ButtonPrimary
                 text="Update Site"
@@ -651,6 +733,7 @@ const SingleSite = () => {
                             top: selectedPlot.y,
                             left: selectedPlot.x+40
                         }}
+                        onClick={(e) => e.stopPropagation()}
                         >
                         <KeyValuePairs
                             keyValuePairArray={[
@@ -659,7 +742,7 @@ const SingleSite = () => {
                                 {"BaseRate":selectedPlot.rate},
                                 {...(selectedPlot.hasSold ?
                                         ({
-                                            "Info":<ButtonPrimary
+                                            "":<ButtonPrimary
                                                     text="Info"
                                                     Icon={ImInfo}
                                                     onClickHandler={() => navigateToSinglePageHandler(selectedPlot?.plotID as string)}
@@ -667,13 +750,19 @@ const SingleSite = () => {
                                         })
                                         :
                                         ({
-                                            "Sell":<ButtonPrimary
+                                            "":<ButtonPrimary
                                                     text="Sell"
                                                     Icon={MdSell}
                                                     onClickHandler={() => navigate(`/create?plotID=${selectedPlot.plotID}&plotStatus=vacant&size=${selectedPlot.size}&length=${selectedPlot.length}&breath=${selectedPlot.breath}&formPanelFor=slips`)}
                                                 />
                                         })
-                                )}
+                                )},
+                                {"":<ButtonPrimary
+                                                text="Delete"
+                                                Icon={MdDeleteOutline}
+                                                onClickHandler={() => setIsDeletePlotModal((prev) => !prev)}
+                                                color="red"
+                                            />}
                             ]}
                             width="100px"
                         />

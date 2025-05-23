@@ -8,6 +8,12 @@ export const fetchAPIHandler = async<T>({
     apiName, endpoint, isFormDataType, method, credentials, body, signal
 }:FetchAPIHandlerArgTypes) => {
     try {
+
+        if (apiName === "createPlots" || apiName === "deletePlot") {
+            console.log(`${import.meta.env.VITE_SERVER_URL}${endpoint}`);
+        }
+        
+
         const res = await fetch(`${import.meta.env.VITE_SERVER_URL}${endpoint}`, {
             ...(isFormDataType?
                 {
@@ -355,17 +361,17 @@ export const updatePlot = async(formData:UpdatePlotBodyTypes) => {
 
     return data;
 };
-//export const deletePlot = async(plotID:string) => {
-//    const data = await fetchAPIHandler<null>({
-//        apiName:"deletePlot",
-//        endpoint:"/plot/delete",
-//        credentials:true,
-//        method:"DELETE",
-//        body:JSON.stringify(plotID)
-//    });
+export const deletePlot = async(formData:{plotID:string}) => {
+    const data = await fetchAPIHandler<PlotTypes>({
+        apiName:"deletePlot",
+        endpoint:"/plot/delete-plot",
+        credentials:true,
+        method:"DELETE",
+        body:JSON.stringify(formData)
+    });
 
-//    return data;
-//};
+    return data;
+};
 
 // Slip related apis
 //export const findAllSlips = async({skip}:{skip:number;}) => {
