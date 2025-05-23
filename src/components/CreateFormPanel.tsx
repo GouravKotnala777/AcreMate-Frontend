@@ -73,35 +73,7 @@ const CreateFormPanel = () => {
         //}
         if (formPanelFor === "slips") {
             console.log({createFormData});
-            const {plotID, agentID,
-            serialNumber, name, guardian, email, gender, mobile,
-            slipType, slipNo, modeOfPayment, paymentID, amount,
-            size, plotNo, length, breath} = createFormData as (CreatePlotBodyTypes&CreateClientBodyTypes&CreateSlipBodyTypes&{x:number; y:number; quantity:number;});
-            if ((plotStatus === "vacant") && (!plotID || !agentID ||
-!            serialNumber || !name || !guardian || !email || !gender || !mobile ||
-!            slipType || !slipNo || !modeOfPayment || !paymentID || !amount ||
-!            size || !plotNo || !length || !breath)) {
-                toast.error("All fields are required", {
-                    duration:2500,
-                    position:"top-center"
-                });
-                setIsLoading(false);
-                return;
-            }
-            if ((plotStatus === "pending") && (!slipType || !slipNo || !modeOfPayment || !paymentID || !amount || !plotID)) {
-                toast.error("All fields are required", {
-                    duration:2500,
-                    position:"top-center"
-                });
-                setIsLoading(false);
-                return;
-            }
-
             plotStatus === "vacant"?
-
-
-
-
                 assignPlotToClient(({
                     ...createFormData,
                     size:Number((createFormData as PlotTypes).size||size),
