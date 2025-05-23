@@ -308,17 +308,19 @@ const SinglePlot = () => {
         }
         findSinglePlot({plotID})
         .then((data) => {
-            setSinglePlotData(data.jsonData.singlePlot);
-            setAllSlipsData(data.jsonData.allSlips);
-            setClearedSlips(data.jsonData.allSlips.reduce((acc, iter) => {
-                if (iter.isCancelled) {
-                    acc.cancelled += 1;
-                }
-                else{
-                    acc.cleared += 1;
-                }
-                return acc;
-            }, {cleared:0, cancelled:0}))
+            if (data.success) {
+                setSinglePlotData(data.jsonData.singlePlot);
+                setAllSlipsData(data.jsonData.allSlips);
+                setClearedSlips(data.jsonData.allSlips.reduce((acc, iter) => {
+                    if (iter.isCancelled) {
+                        acc.cancelled += 1;
+                    }
+                    else{
+                        acc.cleared += 1;
+                    }
+                    return acc;
+                }, {cleared:0, cancelled:0}))
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -331,8 +333,10 @@ const SinglePlot = () => {
         }
         findSinglePlot({clientID})
         .then((data) => {
-            setSinglePlotData(data.jsonData.singlePlot);
-            setAllSlipsData(data.jsonData.allSlips);
+            if (data.success) {
+                setSinglePlotData(data.jsonData.singlePlot);
+                setAllSlipsData(data.jsonData.allSlips);
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -344,14 +348,16 @@ const SinglePlot = () => {
         }
         findSinglePlot({slipID})
         .then((data) => {
-            setSinglePlotData(data.jsonData.singlePlot);
-            setAllSlipsData(data.jsonData.allSlips);
+            if (data.success) {
+                setSinglePlotData(data.jsonData.singlePlot);
+                setAllSlipsData(data.jsonData.allSlips);
+            }
         })
         .catch((err) => {
+            
             console.log(err);
         });
     }, [slipID]);
-
     return(
         <>
         {/*<pre>{JSON.stringify(tooltipCollection, null, `\t`)}</pre>*/}
